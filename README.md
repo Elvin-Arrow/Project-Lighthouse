@@ -14,3 +14,36 @@ So, are you as excited as we are for this awesome journey?
 3. pkg-config
 4. build-essential: sudo apt-get install build-essential
 5. Dependencies for native-keymap node native extension: sudo apt-get install libx11-dev libxkbfile-dev
+
+## Lighthouse Theia
+
+The electron-based Theia application with JavaScript/TypeScript and Java support for Lighthouse.
+
+---
+
+## Helpful commands
+---
+
+### Build
+
+```sh
+yarn
+```
+
+### Run
+
+```sh
+yarn start
+```
+
+### Package the application
+
+```sh
+yarn package
+```
+
+### Create a preview application (without packaging it)
+
+```sh
+yarn package:preview
+```
