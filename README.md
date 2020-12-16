@@ -3,7 +3,11 @@ Are you a young programmer struggling to figure out what is wrong with your prog
 The Project Lighthouse is here to save you both. If you are getting an but can't figure out why? We'll help you find that for you. If you have a habbit of over using your resources, we'll let you know when it's a good time to take a break.
 So, are you as excited as we are for this awesome journey?
 
-## Theia Prequisites 
+## Lighthouse Editor Prequisites
+1. Node JS
+2. Yarn
+3. NVM (preferrable but not recommended)
+
 ### Linux
 1. make
 2. gcc (or another compiling toolchain)
