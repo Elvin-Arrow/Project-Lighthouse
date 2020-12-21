@@ -71,6 +71,7 @@
     "next:publish": "lerna publish --exact --canary=next --npm-tag=next --yes",
     "publish:check": "node scripts/check-publish.js",
     "start": "yarn rebuild:electron && yarn --cwd src/electron start",
+    "start:auth": "electron --cwd src/auth/index.js",
     "download:plugins": "theia download:plugins"
   },
   "workspaces": [

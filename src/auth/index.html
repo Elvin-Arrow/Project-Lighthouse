@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Lighthouse</title>
+    <!-- https://electronjs.org/docs/tutorial/security#csp-meta-tag -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="script-src 'self' 'unsafe-inline';"
+    />
+
+    <script type="text/javascript" src="./auth_service.js"></script>
+    <script>
+    
+      function authenticate() {
+        let username = document.getElementById("usernameInput").value;
+        let password = document.getElementById("passwordInput").value;
+
+        console.log(username);
+        console.log(password);
+        const res = login(username, password);
+
+        if (res) {
+          const remote = require("electron").remote;
+
+          let w = remote.getCurrentWindow();
+          try {
+            exec('cd ../.. | yarn start');
+          } catch(err) {
+            console.error(err);
+          }
+          
+          //w.close();
+        }
+      }
+    </script>
+
+    <style>
+      body {
+        padding: 0;
+        margin: 0;
+        text-align: center;
+      }
+      .form-control {
+        margin: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Welcome to Lighthouse</h1>
+    <img src="lighthouse.svg" alt="Lighthouse" />
+    <h3>Sign in to continue</h3>
+    <div class="form-control">
+      <label for="username">Username</label>
+      <input id="usernameInput" type="text" />
+    </div>
+    <div class="form-control">
+      <label for="password">Password</label>
+      <input id="passwordInput" type="password" />
+    </div>
+    <button id="login_btn" onclick="authenticate()">Authenticate</button>
+  </body>
+</html>
