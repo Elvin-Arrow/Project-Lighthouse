@@ -52,7 +52,7 @@ for (const [packageName, yarnWorkspace] of Object.entries(YARN_WORKSPACES)) {
 
 /** @type {YarnWorkspace} */
 const THEIA_MONOREPO = {
-    name: '@theia/monorepo',
+    name: '@lighthouse/editor',
     workspaceDependencies: Object.keys(YARN_WORKSPACES),
     location: ROOT,
 };
