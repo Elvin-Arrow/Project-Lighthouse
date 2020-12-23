@@ -1,8 +1,8 @@
 {
   "private": true,
-  "name": "@theia/api-samples",
+  "name": "@lighthouse/api-samples",
   "version": "1.9.0",
-  "description": "Theia - Example code to demonstrate Theia API",
+  "description": "Example code to demonstrate Lighthouse API",
   "dependencies": {
     "@theia/core": "^1.9.0",
     "@theia/output": "^1.9.0"

@@ -1,7 +1,7 @@
 {
-  "name": "@theia/api-tests",
+  "name": "@lighthouse/api-tests",
   "version": "1.9.0",
-  "description": "Theia API tests",
+  "description": "Lighthouse API tests",
   "dependencies": {
     "@theia/core": "^1.9.0"
   },

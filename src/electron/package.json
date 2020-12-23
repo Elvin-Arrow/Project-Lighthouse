@@ -1,20 +1,20 @@
 {
   "private": true,
-  "name": "@theia/example-electron",
-  "productName": "Theia Electron Example",
-  "version": "1.9.0",
+  "name": "@lighthouse/editor-electron",
+  "productName": "Lighthouse editor",
+  "version": "0.0.5",
   "main": "src-gen/frontend/electron-main.js",
   "license": "EPL-2.0 OR GPL-2.0 WITH Classpath-exception-2.0",
   "theia": {
     "target": "electron",
     "frontend": {
       "config": {
-        "applicationName": "Theia Electron Example"
+        "applicationName": "Lighthouse Editor"
       }
     }
   },
   "dependencies": {
-    "@theia/api-samples": "^1.9.0",
+    "@lighthouse/api-samples": "^1.9.0",
     "@theia/callhierarchy": "^1.9.0",
     "@theia/console": "^1.9.0",
     "@theia/core": "^1.9.0",
