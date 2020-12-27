@@ -1,0 +1,48 @@
+#widget-container h2 {
+    color: var(--theia-ui-font-color1);
+    font-size: 12px;
+    font-weight: 400;
+    padding: 10px;
+    text-transform: uppercase;
+}
+button{
+    padding: 5px;
+}
+.main-area{
+    width: 80%;
+    float: left;
+}
+.sidebar{
+    width: 15%;
+    float: right;
+}
+ul li{
+    padding-bottom: 10px;
+}
+h1{
+    padding: 20px;
+    text-decoration: underline;
+}
+table {
+    width:100%;
+    margin-left: 20px;
+    color: #222222;
+}
+table, th, td {
+    border: 1px solid #eee;
+    border-collapse: collapse;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+#table1 tr:nth-child(even) {
+    background-color: #dddddd;
+}
+#table1 tr:nth-child(odd) {
+    background-color: #eeeeee;
+}
+#table1 th {
+    background-color: black;
+    color: #eeeeee;
+}
