@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { injectable, postConstruct, inject } from 'inversify';
-// import { AlertMessage } from '@theia/core/lib/browser/widgets/alert-message';
+import { AlertMessage } from '@theia/core/lib/browser/widgets/alert-message';
 import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
 import { CommandService, MessageService } from '@theia/core';
 import { WorkspaceService } from '@theia/workspace/lib/browser';
@@ -31,18 +31,44 @@ export class WidgetTestWidget extends ReactWidget {
     }
 
     protected render(): React.ReactNode {
-        // const header = `This is a sample widget which simply calls the messageService
-        // in order to display an info message to end users.`;
+        if (!this.authState()) {
+            // Request to authenticate
+            const message = 'Please login to access Lighthouse services';
+
+            return <div id='widget-container'>
+            <AlertMessage type='INFO' header={message} />
+            <button className='theia-button secondary' title='Launch Dashboard' onClick={_a => this.lighthouseAuthenticate()}>Login to Lighthouse</button>
+        </div>
+        } else {
+            // Show lighthouse services
+            return this.renderToolbox();
+        }
+        
+    }
+
+    private renderToolbox(): React.ReactNode {
         return <div id='widget-container'>
-            {/* <AlertMessage type='INFO' header={header} /> */}
             <h2>Access the dashboard</h2>
             <br></br>
-            <button className='theia-button secondary' title='Launch Dashboard' onClick={_a => this.displayMessage()}>Display Message</button>
+            <button className='theia-button secondary' title='Launch Dashboard' onClick={_a => this.showDashboard()}>View Dashboard</button>
         </div>
     }
 
-    protected displayMessage(): void {
+    protected showDashboard(): void {
         this.commandService.executeCommand('lighthouse-dashboard:command');
+    }
+
+    /**
+     * Check whether user is authenticated or not
+     */
+    private authState(): boolean {
+        // TODO Implement authentication logic
+        return false;
+    }
+
+    private lighthouseAuthenticate(): void {
+        // TODO Invoke the auth plugin
+        this.commandService.executeCommand('lighthouse.authenticate');
     }
 
 }
