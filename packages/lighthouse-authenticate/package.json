@@ -1,5 +1,6 @@
 {
-  "name": "lighthouse-authenticate",
+  "private": "true",
+  "name": "@lighthouse/authenticate",
   "keywords": [
     "theia-extension"
   ],
