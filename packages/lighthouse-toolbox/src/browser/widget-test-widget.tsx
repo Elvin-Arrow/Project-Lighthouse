@@ -68,7 +68,7 @@ export class WidgetTestWidget extends ReactWidget {
 
     private lighthouseAuthenticate(): void {
         // TODO Invoke the auth plugin
-        this.commandService.executeCommand('lighthouse.authenticate');
+        this.commandService.executeCommand('lighthouse-authenticate:command');
     }
 
 }
