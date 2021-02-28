@@ -12,6 +12,6 @@ process.env.THEIA_PLUGINS = [
 
 // Handover to the auto-generated electron application handler.
 require('../src-gen/frontend/electron-main.js').then(() => {
-    const { exec } = require("child_process")
-    exec('electron ./packages/auth/index.js');
+    // const { exec } = require("child_process")
+    // exec('electron ./packages/auth/index.js');
 });
