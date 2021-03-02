@@ -7,6 +7,8 @@ var __extends = (this && this.__extends) || (function () {
         return extendStatics(d, b);
     };
     return function (d, b) {
+        if (typeof b !== "function" && b !== null)
+            throw new TypeError("Class extends value " + String(b) + " is not a constructor or null");
         extendStatics(d, b);
         function __() { this.constructor = d; }
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
@@ -61,14 +63,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.WidgetTestWidget = void 0;
 var React = require("react");
 var inversify_1 = require("inversify");
-// import { AlertMessage } from '@theia/core/lib/browser/widgets/alert-message';
+var alert_message_1 = require("@theia/core/lib/browser/widgets/alert-message");
 var react_widget_1 = require("@theia/core/lib/browser/widgets/react-widget");
 var core_1 = require("@theia/core");
 var browser_1 = require("@theia/workspace/lib/browser");
+var Store = require("electron-store");
 var WidgetTestWidget = /** @class */ (function (_super) {
     __extends(WidgetTestWidget, _super);
     function WidgetTestWidget() {
-        return _super !== null && _super.apply(this, arguments) || this;
+        var _this = _super !== null && _super.apply(this, arguments) || this;
+        _this.store = new Store();
+        return _this;
     }
     WidgetTestWidget_1 = WidgetTestWidget;
     WidgetTestWidget.prototype.init = function () {
@@ -86,15 +91,42 @@ var WidgetTestWidget = /** @class */ (function (_super) {
     };
     WidgetTestWidget.prototype.render = function () {
         var _this = this;
-        // const header = `This is a sample widget which simply calls the messageService
-        // in order to display an info message to end users.`;
+        if (!this.authState()) {
+            // Request to authenticate
+            var message = 'Please login to access Lighthouse services';
+            return React.createElement("div", { id: 'widget-container' },
+                React.createElement(alert_message_1.AlertMessage, { type: 'INFO', header: message }),
+                React.createElement("button", { className: 'theia-button secondary', title: 'Launch Dashboard', onClick: function (_a) { return _this.lighthouseAuthenticate(); } }, "Login to Lighthouse"));
+        }
+        else {
+            // Show lighthouse services
+            return this.renderToolbox();
+        }
+    };
+    WidgetTestWidget.prototype.renderToolbox = function () {
+        var _this = this;
         return React.createElement("div", { id: 'widget-container' },
             React.createElement("h2", null, "Access the dashboard"),
             React.createElement("br", null),
-            React.createElement("button", { className: 'theia-button secondary', title: 'Launch Dashboard', onClick: function (_a) { return _this.displayMessage(); } }, "Display Message"));
+            React.createElement("button", { className: 'theia-button secondary', title: 'Launch Dashboard', onClick: function (_a) { return _this.showDashboard(); } }, "View Dashboard"));
     };
-    WidgetTestWidget.prototype.displayMessage = function () {
+    WidgetTestWidget.prototype.showDashboard = function () {
         this.commandService.executeCommand('lighthouse-dashboard:command');
+    };
+    /**
+     * Check whether user is authenticated or not
+     */
+    WidgetTestWidget.prototype.authState = function () {
+        // TODO Implement authentication logic
+        var status = this.store.get('authenticated');
+        if (status) {
+            return true;
+        }
+        return false;
+    };
+    WidgetTestWidget.prototype.lighthouseAuthenticate = function () {
+        // TODO Invoke the auth plugin
+        this.commandService.executeCommand('lighthouse-authenticate:command');
     };
     var WidgetTestWidget_1;
     WidgetTestWidget.ID = 'lighthouse-toolbox:widget';

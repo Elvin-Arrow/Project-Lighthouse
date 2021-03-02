@@ -4,6 +4,7 @@ import { AlertMessage } from '@theia/core/lib/browser/widgets/alert-message';
 import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
 import { CommandService, MessageService } from '@theia/core';
 import { WorkspaceService } from '@theia/workspace/lib/browser';
+import Store = require("electron-store");
 
 @injectable()
 export class WidgetTestWidget extends ReactWidget {
@@ -19,6 +20,8 @@ export class WidgetTestWidget extends ReactWidget {
 
     @inject(CommandService)
     protected readonly commandService: CommandService;
+
+    private readonly store = new Store();
 
     @postConstruct()
     protected async init(): Promise < void> {
@@ -63,6 +66,11 @@ export class WidgetTestWidget extends ReactWidget {
      */
     private authState(): boolean {
         // TODO Implement authentication logic
+        const status = this.store.get('authenticated');
+
+        if (status) {
+            return true;
+        }
         return false;
     }
 

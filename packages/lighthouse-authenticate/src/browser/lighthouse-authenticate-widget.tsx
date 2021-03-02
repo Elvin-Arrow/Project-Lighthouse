@@ -1,83 +1,242 @@
-import * as React from 'react';
-import { injectable, postConstruct, inject } from 'inversify';
-import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
-import { MessageService } from '@theia/core';
+import * as React from "react";
+import { injectable, postConstruct, inject } from "inversify";
+import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
+import { MessageService } from "@theia/core";
+import { WorkspaceService } from "@theia/workspace/lib/browser";
+import Store = require("electron-store");
 
-var path = require('path');
+var path = require("path");
 
 @injectable()
 export class LighthouseAuthenticateWidget extends ReactWidget {
+  static readonly ID = "lighthouse-authenticate:widget";
+  static readonly LABEL = "LighthouseAuthenticate Widget";
 
-    static readonly ID = 'lighthouse-authenticate:widget';
-    static readonly LABEL = 'LighthouseAuthenticate Widget';
+  @inject(MessageService)
+  protected readonly messageService!: MessageService;
 
-    @inject(MessageService)
-    protected readonly messageService!: MessageService;
+  @inject(WorkspaceService)
+  protected readonly workspaceService: WorkspaceService;
 
-    @postConstruct()
-    protected async init(): Promise<void> {
-        this.id = LighthouseAuthenticateWidget.ID;
-        this.title.label = LighthouseAuthenticateWidget.LABEL;
-        this.title.caption = LighthouseAuthenticateWidget.LABEL;
-        this.title.closable = true;
-        this.title.iconClass = 'fa fa-window-maximize'; // example widget icon.
-        this.update();
+  private readonly store = new Store();
+
+  private username: String | undefined;
+  private password = new String();
+
+  
+
+  constructor(props: any) {
+    super(props);
+  }
+
+  @postConstruct()
+  protected async init(): Promise<void> {
+    this.id = LighthouseAuthenticateWidget.ID;
+    this.title.label = LighthouseAuthenticateWidget.LABEL;
+    this.title.caption = LighthouseAuthenticateWidget.LABEL;
+    this.title.closable = true;
+    this.title.iconClass = "fa fa-window-maximize"; // example widget icon.
+    this.update();
+  }
+
+  protected render(): React.ReactNode {
+    const lighthouseImagePath = path.join("media", "lighthouse.svg");
+    console.log(lighthouseImagePath);
+
+    
+
+    return (
+      <div id="login">
+        {/* <img src='../../src/browser/media/lighthouse.svg' alt='Lighthouse' /> */}
+        <h1 className="text-center text-white pt-5">Lighthouse Services</h1>
+        <p className="text-center text-white m-3">Please log in to continue.</p>
+        <div className="container">
+          <div
+            id="login-row"
+            className="row justify-content-center align-items-center"
+          >
+            <div id="login-column" className="col-md-6">
+              <div id="login-box" className="col-md-12">
+                <form id="login-form" className="form" action="" method="post">
+                  <div className="form-group">
+                    <label htmlFor="username" className="text-info">
+                      Username:
+                    </label>
+                    <br />
+                    <input
+                      type="text"
+                      name="username"
+                      id="usernameInput"
+                      className="form-control"
+                      onChange={this.updatePassword}
+                      ref={(e) => console.info(e?.textContent)}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="password" className="text-info">
+                      Password:
+                    </label>
+                    <br />
+                    <input
+                      type="password"
+                      name="password"
+                      id="passwordInput"
+                      className="form-control"
+                      ref={(c) => {
+                        this.username = c?.value;
+                        console.info(`c-value: ${c?.value}`);
+                      }}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <button
+                      type="button"
+                      className="theia-button secondary btn btn-info btn-md"
+                      title="Login"
+                      onClick={(_a) => {
+                        this.authenticate();
+                      }}
+                    >
+                      Login
+                    </button>
+                  </div>                  
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  protected displayMessage(): void {
+    this.messageService.info(
+      "Congratulations: LighthouseAuthenticate Widget Successfully Created!"
+    );
+  }
+
+  onSubmit(e: Event) {
+    e.preventDefault();
+    var username = this.username;
+    console.log(username);
+  }
+
+  private updatePassword(event: React.ChangeEvent<HTMLInputElement>): void {
+    this.password = event.target.value;
+    console.info(`Updated password to: ${this.password}`);
+  }
+
+  private authenticate(): void {
+    console.info(
+      `Got ${this.username} as username and ${this.password} as password`
+    );
+    if (this.username == "student" && this.password == "123456") {
+      this.store.set("authenticated", true);
+
+      this.refreshWorkspace();
+      this.dispose();
     }
+  }
 
-    protected render(): React.ReactNode {
-        const lighthouseImagePath = path.join('media', 'lighthouse.svg');
-        console.log(lighthouseImagePath);
+  private refreshWorkspace(): void {
+    if (this.workspaceService.opened) {
+      const currentWorkspace = this.workspaceService.workspace?.resource;
 
-        return  <div id="login">
-                    {/* <img src='../../src/browser/media/lighthouse.svg' alt='Lighthouse' /> */}
-                    <h1 className="text-center text-white pt-5">Lighthouse Services</h1>
-                    <p className="text-center text-white m-3">Please log in to continue.</p>
-                    <div className="container">
-                        <div id="login-row" className="row justify-content-center align-items-center">
-                            <div id="login-column" className="col-md-6">
-                                <div id="login-box" className="col-md-12">
-                                    <form id="login-form" className="form" action="" method="post">
-                                        <div className="form-group">
-                                            <label htmlFor="username" className="text-info">Username:</label><br />
-                                            <input type="text" name="username" id="username" className="form-control" />
-                                        </div>
-                                        <div className="form-group">
-                                            <label htmlFor="password" className="text-info">Password:</label><br />
-                                            <input type="text" name="password" id="password" className="form-control" />
-                                        </div>
-                                        <div className="form-group">
-                                            {/* <input type="submit" name="submit" className="btn btn-info btn-md" value="submit" /> */}
-                                            <button type="button" className='theia-button secondary btn btn-info btn-md' title='Display Message' onClick={_a => this.displayMessage()}>Login</button>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+      if (currentWorkspace != undefined) {
+        this.workspaceService.close();
+        this.workspaceService.open(currentWorkspace);
+      }
+    }
+  }
+}
+
+export class AuthView extends React.Component {
+  constructor(props: {}) {
+    super(props);
+
+    this.state = {
+      username: "",
+      password: "",      
+    };
+  }
+
+  render(): JSX.Element {
+    return (
+      <React.Fragment>
+        <div id="login">
+          {/* <img src='../../src/browser/media/lighthouse.svg' alt='Lighthouse' /> */}
+          <h1 className="text-center text-white pt-5">Lighthouse Services</h1>
+          <p className="text-center text-white m-3">
+            Please log in to continue.
+          </p>
+          <div className="container">
+            <div
+              id="login-row"
+              className="row justify-content-center align-items-center"
+            >
+              <div id="login-column" className="col-md-6">
+                <div id="login-box" className="col-md-12">
+                  <form
+                    id="login-form"
+                    className="form"
+                    action=""
+                    method="post"
+                  >
+                    <div className="form-group">
+                      <label htmlFor="username" className="text-info">
+                        Username:
+                      </label>
+                      <br />
+                      <input
+                        type="text"
+                        name="username"
+                        id="usernameInput"
+                        className="form-control"
+                        onChange={this.updateUsername}
+                      />
                     </div>
+                    <div className="form-group">
+                      <label htmlFor="password" className="text-info">
+                        Password:
+                      </label>
+                      <br />
+                      <input
+                        type="password"
+                        name="password"
+                        id="passwordInput"
+                        className="form-control"
+                        ref={(c) => {
+                          // this.username = c?.value
+                          console.info(`c-value: ${c?.value}`);
+
+                        }}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <button
+                        type="button"
+                        className="theia-button secondary btn btn-info btn-md"
+                        title="Login"
+                        onClick={(_a) => {
+                          // this.authenticate();
+                        }}
+                      >
+                        Login
+                      </button>
+                    </div>
+                  </form>
                 </div>
-        // return <div id='widget-container'>
-        //     <div className='row'>
-        //         <div className='col-md-8 mx-auto'>
-        //             <h1>Welcome to Lighthouse</h1>
-        //             {/* <img src='lighthouse.png' alt='Lighthouse' /> */}
-        //             <h3>Sign in to continue</h3>
-        //             <div className=''></div>
-        //             <div className='form-control'>
-        //                 <label htmlFor='username'>Username</label>
-        //                 <input id='usernameInput' type='text' />
-        //             </div>
-        //             <div className='form-control'>
-        //                 <label htmlFor='password'>Password</label>
-        //                 <input id='passwordInput' type='password' />
-        //             </div>
-        //             <button className='theia-button secondary' title='Display Message' onClick={_a => this.displayMessage()}>Display Message</button>
-        //         </div>
-        //     </div>
-        // </div>
-    }
+              </div>
+            </div>
+          </div>
+        </div>
+      </React.Fragment>
+    );
+  }
 
-    protected displayMessage(): void {
-        this.messageService.info('Congratulations: LighthouseAuthenticate Widget Successfully Created!');
-    }
-
+  private updateUsername(e: React.ChangeEvent<HTMLInputElement>): void {
+    this.setState({
+      username: e.currentTarget.value
+    });
+  }
 }

@@ -8,8 +8,15 @@ export declare class WidgetTestWidget extends ReactWidget {
     protected readonly messageService: MessageService;
     protected readonly workspaceService: WorkspaceService;
     protected readonly commandService: CommandService;
+    private readonly store;
     protected init(): Promise<void>;
     protected render(): React.ReactNode;
-    protected displayMessage(): void;
+    private renderToolbox;
+    protected showDashboard(): void;
+    /**
+     * Check whether user is authenticated or not
+     */
+    private authState;
+    private lighthouseAuthenticate;
 }
 //# sourceMappingURL=widget-test-widget.d.ts.map

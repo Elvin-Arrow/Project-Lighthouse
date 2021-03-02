@@ -60,16 +60,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.LighthouseAuthenticateWidget = void 0;
+exports.AuthView = exports.LighthouseAuthenticateWidget = void 0;
 var React = require("react");
 var inversify_1 = require("inversify");
 var react_widget_1 = require("@theia/core/lib/browser/widgets/react-widget");
 var core_1 = require("@theia/core");
-var path = require('path');
+var browser_1 = require("@theia/workspace/lib/browser");
+var Store = require("electron-store");
+var path = require("path");
 var LighthouseAuthenticateWidget = /** @class */ (function (_super) {
     __extends(LighthouseAuthenticateWidget, _super);
-    function LighthouseAuthenticateWidget() {
-        return _super !== null && _super.apply(this, arguments) || this;
+    function LighthouseAuthenticateWidget(props) {
+        var _this = _super.call(this, props) || this;
+        _this.store = new Store();
+        _this.password = new String();
+        return _this;
     }
     LighthouseAuthenticateWidget_1 = LighthouseAuthenticateWidget;
     LighthouseAuthenticateWidget.prototype.init = function () {
@@ -79,7 +84,7 @@ var LighthouseAuthenticateWidget = /** @class */ (function (_super) {
                 this.title.label = LighthouseAuthenticateWidget_1.LABEL;
                 this.title.caption = LighthouseAuthenticateWidget_1.LABEL;
                 this.title.closable = true;
-                this.title.iconClass = 'fa fa-window-maximize'; // example widget icon.
+                this.title.iconClass = "fa fa-window-maximize"; // example widget icon.
                 this.update();
                 return [2 /*return*/];
             });
@@ -87,33 +92,73 @@ var LighthouseAuthenticateWidget = /** @class */ (function (_super) {
     };
     LighthouseAuthenticateWidget.prototype.render = function () {
         var _this = this;
-        var lighthouseImagePath = path.join('media', 'lighthouse.svg');
+        var lighthouseImagePath = path.join("media", "lighthouse.svg");
         console.log(lighthouseImagePath);
-        return React.createElement("div", { id: 'widget-container' },
-            React.createElement("div", { className: "row" },
-                React.createElement("div", { className: "col-md-8 mx-auto" },
-                    React.createElement("h1", null, "Welcome to Lighthouse"),
-                    React.createElement("img", { src: 'lighthouse-authenticate/src/browser/media/lighthouse.svg', alt: "Lighthouse" }),
-                    React.createElement("h3", null, "Sign in to continue"),
-                    React.createElement("div", { className: "" }),
-                    React.createElement("div", { className: "form-control" },
-                        React.createElement("label", { htmlFor: "username" }, "Username"),
-                        React.createElement("input", { id: "usernameInput", type: "text" })),
-                    React.createElement("div", { className: "form-control" },
-                        React.createElement("label", { htmlFor: "password" }, "Password"),
-                        React.createElement("input", { id: "passwordInput", type: "password" })),
-                    React.createElement("button", { className: 'theia-button secondary', title: 'Display Message', onClick: function (_a) { return _this.displayMessage(); } }, "Display Message"))));
+        return (React.createElement("div", { id: "login" },
+            React.createElement("h1", { className: "text-center text-white pt-5" }, "Lighthouse Services"),
+            React.createElement("p", { className: "text-center text-white m-3" }, "Please log in to continue."),
+            React.createElement("div", { className: "container" },
+                React.createElement("div", { id: "login-row", className: "row justify-content-center align-items-center" },
+                    React.createElement("div", { id: "login-column", className: "col-md-6" },
+                        React.createElement("div", { id: "login-box", className: "col-md-12" },
+                            React.createElement("form", { id: "login-form", className: "form", action: "", method: "post" },
+                                React.createElement("div", { className: "form-group" },
+                                    React.createElement("label", { htmlFor: "username", className: "text-info" }, "Username:"),
+                                    React.createElement("br", null),
+                                    React.createElement("input", { type: "text", name: "username", id: "usernameInput", className: "form-control", onChange: this.updatePassword, ref: function (e) { return console.info(e === null || e === void 0 ? void 0 : e.textContent); } })),
+                                React.createElement("div", { className: "form-group" },
+                                    React.createElement("label", { htmlFor: "password", className: "text-info" }, "Password:"),
+                                    React.createElement("br", null),
+                                    React.createElement("input", { type: "password", name: "password", id: "passwordInput", className: "form-control", ref: function (c) {
+                                            _this.username = c === null || c === void 0 ? void 0 : c.value;
+                                            console.info("c-value: " + (c === null || c === void 0 ? void 0 : c.value));
+                                        } })),
+                                React.createElement("div", { className: "form-group" },
+                                    React.createElement("button", { type: "button", className: "theia-button secondary btn btn-info btn-md", title: "Login", onClick: function (_a) {
+                                            _this.authenticate();
+                                        } }, "Login")))))))));
     };
     LighthouseAuthenticateWidget.prototype.displayMessage = function () {
-        this.messageService.info('Congratulations: LighthouseAuthenticate Widget Successfully Created!');
+        this.messageService.info("Congratulations: LighthouseAuthenticate Widget Successfully Created!");
+    };
+    LighthouseAuthenticateWidget.prototype.onSubmit = function (e) {
+        e.preventDefault();
+        var username = this.username;
+        console.log(username);
+    };
+    LighthouseAuthenticateWidget.prototype.updatePassword = function (event) {
+        this.password = event.target.value;
+        console.info("Updated password to: " + this.password);
+    };
+    LighthouseAuthenticateWidget.prototype.authenticate = function () {
+        console.info("Got " + this.username + " as username and " + this.password + " as password");
+        if (this.username == "student" && this.password == "123456") {
+            this.store.set("authenticated", true);
+            this.refreshWorkspace();
+            this.dispose();
+        }
+    };
+    LighthouseAuthenticateWidget.prototype.refreshWorkspace = function () {
+        var _b;
+        if (this.workspaceService.opened) {
+            var currentWorkspace = (_b = this.workspaceService.workspace) === null || _b === void 0 ? void 0 : _b.resource;
+            if (currentWorkspace != undefined) {
+                this.workspaceService.close();
+                this.workspaceService.open(currentWorkspace);
+            }
+        }
     };
     var LighthouseAuthenticateWidget_1;
-    LighthouseAuthenticateWidget.ID = 'lighthouse-authenticate:widget';
-    LighthouseAuthenticateWidget.LABEL = 'LighthouseAuthenticate Widget';
+    LighthouseAuthenticateWidget.ID = "lighthouse-authenticate:widget";
+    LighthouseAuthenticateWidget.LABEL = "LighthouseAuthenticate Widget";
     __decorate([
         inversify_1.inject(core_1.MessageService),
         __metadata("design:type", core_1.MessageService)
     ], LighthouseAuthenticateWidget.prototype, "messageService", void 0);
+    __decorate([
+        inversify_1.inject(browser_1.WorkspaceService),
+        __metadata("design:type", browser_1.WorkspaceService)
+    ], LighthouseAuthenticateWidget.prototype, "workspaceService", void 0);
     __decorate([
         inversify_1.postConstruct(),
         __metadata("design:type", Function),
@@ -121,9 +166,54 @@ var LighthouseAuthenticateWidget = /** @class */ (function (_super) {
         __metadata("design:returntype", Promise)
     ], LighthouseAuthenticateWidget.prototype, "init", null);
     LighthouseAuthenticateWidget = LighthouseAuthenticateWidget_1 = __decorate([
-        inversify_1.injectable()
+        inversify_1.injectable(),
+        __metadata("design:paramtypes", [Object])
     ], LighthouseAuthenticateWidget);
     return LighthouseAuthenticateWidget;
 }(react_widget_1.ReactWidget));
 exports.LighthouseAuthenticateWidget = LighthouseAuthenticateWidget;
+var AuthView = /** @class */ (function (_super) {
+    __extends(AuthView, _super);
+    function AuthView(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            username: "",
+            password: "",
+        };
+        return _this;
+    }
+    AuthView.prototype.render = function () {
+        return (React.createElement(React.Fragment, null,
+            React.createElement("div", { id: "login" },
+                React.createElement("h1", { className: "text-center text-white pt-5" }, "Lighthouse Services"),
+                React.createElement("p", { className: "text-center text-white m-3" }, "Please log in to continue."),
+                React.createElement("div", { className: "container" },
+                    React.createElement("div", { id: "login-row", className: "row justify-content-center align-items-center" },
+                        React.createElement("div", { id: "login-column", className: "col-md-6" },
+                            React.createElement("div", { id: "login-box", className: "col-md-12" },
+                                React.createElement("form", { id: "login-form", className: "form", action: "", method: "post" },
+                                    React.createElement("div", { className: "form-group" },
+                                        React.createElement("label", { htmlFor: "username", className: "text-info" }, "Username:"),
+                                        React.createElement("br", null),
+                                        React.createElement("input", { type: "text", name: "username", id: "usernameInput", className: "form-control", onChange: this.updateUsername })),
+                                    React.createElement("div", { className: "form-group" },
+                                        React.createElement("label", { htmlFor: "password", className: "text-info" }, "Password:"),
+                                        React.createElement("br", null),
+                                        React.createElement("input", { type: "password", name: "password", id: "passwordInput", className: "form-control", ref: function (c) {
+                                                // this.username = c?.value
+                                                console.info("c-value: " + (c === null || c === void 0 ? void 0 : c.value));
+                                            } })),
+                                    React.createElement("div", { className: "form-group" },
+                                        React.createElement("button", { type: "button", className: "theia-button secondary btn btn-info btn-md", title: "Login", onClick: function (_a) {
+                                                // this.authenticate();
+                                            } }, "Login"))))))))));
+    };
+    AuthView.prototype.updateUsername = function (e) {
+        this.setState({
+            username: e.currentTarget.value
+        });
+    };
+    return AuthView;
+}(React.Component));
+exports.AuthView = AuthView;
 //# sourceMappingURL=lighthouse-authenticate-widget.js.map
