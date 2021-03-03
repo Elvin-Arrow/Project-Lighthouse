@@ -1,5 +1,6 @@
 import * as React from "react";
 import { injectable, postConstruct, inject } from "inversify";
+import { AlertMessage } from '@theia/core/lib/browser/widgets/alert-message';
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { MessageService } from "@theia/core";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
@@ -39,7 +40,14 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
     const lighthouseImagePath = path.join("media", "lighthouse.svg");
     console.log(lighthouseImagePath);
 
-    
+    const status = this.store.get('authenticated');
+
+    if (status) {
+      // User already signed in
+      const header: string = 'Hurrraaay! You are already signed in. :)';
+      return <AlertMessage type='INFO' header={header} />
+
+    }
 
     return (
       <div id="login">
