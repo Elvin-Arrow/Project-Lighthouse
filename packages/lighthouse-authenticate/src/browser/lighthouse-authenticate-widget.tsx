@@ -23,6 +23,8 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
   private username: String | undefined;
   private password = new String();
 
+             
+
   @postConstruct()
   protected async init(): Promise<void> {
     this.id = LighthouseAuthenticateWidget.ID;
@@ -37,12 +39,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
     const lighthouseImagePath = path.join("media", "lighthouse.svg");
     console.log(lighthouseImagePath);
 
-    const status = this.store.get('authenticated');
-
-    if (status) {
-      // User already signed in
-      
-    }
+    
 
     return (
       <div id="login">
@@ -67,8 +64,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
                       name="username"
                       id="usernameInput"
                       className="form-control"
-                      onChange={this.updatePassword}
-                      ref={(e) => console.info(e?.textContent)}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.username = e.target.value }
                     />
                   </div>
                   <div className="form-group">
@@ -81,10 +77,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
                       name="password"
                       id="passwordInput"
                       className="form-control"
-                      ref={(c) => {
-                        this.username = c?.value;
-                        console.info(`c-value: ${c?.value}`);
-                      }}
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.password = e.target.value }
                     />
                   </div>
                   <div className="form-group">
@@ -112,17 +105,6 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
     this.messageService.info(
       "Congratulations: LighthouseAuthenticate Widget Successfully Created!"
     );
-  }
-
-  onSubmit(e: Event) {
-    e.preventDefault();
-    var username = this.username;
-    console.log(username);
-  }
-
-  private updatePassword(event: React.ChangeEvent<HTMLInputElement>): void {
-    this.password = event.target.value;
-    console.info(`Updated password to: ${this.password}`);
   }
 
   private authenticate(): void {
