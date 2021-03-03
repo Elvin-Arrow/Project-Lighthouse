@@ -23,12 +23,6 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
   private username: String | undefined;
   private password = new String();
 
-  
-
-  constructor(props: any) {
-    super(props);
-  }
-
   @postConstruct()
   protected async init(): Promise<void> {
     this.id = LighthouseAuthenticateWidget.ID;
@@ -43,7 +37,12 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
     const lighthouseImagePath = path.join("media", "lighthouse.svg");
     console.log(lighthouseImagePath);
 
-    
+    const status = this.store.get('authenticated');
+
+    if (status) {
+      // User already signed in
+      
+    }
 
     return (
       <div id="login">
