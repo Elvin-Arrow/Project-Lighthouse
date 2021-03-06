@@ -62,9 +62,11 @@
     "@theia/terminal": "latest",
     "@theia/userstorage": "latest",
     "@theia/workspace": "latest",
+    "electron-store": "latest",
     "@lighthouse/dashboard": "0.0.1",
     "@lighthouse/toolbox": "0.0.1",
-    "@lighthouse/authenticate": "0.0.1"
+    "@lighthouse/authenticate": "0.0.1",
+    "@lighthouse/crnl": "0.0.2"
   },
   "devDependencies": {
     "@theia/cli": "latest",
