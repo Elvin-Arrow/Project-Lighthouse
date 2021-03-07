@@ -34,13 +34,17 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
                     this.messageService.info("Creating new terminal");
                     this.terminalService
                         .newTerminal({
-                            /* title: "Lighthouse terminal",
+                            title: "Lighthouse terminal",
                             shellPath:
-                            "/bin/bash, bash, sh",
-                             */
+                                "c:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe",
                         }).then((term) => {
+                            term.setTitle('Lighthouse Terminal');
+                            term.start().then(() => {
+                                this.sendTextToTerminal(term);
+                            });
                             this.terminalService.open(term);
-                            this.sendTextToTerminal(term);
+
+
                         });
                 }
 
@@ -48,20 +52,29 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
         });
     }
 
-    private sendTextToTerminal(term : TerminalWidget): void {
+    private sendTextToTerminal(term: TerminalWidget): void {
         let editors = this.editorManager.all;
 
         if (editors.length > 0) {
             let currentEditor = editors[0];
-            let detectedLanguage = currentEditor.editor.document.languageId;
-            let currentFilePath = currentEditor.editor.document.uri.split('file://')[1];
+            // let detectedLanguage = currentEditor.editor.document.languageId;
+            let currentFilePath = currentEditor.editor.document.uri.split('/');
 
-            term.sendText(`echo Current file language is: ${detectedLanguage}\n`);
-            term.sendText(`python3 ${currentFilePath}\n`);
+            // term.sendText(`echo Current file language is: ${detectedLanguage}\n`);
+            // term.sendText(`echo Current file path: ${currentFilePath}\n`);
+            let fileName = currentFilePath[currentFilePath.length - 1];
+
+            term.sendText(`python ${fileName}`);
+            setTimeout(() => {
+                term.sendText('\r');
+            }, 500);
+
+
+
 
         } else {
             term.sendText('echo No file open\n');
-        }        
+        }
     }
 }
 
@@ -82,7 +95,7 @@ export class LighthouseTabBarToolbarContribution
     implements TabBarToolbarContribution {
     registerToolbarItems(registry: TabBarToolbarRegistry): void {
         registry.registerItem(new CRnLTabBarToolbarItem());
-        
+
     }
 }
 
