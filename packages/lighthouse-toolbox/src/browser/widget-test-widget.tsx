@@ -54,11 +54,17 @@ export class WidgetTestWidget extends ReactWidget {
             <h2>Access the dashboard</h2>
             <br></br>
             <button className='theia-button secondary' title='Launch Dashboard' onClick={_a => this.showDashboard()}>View Dashboard</button>
+            <br></br>
+            <button className='theia-button secondary' title='Launch Dashboard' onClick={_a => this.logout()}>Logout</button>
         </div>
     }
 
-    protected showDashboard(): void {
+    private showDashboard(): void {
         this.commandService.executeCommand('lighthouse-dashboard:command');
+    }
+
+    private logout(): void {
+        this.store.delete('authenticated');
     }
 
     /**
