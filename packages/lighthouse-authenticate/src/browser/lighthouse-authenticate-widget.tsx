@@ -11,7 +11,7 @@ var path = require("path");
 @injectable()
 export class LighthouseAuthenticateWidget extends ReactWidget {
   static readonly ID = "lighthouse-authenticate:widget";
-  static readonly LABEL = "LighthouseAuthenticate Widget";
+  static readonly LABEL = "Lighthouse Authenticate";
 
   @inject(MessageService)
   protected readonly messageService!: MessageService;

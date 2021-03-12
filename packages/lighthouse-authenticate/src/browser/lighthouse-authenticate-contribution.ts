@@ -3,12 +3,14 @@ import { MenuModelRegistry } from '@theia/core';
 import { LighthouseAuthenticateWidget } from './lighthouse-authenticate-widget';
 import { AbstractViewContribution, FrontendApplication, FrontendApplicationContribution } from '@theia/core/lib/browser';
 import { Command, CommandRegistry } from '@theia/core/lib/common/command';
+import Store = require("electron-store");
 
 export const LighthouseAuthenticateCommand: Command = { id: 'lighthouse-authenticate:command', label: 'Lighthouse authenticate' };
 
 @injectable()
 export class LighthouseAuthenticateContribution extends AbstractViewContribution<LighthouseAuthenticateWidget> implements FrontendApplicationContribution {
 
+    private store: Store;
     /**
      * `AbstractViewContribution` handles the creation and registering
      *  of the widget including commands, menus, and keybindings.
@@ -24,10 +26,16 @@ export class LighthouseAuthenticateContribution extends AbstractViewContribution
             defaultWidgetOptions: { area: 'main' },
             toggleCommandId: LighthouseAuthenticateCommand.id
         });
+        this.store = new Store();
     }
 
     // Show widget on start
     async initializeLayout(app: FrontendApplication): Promise<void> {
+        let authStatus = this.store.get('authenticated');
+
+        if (authStatus == true) {
+            return;
+        }
         await this.openView();
     }
 
