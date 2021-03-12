@@ -1,13 +1,13 @@
 import { injectable } from 'inversify';
 import { MenuModelRegistry } from '@theia/core';
 import { LighthouseDashboardWidget } from './lighthouse-dashboard-widget';
-import { AbstractViewContribution, FrontendApplication, FrontendApplicationContribution } from '@theia/core/lib/browser';
+import { AbstractViewContribution } from '@theia/core/lib/browser';
 import { Command, CommandRegistry } from '@theia/core/lib/common/command';
 
 export const LighthouseDashboardCommand: Command = { id: 'lighthouse-dashboard:command' };
 
 @injectable()
-export class LighthouseDashboardContribution extends AbstractViewContribution<LighthouseDashboardWidget> implements FrontendApplicationContribution {
+export class LighthouseDashboardContribution extends AbstractViewContribution<LighthouseDashboardWidget> {
 
     /**
      * `AbstractViewContribution` handles the creation and registering
@@ -26,9 +26,6 @@ export class LighthouseDashboardContribution extends AbstractViewContribution<Li
         });
     }
 
-    async initializeLayout(app: FrontendApplication): Promise<void> {
-        await this.openView();
-    }
 
 
     /**
