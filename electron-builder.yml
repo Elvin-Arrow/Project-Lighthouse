@@ -1,6 +1,6 @@
 electronDist: node_modules/electron/dist
-productName: Theia
-appId: theia
+productName: Lighthouse
+appId: lighthouse
 
 asar: false
 directories:
