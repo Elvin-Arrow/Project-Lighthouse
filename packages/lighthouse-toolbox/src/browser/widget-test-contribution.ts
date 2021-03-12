@@ -1,15 +1,16 @@
-import { injectable } from 'inversify';
+import { injectable, interfaces, Container } from 'inversify';
 import { MenuModelRegistry } from '@theia/core';
 import { WidgetTestWidget } from './widget-test-widget';
 import { AbstractViewContribution, CommonMenus, FrontendApplication, FrontendApplicationContribution } from '@theia/core/lib/browser';
 import { Command, CommandRegistry } from '@theia/core/lib/common/command';
+import { SourceTreeWidget } from '@theia/core/lib/browser/source-tree';
 
 export const WidgetTestCommand: Command = { id: 'widget-test:command' };
 
 @injectable()
 export class WidgetTestContribution extends AbstractViewContribution<WidgetTestWidget> implements FrontendApplicationContribution {
 
-    
+
 
     /**
      * `AbstractViewContribution` handles the creation and registering
@@ -52,7 +53,7 @@ export class WidgetTestContribution extends AbstractViewContribution<WidgetTestW
      */
     registerCommands(commands: CommandRegistry): void {
         commands.registerCommand(WidgetTestCommand, {
-            execute: () => super.openView({ activate: true, reveal: true })         
+            execute: () => super.openView({ activate: true, reveal: true })
         });
     }
 
@@ -76,5 +77,23 @@ export class WidgetTestContribution extends AbstractViewContribution<WidgetTestW
             commandId: WidgetTestCommand.id,
             label: WidgetTestWidget.LABEL,
         });
+    }
+}
+
+@injectable()
+export class AssignmentsWidget extends SourceTreeWidget {
+    static createContainer(parent: interfaces.Container): Container {
+        const child = SourceTreeWidget.createContainer(parent, {
+            virtualized: false,
+            scrollIfActive: true
+        });
+
+        child.unbind(SourceTreeWidget);
+
+        return child;
+    }
+
+    static createWidget(parent: interfaces.Container): AssignmentsWidget {
+        return AssignmentsWidget.createContainer(parent).get(AssignmentsWidget);
     }
 }

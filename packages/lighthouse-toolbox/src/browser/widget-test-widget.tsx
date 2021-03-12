@@ -1,88 +1,119 @@
-import * as React from 'react';
-import { injectable, postConstruct, inject } from 'inversify';
-import { AlertMessage } from '@theia/core/lib/browser/widgets/alert-message';
-import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
-import { CommandService, MessageService } from '@theia/core';
-import { WorkspaceService } from '@theia/workspace/lib/browser';
+import * as React from "react";
+import { injectable, postConstruct, inject } from "inversify";
+import { AlertMessage } from "@theia/core/lib/browser/widgets/alert-message";
+import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
+import { CommandService, MessageService } from "@theia/core";
+import { WorkspaceService } from "@theia/workspace/lib/browser";
 import Store = require("electron-store");
 
 @injectable()
 export class WidgetTestWidget extends ReactWidget {
+  static readonly ID = "lighthouse-toolbox:widget";
+  static readonly LABEL = "Lighthouse Toolbox";
 
-    static readonly ID = 'lighthouse-toolbox:widget';
-    static readonly LABEL = 'Lighthouse Toolbox';
+  @inject(MessageService)
+  protected readonly messageService!: MessageService;
 
-    @inject(MessageService)
-    protected readonly messageService!: MessageService;
+  @inject(WorkspaceService)
+  protected readonly workspaceService: WorkspaceService;
 
-    @inject(WorkspaceService)
-    protected readonly workspaceService: WorkspaceService;
+  @inject(CommandService)
+  protected readonly commandService: CommandService;
 
-    @inject(CommandService)
-    protected readonly commandService: CommandService;
+  private readonly store = new Store();
 
-    private readonly store = new Store();
+  @postConstruct()
+  protected async init(): Promise<void> {
+    this.id = WidgetTestWidget.ID;
+    this.title.label = WidgetTestWidget.LABEL;
+    this.title.caption = WidgetTestWidget.LABEL;
+    this.title.closable = true;
+    this.title.iconClass = "fa fa-sun-o"; // example widget icon.
+    this.update();
+  }
 
-    @postConstruct()
-    protected async init(): Promise < void> {
-        this.id = WidgetTestWidget.ID;
-        this.title.label = WidgetTestWidget.LABEL;
-        this.title.caption = WidgetTestWidget.LABEL;
-        this.title.closable = true;
-        this.title.iconClass = 'fa fa-sun-o'; // example widget icon.
-        this.update();
-    }
+  protected render(): React.ReactNode {
+    if (!this.authState()) {
+      // Request to authenticate
+      const message = "Please login to access Lighthouse services";
 
-    protected render(): React.ReactNode {
-        if (!this.authState()) {
-            // Request to authenticate
-            const message = 'Please login to access Lighthouse services';
-
-            return <div id='widget-container'>
-            <AlertMessage type='INFO' header={message} />
-            <button className='theia-button secondary' title='Launch Dashboard' onClick={_a => this.lighthouseAuthenticate()}>Login to Lighthouse</button>
+      return (
+        <div id="widget-container">
+          <AlertMessage type="INFO" header={message} />
+          <button
+            className="theia-button secondary"
+            title="Launch Dashboard"
+            onClick={(_a) => this.lighthouseAuthenticate()}
+          >
+            Login to Lighthouse
+          </button>
         </div>
-        } else {
-            // Show lighthouse services
-            return this.renderToolbox();
-        }
-        
+      );
+    } else {
+      // Show lighthouse services
+      return this.renderToolbox();
     }
+  }
 
-    private renderToolbox(): React.ReactNode {
-        return <div id='widget-container'>
-            <h2>Access the dashboard</h2>
-            <br></br>
-            <button className='theia-button secondary' title='Launch Dashboard' onClick={_a => this.showDashboard()}>View Dashboard</button>
-            <br></br>
-            <button className='theia-button secondary' title='Launch Dashboard' onClick={_a => this.logout()}>Logout</button>
-        </div>
+  private renderToolbox(): React.ReactNode {
+    return (
+      <div id="widget-container">
+        <h2>Access the dashboard</h2>
+        <br></br>
+        <button
+          className="theia-button secondary"
+          title="Launch Dashboard"
+          onClick={(_a) => this.showDashboard()}
+        >
+          View Dashboard
+        </button>
+        <br></br>
+        <button
+          className="theia-button secondary"
+          title="Launch Dashboard"
+          onClick={(_a) => this.logout()}
+        >
+          Logout
+        </button>
+      </div>
+    );
+  }
+
+  private showDashboard(): void {
+    this.commandService.executeCommand("lighthouse-dashboard:command");
+  }
+
+  private logout(): void {
+    this.store.delete("authenticated");
+    this.refreshWorkspace();
+  }
+
+  /**
+   * Check whether user is authenticated or not
+   */
+  private authState(): boolean {
+    // TODO Implement authentication logic
+    const status = this.store.get("authenticated");
+
+    if (status) {
+      return true;
     }
+    return false;
+  }
 
-    private showDashboard(): void {
-        this.commandService.executeCommand('lighthouse-dashboard:command');
+  private lighthouseAuthenticate(): void {
+    // TODO Invoke the auth plugin
+    this.commandService.executeCommand("lighthouse-authenticate:command");
+  }
+
+  private refreshWorkspace(): void {
+    if (this.workspaceService.opened) {
+      const currentWorkspace = this.workspaceService.workspace?.resource;
+
+      if (currentWorkspace != undefined) {
+        this.workspaceService.close();
+        this.workspaceService.open(currentWorkspace);
+      }
     }
-
-    private logout(): void {
-        this.store.delete('authenticated');
-    }
-
-    /**
-     * Check whether user is authenticated or not
-     */
-    private authState(): boolean {
-        // TODO Implement authentication logic
-        const status = this.store.get('authenticated');
-
-        if (status) {
-            return true;
-        }
-        return false;
-    }
-
-    private lighthouseAuthenticate(): void {
-        // TODO Invoke the auth plugin
-        this.commandService.executeCommand('lighthouse-authenticate:command');
-    }
-
+  }
 }
