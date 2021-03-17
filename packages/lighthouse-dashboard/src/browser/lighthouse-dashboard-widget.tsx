@@ -3,6 +3,7 @@ import { injectable, postConstruct, inject } from "inversify";
 import { AlertMessage } from "@theia/core/lib/browser/widgets/alert-message";
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { CommandService, MessageService } from "@theia/core";
+import Store = require("electron-store");
 // import { Model } from "./model";
 
 @injectable()
@@ -15,6 +16,8 @@ export class LighthouseDashboardWidget extends ReactWidget {
 
   @inject(CommandService)
   protected readonly commandService: CommandService;
+
+  private readonly store = new Store();
 
   @postConstruct()
   protected async init(): Promise<void> {
@@ -35,7 +38,9 @@ export class LighthouseDashboardWidget extends ReactWidget {
         const data: Map<String, any>[] = JSON.parse(rawJson);
         const table = this.getTable(data); */
     const table = this.getTable();
-    const header = `Welcome to the Lighthouse Dashboard!`;
+    const username = this.store.get("username")
+
+    const header = `Hey... ${username}\nWelcome to the Lighthouse Dashboard!`;
     return (
       <div id="widget-container">
         <AlertMessage type="INFO" header={header} />
@@ -75,14 +80,14 @@ export class LighthouseDashboardWidget extends ReactWidget {
 
          for (let i = 0; i < data.length; ++i) {
 
-			let model: Model = new Model(data[i]);
+      let model: Model = new Model(data[i]);
             rows.push(<tr>
                 <td>{model.ID}</td>
                 <td>{model.CompileCount}</td>
                 <td>{model.Error}</td>
                 <td>{model.Language}</td>
             </tr>)
-		} */
+    } */
 
     const temp = (
       <table id="table1">
