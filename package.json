@@ -69,7 +69,10 @@
     "@lighthouse/crnl": "0.0.2",
     "@lighthouse/observer": "0.0.1",
     "@lighthouse/assignments": "0.0.1",
-    "@lighthouse/default-screen": "0.0.1"
+    "@lighthouse/default-screen": "0.0.1",
+    "lighthouse-resources": "0.0.1",
+    "resources-cpp": "0.0.1",
+    "resources-python": "0.0.1"
   },
   "devDependencies": {
     "@theia/cli": "latest",
