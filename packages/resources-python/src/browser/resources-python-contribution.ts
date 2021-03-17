@@ -1,13 +1,13 @@
 import { injectable } from 'inversify';
-import { MenuModelRegistry } from '@theia/core';
-import { LighthouseResourcesWidget } from './lighthouse-resources-widget';
+// import { MenuModelRegistry } from '@theia/core';
+import { ResourcesPythonWidget } from './resources-python-widget';
 import { AbstractViewContribution } from '@theia/core/lib/browser';
 import { Command, CommandRegistry } from '@theia/core/lib/common/command';
 
-export const LighthouseResourcesCommand: Command = { id: 'lighthouse-resources:command' };
+export const ResourcesPythonCommand: Command = { id: 'resources-python:command' };
 
 @injectable()
-export class LighthouseResourcesContribution extends AbstractViewContribution<LighthouseResourcesWidget> {
+export class ResourcesPythonContribution extends AbstractViewContribution<ResourcesPythonWidget> {
 
     /**
      * `AbstractViewContribution` handles the creation and registering
@@ -19,10 +19,10 @@ export class LighthouseResourcesContribution extends AbstractViewContribution<Li
      */
     constructor() {
         super({
-            widgetId: LighthouseResourcesWidget.ID,
-            widgetName: LighthouseResourcesWidget.LABEL,
+            widgetId: ResourcesPythonWidget.ID,
+            widgetName: ResourcesPythonWidget.LABEL,
             defaultWidgetOptions: { area: 'main' },
-            toggleCommandId: LighthouseResourcesCommand.id
+            toggleCommandId: ResourcesPythonCommand.id
         });
     }
 
@@ -45,7 +45,7 @@ export class LighthouseResourcesContribution extends AbstractViewContribution<Li
      * @param commands
      */
     registerCommands(commands: CommandRegistry): void {
-        commands.registerCommand(LighthouseResourcesCommand, {
+        commands.registerCommand(ResourcesPythonCommand, {
             execute: () => super.openView({ activate: false, reveal: true })
         });
     }
@@ -64,7 +64,7 @@ export class LighthouseResourcesContribution extends AbstractViewContribution<Li
      * 
      * @param menus
      */
-    registerMenus(menus: MenuModelRegistry): void {
-        super.registerMenus(menus);
-    }
+    // registerMenus(menus: MenuModelRegistry): void {
+    //     super.registerMenus(menus);
+    // }
 }
