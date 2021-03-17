@@ -1,6 +1,6 @@
 #widget-container h2 {
     color: var(--theia-ui-font-color1);
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 400;
     padding: 10px;
     text-transform: uppercase;
@@ -21,7 +21,7 @@ ul li{
 }
 h1{
     padding: 20px;
-    text-decoration: underline;
+    /* text-decoration: underline; */
 }
 table {
     width:100%;

@@ -1,10 +1,10 @@
 import * as React from "react";
 import { injectable, postConstruct, inject } from "inversify";
-import { AlertMessage } from "@theia/core/lib/browser/widgets/alert-message";
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { CommandService, MessageService } from "@theia/core";
 import Store = require("electron-store");
 // import { Model } from "./model";
+import * as fs from "fs";
 
 @injectable()
 export class LighthouseDashboardWidget extends ReactWidget {
@@ -38,14 +38,16 @@ export class LighthouseDashboardWidget extends ReactWidget {
         const data: Map<String, any>[] = JSON.parse(rawJson);
         const table = this.getTable(data); */
     const table = this.getTable();
+    // const records = this.getData();
     const username = this.store.get("username")
 
-    const header = `Hey... ${username}\nWelcome to the Lighthouse Dashboard!`;
+    // const header = `Hey... ${username}\nWelcome to the Lighthouse Dashboard!`;
     return (
       <div id="widget-container">
-        <AlertMessage type="INFO" header={header} />
+        {/* <AlertMessage type="INFO" header={header} /> */}
         <div>
-          <h1>Lighthouse Dashoard</h1>
+          <h1>Hey... {username}</h1>
+          <h1>Welcome to the Lighthouse Dashboard!</h1>
         </div>
         <div className="main-area">{table}</div>
         <div className="sidebar">
@@ -92,10 +94,11 @@ export class LighthouseDashboardWidget extends ReactWidget {
     const temp = (
       <table id="table1">
         <tr>
-          <th>Sr Number</th>
+          <th>Number</th>
           <th>Number of compiles</th>
-          <th>Errors</th>
-          <th>Language</th>
+          <th>Number of Success</th>
+          <th>Number of Errors</th>
+          <th>Success to failure ratio</th>
         </tr>
         <tr>
           <td>1</td>
@@ -124,6 +127,14 @@ export class LighthouseDashboardWidget extends ReactWidget {
       </table>
     );
     return temp;
+  }
+
+  protected getData() {
+    let log = `${process.cwd}/log.json`
+
+    let data = fs.readFileSync(log);
+
+    return JSON.parse(data.toString());
   }
 
   protected attemptAssignments(): void {
