@@ -8,3 +8,4 @@ lib/
 src-gen/
 node_modules/
 lerna-debug.log
+yarn-error.log
