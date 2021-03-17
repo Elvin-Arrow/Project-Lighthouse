@@ -5,9 +5,9 @@ import { ReactWidget } from '@theia/core/lib/browser/widgets/react-widget';
 import { CommandService, MessageService } from "@theia/core";
 
 @injectable()
-export class LighthouseResourcesWidget extends ReactWidget {
+export class ResourcesCppWidget extends ReactWidget {
 
-    static readonly ID = 'lighthouse-resources:widget';
+    static readonly ID = 'resources-cpp:widget';
     static readonly LABEL = 'Lighthouse Resources';
 
     @inject(MessageService)
@@ -18,9 +18,9 @@ export class LighthouseResourcesWidget extends ReactWidget {
 
     @postConstruct()
     protected async init(): Promise < void> {
-        this.id = LighthouseResourcesWidget.ID;
-        this.title.label = LighthouseResourcesWidget.LABEL;
-        this.title.caption = LighthouseResourcesWidget.LABEL;
+        this.id = ResourcesCppWidget.ID;
+        this.title.label = ResourcesCppWidget.LABEL;
+        this.title.caption = ResourcesCppWidget.LABEL;
         this.title.closable = true;
         this.title.iconClass = 'fa fa-th';
         this.update();
@@ -39,7 +39,7 @@ export class LighthouseResourcesWidget extends ReactWidget {
                         <h2>Select language</h2>
                         <ul>
                             <li><a onClick={(_a) => this.pythonResources()}>Python</a></li>
-                            <li><a onClick={(_a) => this.cppResources()}>C++</a></li>
+                            <li>C++</li>
                         </ul>
                     </div>
                 </div>
@@ -50,8 +50,8 @@ export class LighthouseResourcesWidget extends ReactWidget {
         this.messageService.info('Language selected: Python');
         this.commandService.executeCommand("resources-python:command");
     }
-    protected cppResources(): void {
-        this.messageService.info('Language selected: C++');
-        this.commandService.executeCommand("resources-cpp:command");
-    }
+    // protected cppResources(): void {
+    //     this.messageService.info('Language selected: C++');
+    //     this.commandService.executeCommand("resources-cpp:command");
+    // }
 }

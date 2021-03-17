@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "lighthouse-resources",
+  "name": "resources-cpp",
   "keywords": [
     "theia-extension"
   ],
@@ -24,7 +24,7 @@
   },
   "theiaExtensions": [
     {
-      "frontend": "lib/browser/lighthouse-resources-frontend-module"
+      "frontend": "lib/browser/resources-cpp-frontend-module"
     }
   ]
 }
