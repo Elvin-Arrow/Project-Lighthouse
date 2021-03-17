@@ -2,7 +2,7 @@ import * as React from "react";
 import { injectable, postConstruct, inject } from "inversify";
 import { AlertMessage } from "@theia/core/lib/browser/widgets/alert-message";
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
-import { MessageService } from "@theia/core";
+import { CommandService, MessageService } from "@theia/core";
 // import { Model } from "./model";
 
 @injectable()
@@ -12,6 +12,9 @@ export class LighthouseDashboardWidget extends ReactWidget {
 
   @inject(MessageService)
   protected readonly messageService!: MessageService;
+
+  @inject(CommandService)
+  protected readonly commandService: CommandService;
 
   @postConstruct()
   protected async init(): Promise<void> {
@@ -119,9 +122,10 @@ export class LighthouseDashboardWidget extends ReactWidget {
   }
 
   protected attemptAssignments(): void {
-    this.messageService.info(
-      "Soon you would be able to attempt assignments within Lighthouse!"
-    );
+    // this.messageService.info(
+    //   "Soon you would be able to attempt assignments within Lighthouse!"
+    // );
+    this.commandService.executeCommand("assignments:command");
   }
   protected displayMessage(): void {
     this.messageService.info(

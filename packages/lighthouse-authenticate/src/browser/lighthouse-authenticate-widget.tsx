@@ -5,6 +5,7 @@ import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { MessageService } from "@theia/core";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
 import Store = require("electron-store");
+import URI from "@theia/core/lib/common/uri";
 
 var path = require("path");
 
@@ -134,6 +135,13 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
       if (currentWorkspace != undefined) {
         this.workspaceService.close();
         this.workspaceService.open(currentWorkspace);
+      } else {
+        this.workspaceService.open(
+          new URI(`${process.cwd()}\\resources\\assignments\\assignment-1`),
+          {
+            preserveWindow: true,
+          }
+        );
       }
     }
   }

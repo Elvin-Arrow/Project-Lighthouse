@@ -81,14 +81,13 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
       console.info(`Current file language: ${detectedLanguage}`);
 
       let logFilePath = process.cwd();
-
-      term.sendText(
-        `python ${fileName} 2>&1 | tee ${logFilePath}\\out_log.txt`
-      );
+      // let command = `python ${fileName} 2>&1 | tee ${logFilePath}\\out_log.txt`;
+      let cmd = `python ${fileName} 2>&1 | ConvertTo-JSON | Out-File ${logFilePath}/log.json -Encoding utf8`;
+      term.sendText(cmd);
       setTimeout(() => {
         term.sendText("\r");
 
-        setTimeout(this.parseLogFile, 1000);
+        setTimeout(this.parseLogFile, 200);
       }, 500);
     } else {
       term.sendText("echo No file open\n");

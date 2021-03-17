@@ -1,9 +1,10 @@
 {
-  "name": "default-screen",
+  "private": "true",
+  "name": "@lighthouse/default-screen",
   "keywords": [
     "theia-extension"
   ],
-  "version": "0.0.0",
+  "version": "0.0.1",
   "files": [
     "lib",
     "src"
