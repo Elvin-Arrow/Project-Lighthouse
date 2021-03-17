@@ -28,7 +28,7 @@ export const LighthouseCrnlCommand = {
 export class LighthouseCrnlCommandContribution implements CommandContribution {
   constructor(
     // @inject(MessageService) private readonly messageService: MessageService,
-    @inject(CommandService) private readonly commandService: CommandService,
+    @inject(CommandService) protected readonly commandService: CommandService,
     @inject(TerminalService)
     protected readonly terminalService: TerminalService,
     @inject(EditorManager) private readonly editorManager: EditorManager
@@ -40,32 +40,17 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
         // let terms: TerminalWidget[] = this.terminalService.all;
         this.commandService
           .executeCommand("workbench.action.debug.start")
-          .then(async () => {
-            // Extract log from debugpy log
-            let errLog = await this.extractLog();
-            // Generate execution log
+          .then(() => {
+            console.info(`Waiting for logger`);
+            setTimeout(async () => {
+              console.log(`Generating log`);
 
-            let log = [
-              {
-                executionDate: this.getDate(),
-                log: {
-                  index: this.getIndex(),
-                  executionStatus: errLog ? true : false,
-                  err: {
-                    text: errLog["errText"] ?? "",
-                    position: errLog["errLine"] ?? "",
-                  },
-                },
-              },
-            ];
-
-            // Save log
-            let logPath = `${process.cwd}/log.json`;
-            let logJson = JSON.stringify(log);
-            fs.appendFile(logPath, logJson, () => {
-              console.error(`Could not save log`);
-            });
+              // Extract log from debugpy log
+              await this.extractLog();
+            }, 10000);
           });
+        // console.log(`Generating log`);
+        // setTimeout(() => {}, 10000);
       },
     });
   }
@@ -75,63 +60,115 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
    * in the process root directory.
    *
    */
-  private async extractLog(): Promise<any> {
+  protected extractLog(): void {
     var glob = require("glob");
-    let logMap = {};
+    let logMap: any;
 
-    await glob(
+    glob(
       "E:/Foundary/Lighthouse/02-Lighthouse-Experimental/plugins/lighthouse-builtin-ms-python/extension/*.log",
-      function(err: any, files: any) {
+      (err: any, files: any) => {
         if (err) {
           return;
         } else {
+          console.info(`Log acquired, processing...`);
           let requiredFile = files[3];
+          console.info(`Processing file: ${requiredFile}`);
+
           fs.readFile(requiredFile, "utf-8", (err, data) => {
             if (err) {
               console.error("Unable to read the file");
             } else {
               try {
+                console.info(`Parse started, splitting data...`);
+
                 let breakpoint = data.split("PyDB.do_wait_suspend")[1];
                 // Sending suspend notification.
+                console.info(`First split successful`);
+
                 let error = breakpoint.split(
                   "Sending suspend notification."
                 )[0];
+
+                console.info(`Second split successful`);
+
                 let lineByLineErr = error.split("\r\n");
+                console.info(`Third split successful`);
 
                 // Getting line number from error
                 let errNumberLine = lineByLineErr[1].split(" ");
+                console.info(`Fourth split successful`);
+
                 let lineNumber = errNumberLine[errNumberLine.length - 1].split(
                   ")"
                 )[0];
+                console.info(`Line number acquired`);
 
                 // Getting error text from the error
                 let errText = lineByLineErr[4].split(", ")[1];
 
-                logMap = {
+                console.info(`Error text acquired`);
+
+                logMap = JSON.stringify({
                   errLine: lineNumber,
                   errText: errText,
-                };
+                });
 
                 console.log(`Error on line: ${lineNumber}`);
                 console.log(errText);
-              } finally {
+              } catch (err) {
+                console.error(`Failed to parse log: ${err}`);
               }
               files.forEach((file: any) => {
                 fs.unlinkSync(file);
               });
+
+              this.processLog(logMap);
             }
           });
         }
       }
     );
-    return logMap;
+  }
+
+  protected processLog(errLog: any): void {
+    console.info(`Attempting to save log`);
+    // Generate execution log
+    try {
+      // Save log
+      console.info(errLog);
+      let temp = JSON.parse(errLog);
+      let logPath = `${process.cwd}/log.json`;
+      let logJson = JSON.stringify([
+        {
+          executionDate: this.getDate(),
+          log: {
+            index: this.getIndex(),
+            executionStatus: errLog ? true : false,
+            err: {
+              text: temp["errText"],
+              position: temp["errLine"],
+            },
+          },
+        },
+      ]);
+
+      console.info(logJson.toString());
+
+      fs.appendFile(logPath, logJson, () => {
+        console.error(`Could not save log`);
+      });
+
+      console.info(`Log saved`);
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   /**
    * Returns current date in [day], [month] and [year] format
    * @returns date: string
    */
-  private getDate(): string {
+  protected getDate(): string {
     var today = new Date();
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
@@ -145,11 +182,13 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
    * If no log entry is found, returns 1 by default
    * @returns int
    */
-  private getIndex(): number {
-    let log = fs.readFileSync(`./log.json`, "utf-8");
-    let logJson = JSON.parse(log);
-
-    if (logJson.length > 0) return logJson.length + 1;
+  protected getIndex(): number {
+    let logPath = `${process.cwd}/log.json`;
+    if (fs.existsSync(logPath)) {
+      let log = fs.readFileSync(logPath, "utf-8");
+      let logJson = JSON.parse(log);
+      if (logJson.length > 0) return logJson.length + 1;
+    }
 
     return 1;
   }
