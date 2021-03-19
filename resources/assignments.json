@@ -4,13 +4,13 @@
     "title": "Sum calculation",
     "description": "Take two numbers as input from the user and display it's sum",
     "solvingTime": "5 mins",
-    "assignmentPath": "E:/Foundary/Lighthouse/workbench-01/resources/assignments/assignment-1"
+    "assignmentPath": "E:/Foundary/Lighthouse/02-Lighthouse-Experimental/resources/assignments/assignment-1"
   },
   {
     "assignmentNumber": 2,
-    "title": "Discount calculation",
-    "description": "Write a program to calculate the total bill after a discount a 5%",
+    "title": "Factorial calculation",
+    "description": "Write a program to calculate the factorial of a given number",
     "solvingTime": "5 mins",
-    "assignmentPath": "E:/Foundary/Lighthouse/workbench-01/resources/assignments/assignment-2"
+    "assignmentPath": "E:/Foundary/Lighthouse/02-Lighthouse-Experimental/resources/assignments/assignment-2"
   }
 ]

@@ -9,7 +9,7 @@ import { WorkspaceService } from "@theia/workspace/lib/browser"; // For handling
 import * as fs from "fs";
 
 const kAssignmentsJsonPath =
-  "E:/Foundary/Lighthouse/workbench-01/resources/assignments.json";
+  "E:/Foundary/Lighthouse/02-Lighthouse-Experimental/resources/assignments.json";
 
 @injectable()
 export class AssignmentsWidget extends ReactWidget {
@@ -52,7 +52,7 @@ export class AssignmentsWidget extends ReactWidget {
           <button
             className="theia-button secondary"
             title="Attempt assignment"
-            onClick={(_a) => this.attemptAssignment()}
+            onClick={(_a) => this.attemptAssignment(assignment.assignmentPath)}
           >
             Attempt
           </button>
@@ -90,7 +90,7 @@ export class AssignmentsWidget extends ReactWidget {
     return assignmentsData;
   }
 
-  private attemptAssignment(): void {
+  private attemptAssignment(assignmentPath: string): void {
     this.dispose();
     if (this.workspaceService.opened) {
       const currentWorkspace = this.workspaceService.workspace?.resource;
@@ -101,7 +101,7 @@ export class AssignmentsWidget extends ReactWidget {
     }
 
     let workSpaceUri: URI = new URI(
-      "E:/Foundary/Lighthouse/workbench-01/resources/assignments"
+      assignmentPath
     );
     console.info(workSpaceUri.path);
     this.workspaceService.open(workSpaceUri, {

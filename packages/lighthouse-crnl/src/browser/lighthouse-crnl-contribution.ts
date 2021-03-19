@@ -4,7 +4,7 @@ import {
   CommandRegistry,
   MenuContribution,
   MenuModelRegistry,
-  // MessageService,
+  MessageService,
   CommandService,
 } from "@theia/core/lib/common";
 import { CommonMenus } from "@theia/core/lib/browser";
@@ -24,10 +24,15 @@ export const LighthouseCrnlCommand = {
   label: "Lighthouse compile",
 };
 
+export const LighthouseSubmitCommand = {
+  id: "LighthouseCrnl.submit",
+  label: "Lighthouse submit",
+}
+
 @injectable()
 export class LighthouseCrnlCommandContribution implements CommandContribution {
   constructor(
-    // @inject(MessageService) private readonly messageService: MessageService,
+    @inject(MessageService) private readonly messageService: MessageService,
     @inject(CommandService) protected readonly commandService: CommandService,
     @inject(TerminalService)
     protected readonly terminalService: TerminalService,
@@ -42,16 +47,32 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
           .executeCommand("workbench.action.debug.start")
           .then(() => {
             console.info(`Waiting for logger`);
-            setTimeout(async () => {
+            setTimeout(() => {
               console.log(`Generating log`);
 
               // Extract log from debugpy log
-              await this.extractLog();
+              this.extractLog();
             }, 10000);
           });
         // console.log(`Generating log`);
         // setTimeout(() => {}, 10000);
       },
+    });
+
+    registry.registerCommand(LighthouseSubmitCommand, {
+      execute: () => {
+        this.commandService
+          .executeCommand("workbench.action.debug.start")
+          .then(() => {
+            console.info(`Waiting for logger`);
+            setTimeout(() => {
+              console.log(`Generating log`);
+
+              // Extract log from debugpy log
+              this.extractSubmissionLog();
+            }, 10000);
+          });
+      }
     });
   }
 
@@ -115,14 +136,100 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
 
                 console.log(`Error on line: ${lineNumber}`);
                 console.log(errText);
+
+                this.processLog(logMap);
               } catch (err) {
                 console.error(`Failed to parse log: ${err}`);
+              } finally {
+                files.forEach((file: any) => {
+                  fs.unlinkSync(file);
+                });
               }
-              files.forEach((file: any) => {
-                fs.unlinkSync(file);
-              });
+              
 
-              this.processLog(logMap);
+              
+            }
+          });
+        }
+      }
+    );
+  }
+
+  /**
+   * Reads the debugpy execution logs and creates a file log.json
+   * in the process root directory.
+   *
+   */
+   protected extractSubmissionLog(): void {
+    var glob = require("glob");
+    let logMap: any;
+
+    glob(
+      "E:/Foundary/Lighthouse/02-Lighthouse-Experimental/plugins/lighthouse-builtin-ms-python/extension/*.log",
+      (err: any, files: any) => {
+        if (err) {
+          return;
+        } else {
+          console.info(`Log acquired, processing...`);
+          let requiredFile = files[3];
+          console.info(`Processing file: ${requiredFile}`);
+
+          fs.readFile(requiredFile, "utf-8", (err, data) => {
+            if (err) {
+              console.error("Unable to read the file");
+            } else {
+              try {
+                console.info(`Parse started, splitting data...`);
+
+                let breakpoint = data.split("PyDB.do_wait_suspend")[1];
+                // Sending suspend notification.
+                console.info(`First split successful`);
+
+                let error = breakpoint.split(
+                  "Sending suspend notification."
+                )[0];
+
+                console.info(`Second split successful`);
+
+                let lineByLineErr = error.split("\r\n");
+                console.info(`Third split successful`);
+
+                // Getting line number from error
+                let errNumberLine = lineByLineErr[1].split(" ");
+                console.info(`Fourth split successful`);
+
+                let lineNumber = errNumberLine[errNumberLine.length - 1].split(
+                  ")"
+                )[0];
+                console.info(`Line number acquired`);
+
+                // Getting error text from the error
+                let errText = lineByLineErr[4].split(", ")[1];
+
+                console.info(`Error text acquired`);
+
+                logMap = JSON.stringify({
+                  errLine: lineNumber,
+                  errText: errText,
+                });
+
+                console.log(`Error on line: ${lineNumber}`);
+                console.log(errText);
+
+                this.processLog(logMap);
+                this.messageService.warn('We all struggle sometimes, keep trying, it will work out');
+              } catch (err) {
+                console.error(`Failed to parse log: ${err}`);
+                this.messageService.warn('You are awesome! You just successfully submitted the assignment');
+                
+              } finally {
+                files.forEach((file: any) => {
+                  fs.unlinkSync(file);
+                });
+              }
+              
+
+              
             }
           });
         }
@@ -137,7 +244,7 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
       // Save log
       console.info(errLog);
       let temp = JSON.parse(errLog);
-      let logPath = `${process.cwd}/log.json`;
+      let logPath = `E:/Foundary/Lighthouse/02-Lighthouse-Experimental/log.json`;
       let logJson = JSON.stringify([
         {
           executionDate: this.getDate(),
@@ -154,9 +261,7 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
 
       console.info(logJson.toString());
 
-      fs.appendFile(logPath, logJson, () => {
-        console.error(`Could not save log`);
-      });
+      fs.appendFileSync(logPath, logJson);
 
       console.info(`Log saved`);
     } catch (err) {
@@ -265,6 +370,7 @@ export class LighthouseTabBarToolbarContribution
   implements TabBarToolbarContribution {
   registerToolbarItems(registry: TabBarToolbarRegistry): void {
     registry.registerItem(new CRnLTabBarToolbarItem());
+    registry.registerItem(new CRnLSubmitTabBarToolbarItem());
   }
 }
 
@@ -283,6 +389,25 @@ class CRnLTabBarToolbarItem implements TabBarToolbarItem {
     this.group = "navigation";
     this.tooltip = "Compile and run";
     this.icon = "fa fa-play";
+    // this.when = "editorLangId == python";
+  }
+}
+
+class CRnLSubmitTabBarToolbarItem implements TabBarToolbarItem {
+  id: string;
+  command: string;
+  priority?: number | undefined;
+  group?: string | undefined;
+  tooltip?: string | undefined;
+  icon?: string | (() => string) | undefined;
+  when?: string | undefined;
+
+  constructor() {
+    this.id = "submit-button";
+    this.command = LighthouseSubmitCommand.id;
+    this.group = "navigation";
+    this.tooltip = "Test and submit assignment";
+    this.icon = "fa fa-tasks";
     // this.when = "editorLangId == python";
   }
 }

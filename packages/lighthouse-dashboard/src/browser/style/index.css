@@ -21,7 +21,7 @@ ul li{
 }
 h1{
     padding: 20px;
-    /* text-decoration: underline; */
+    text-decoration: none;
 }
 table {
     width:100%;

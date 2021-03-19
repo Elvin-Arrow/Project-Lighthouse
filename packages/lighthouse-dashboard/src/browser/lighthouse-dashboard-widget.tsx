@@ -3,7 +3,7 @@ import { injectable, postConstruct, inject } from "inversify";
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { CommandService, MessageService } from "@theia/core";
 import Store = require("electron-store");
-// import { Model } from "./model";
+import { ErrorModel } from "./err_model";
 import * as fs from "fs";
 
 @injectable()
@@ -91,6 +91,22 @@ export class LighthouseDashboardWidget extends ReactWidget {
             </tr>)
     } */
 
+    let err = this.getData();
+    console.info(err);
+
+    /* const temp2 = (
+      <table id="table1">
+        <tr>
+          <th>Sr.no</th>
+          <th>Execution Date</th>
+          <th>Execution Status</th>
+          <th>Error Text</th>
+          <th>Error Position</th>
+        </tr>
+        
+      </table>
+    ); */
+
     const temp = (
       <table id="table1">
         <tr>
@@ -98,7 +114,6 @@ export class LighthouseDashboardWidget extends ReactWidget {
           <th>Number of compiles</th>
           <th>Number of Success</th>
           <th>Number of Errors</th>
-          <th>Success to failure ratio</th>
         </tr>
         <tr>
           <td>1</td>
@@ -131,10 +146,26 @@ export class LighthouseDashboardWidget extends ReactWidget {
 
   protected getData() {
     let log = `${process.cwd}/log.json`
+    let errs: ErrorModel[] = [];
+    try {
+      let data = fs.readFileSync(log);
 
-    let data = fs.readFileSync(log);
+      let json = JSON.parse(data.toString());
+      
+      let index: number = 1;
+      json.forEach((element: any) => {
+        errs.push(new ErrorModel(element, index));
+        index++;
+      });
 
-    return JSON.parse(data.toString());
+      return errs;
+    } catch(_) {
+      return null;
+    }
+
+    
+
+    
   }
 
   protected attemptAssignments(): void {
