@@ -1,9 +1,10 @@
 import * as React from "react";
 import { injectable, postConstruct, inject } from "inversify";
-import { AlertMessage } from "@theia/core/lib/browser/widgets/alert-message";
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
-import { MessageService } from "@theia/core";
-// import { Model } from "./model";
+import { CommandService, MessageService } from "@theia/core";
+import Store = require("electron-store");
+import { ErrorModel } from "./err_model";
+import * as fs from "fs";
 
 @injectable()
 export class LighthouseDashboardWidget extends ReactWidget {
@@ -12,6 +13,11 @@ export class LighthouseDashboardWidget extends ReactWidget {
 
   @inject(MessageService)
   protected readonly messageService!: MessageService;
+
+  @inject(CommandService)
+  protected readonly commandService: CommandService;
+
+  private readonly store = new Store();
 
   @postConstruct()
   protected async init(): Promise<void> {
@@ -32,12 +38,16 @@ export class LighthouseDashboardWidget extends ReactWidget {
         const data: Map<String, any>[] = JSON.parse(rawJson);
         const table = this.getTable(data); */
     const table = this.getTable();
-    const header = `Welcome to the Lighthouse Dashboard!`;
+    // const records = this.getData();
+    const username = this.store.get("username")
+
+    // const header = `Hey... ${username}\nWelcome to the Lighthouse Dashboard!`;
     return (
       <div id="widget-container">
-        <AlertMessage type="INFO" header={header} />
+        {/* <AlertMessage type="INFO" header={header} /> */}
         <div>
-          <h1>Lighthouse Dashoard</h1>
+          <h1>Hey... {username}</h1>
+          <h1>Welcome to the Lighthouse Dashboard!</h1>
         </div>
         <div className="main-area">{table}</div>
         <div className="sidebar">
@@ -72,22 +82,38 @@ export class LighthouseDashboardWidget extends ReactWidget {
 
          for (let i = 0; i < data.length; ++i) {
 
-			let model: Model = new Model(data[i]);
+      let model: Model = new Model(data[i]);
             rows.push(<tr>
                 <td>{model.ID}</td>
                 <td>{model.CompileCount}</td>
                 <td>{model.Error}</td>
                 <td>{model.Language}</td>
             </tr>)
-		} */
+    } */
+
+    let err = this.getData();
+    console.info(err);
+
+    /* const temp2 = (
+      <table id="table1">
+        <tr>
+          <th>Sr.no</th>
+          <th>Execution Date</th>
+          <th>Execution Status</th>
+          <th>Error Text</th>
+          <th>Error Position</th>
+        </tr>
+        
+      </table>
+    ); */
 
     const temp = (
       <table id="table1">
         <tr>
-          <th>Sr Number</th>
+          <th>Number</th>
           <th>Number of compiles</th>
-          <th>Errors</th>
-          <th>Language</th>
+          <th>Number of Success</th>
+          <th>Number of Errors</th>
         </tr>
         <tr>
           <td>1</td>
@@ -118,10 +144,35 @@ export class LighthouseDashboardWidget extends ReactWidget {
     return temp;
   }
 
+  protected getData() {
+    let log = `${process.cwd}/log.json`
+    let errs: ErrorModel[] = [];
+    try {
+      let data = fs.readFileSync(log);
+
+      let json = JSON.parse(data.toString());
+      
+      let index: number = 1;
+      json.forEach((element: any) => {
+        errs.push(new ErrorModel(element, index));
+        index++;
+      });
+
+      return errs;
+    } catch(_) {
+      return null;
+    }
+
+    
+
+    
+  }
+
   protected attemptAssignments(): void {
-    this.messageService.info(
-      "Soon you would be able to attempt assignments within Lighthouse!"
-    );
+    // this.messageService.info(
+    //   "Soon you would be able to attempt assignments within Lighthouse!"
+    // );
+    this.commandService.executeCommand("assignments:command");
   }
   protected displayMessage(): void {
     this.messageService.info(

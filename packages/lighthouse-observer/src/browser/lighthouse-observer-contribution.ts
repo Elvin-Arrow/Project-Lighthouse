@@ -46,6 +46,7 @@ export class LighthouseObserverCommandContribution implements CommandContributio
     }
 
     resetTimer(_: any) {
+        console.info(`Resetting timer`);
         try {
             window.clearTimeout(this.timeoutId);
             this.goActive();

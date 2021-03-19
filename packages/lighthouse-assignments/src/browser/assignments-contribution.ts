@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 import { MenuModelRegistry } from '@theia/core';
 import { AssignmentsWidget } from './assignments-widget';
-import { AbstractViewContribution } from '@theia/core/lib/browser';
+import { AbstractViewContribution, CommonMenus } from '@theia/core/lib/browser';
 import { Command, CommandRegistry } from '@theia/core/lib/common/command';
 
 export const AssignmentsCommand: Command = { id: 'assignments:command' };
@@ -21,7 +21,7 @@ export class AssignmentsContribution extends AbstractViewContribution<Assignment
         super({
             widgetId: AssignmentsWidget.ID,
             widgetName: AssignmentsWidget.LABEL,
-            defaultWidgetOptions: { area: 'left' },
+            defaultWidgetOptions: { area: 'main' },
             toggleCommandId: AssignmentsCommand.id
         });
     }
@@ -66,5 +66,9 @@ export class AssignmentsContribution extends AbstractViewContribution<Assignment
      */
     registerMenus(menus: MenuModelRegistry): void {
         super.registerMenus(menus);
+        menus.registerMenuAction(CommonMenus.EDIT, {
+            commandId: AssignmentsCommand.id,
+            label: AssignmentsCommand.label,
+        });
     }
 }

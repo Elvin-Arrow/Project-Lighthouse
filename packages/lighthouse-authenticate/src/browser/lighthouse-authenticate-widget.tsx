@@ -5,6 +5,7 @@ import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { MessageService } from "@theia/core";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
 import Store = require("electron-store");
+import URI from "@theia/core/lib/common/uri";
 
 var path = require("path");
 
@@ -24,7 +25,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
   private username: String | undefined;
   private password = new String();
 
-             
+
 
   @postConstruct()
   protected async init(): Promise<void> {
@@ -72,7 +73,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
                       name="username"
                       id="usernameInput"
                       className="form-control"
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.username = e.target.value }
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.username = e.target.value}
                     />
                   </div>
                   <div className="form-group">
@@ -85,7 +86,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
                       name="password"
                       id="passwordInput"
                       className="form-control"
-                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.password = e.target.value }
+                      onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.password = e.target.value}
                     />
                   </div>
                   <div className="form-group">
@@ -99,7 +100,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
                     >
                       Login
                     </button>
-                  </div>                  
+                  </div>
                 </form>
               </div>
             </div>
@@ -121,6 +122,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
     );
     if (this.username == "student" && this.password == "123456") {
       this.store.set("authenticated", true);
+      this.store.set("username", "Muhammad");
 
       this.refreshWorkspace();
       this.dispose();
@@ -134,6 +136,13 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
       if (currentWorkspace != undefined) {
         this.workspaceService.close();
         this.workspaceService.open(currentWorkspace);
+      } else {
+        this.workspaceService.open(
+          new URI(`${process.cwd()}\\resources\\assignments\\assignment-1`),
+          {
+            preserveWindow: true,
+          }
+        );
       }
     }
   }
@@ -145,7 +154,7 @@ export class AuthView extends React.Component {
 
     this.state = {
       username: "",
-      password: "",      
+      password: "",
     };
   }
 
