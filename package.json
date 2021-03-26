@@ -92,6 +92,8 @@
   "theiaPlugins": {
     "lighthouse-builtin-cpp": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/cpp-1.39.1-prel.vsix",
     "lighthouse-builtin-debug-auto-launch": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/debug-auto-launch-1.39.1-prel.vsix",
+    "vscode-builtin-json": "https://open-vsx.org/api/vscode/json/1.46.1/file/vscode.json-1.46.1.vsix",
+    "vscode-builtin-json-language-features": "https://open-vsx.org/api/vscode/json-language-features/1.46.1/file/vscode.json-language-features-1.46.1.vsix",
     "lighthouse-builtin-java": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/java-1.39.1-prel.vsix",
     "lighthouse-builtin-python": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/python-1.39.1-prel.vsix",
     "vscode-builtin-theme-abyss": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-abyss-1.39.1-prel.vsix",
