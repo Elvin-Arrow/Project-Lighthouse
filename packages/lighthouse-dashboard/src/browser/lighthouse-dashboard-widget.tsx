@@ -72,6 +72,16 @@ export class LighthouseDashboardWidget extends ReactWidget {
               Attempt assignments
             </button>
           </div>
+          <div>
+            <h2>Resources</h2>
+            <button
+              className="theia-button secondary"
+              title="View resources"
+              onClick={(_a) => this.viewResources()}
+            >
+              View resources
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -151,7 +161,7 @@ export class LighthouseDashboardWidget extends ReactWidget {
       let data = fs.readFileSync(log);
 
       let json = JSON.parse(data.toString());
-      
+
       let index: number = 1;
       json.forEach((element: any) => {
         errs.push(new ErrorModel(element, index));
@@ -159,13 +169,13 @@ export class LighthouseDashboardWidget extends ReactWidget {
       });
 
       return errs;
-    } catch(_) {
+    } catch (_) {
       return null;
     }
 
-    
 
-    
+
+
   }
 
   protected attemptAssignments(): void {
@@ -174,6 +184,15 @@ export class LighthouseDashboardWidget extends ReactWidget {
     // );
     this.commandService.executeCommand("assignments:command");
   }
+
+  /**
+  * @TODO add a view resource trigger
+  */
+  private viewResources(): void {
+
+
+  }
+
   protected displayMessage(): void {
     this.messageService.info(
       "Congratulations: Lighthouse Dashboard Widget Successfully Created!"
