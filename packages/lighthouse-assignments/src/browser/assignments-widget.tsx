@@ -7,9 +7,9 @@ import URI from "@theia/core/lib/common/uri"; // For opening the folder
 import { WorkspaceService } from "@theia/workspace/lib/browser"; // For handling the workspaces
 // import * as data from "./resources.json";
 import * as fs from "fs";
+import path = require('path');
 
-const kAssignmentsJsonPath =
-  "E:/Foundary/Lighthouse/02-Lighthouse-Experimental/resources/assignments.json";
+// const kAssignmentsJsonPath = `${process.cwd}/resources/log.json`;
 
 @injectable()
 export class AssignmentsWidget extends ReactWidget {
@@ -33,8 +33,6 @@ export class AssignmentsWidget extends ReactWidget {
   }
 
   protected render(): React.ReactNode {
-    // const assignmentName = `Odd or Even`;
-    // The content of "assignment-container-i" will be dynamically showed where 'i' is the index number of the assignment
     let assignments: any = [];
 
     let assignmentsData = this.getData();
@@ -83,7 +81,9 @@ export class AssignmentsWidget extends ReactWidget {
   }
 
   private getData(): any {
-    let rawJson = fs.readFileSync(kAssignmentsJsonPath, "utf-8");
+    const assignmentPath = path.join(process.cwd(), 'resources', 'assignments.json');
+    // const assignmentPath = `${process.cwd}/resources/log.json`;
+    let rawJson = fs.readFileSync(assignmentPath, "utf-8");
 
     let assignmentsData = JSON.parse(rawJson);
 
@@ -91,7 +91,7 @@ export class AssignmentsWidget extends ReactWidget {
   }
 
   private attemptAssignment(assignmentPath: string): void {
-    this.dispose();
+    // Close current workspace
     if (this.workspaceService.opened) {
       const currentWorkspace = this.workspaceService.workspace?.resource;
 
@@ -100,35 +100,32 @@ export class AssignmentsWidget extends ReactWidget {
       }
     }
 
+    // Open the selected assignment workspace
     let workSpaceUri: URI = new URI(
-      assignmentPath
+      this.resolveAssignmentPath(assignmentPath)
     );
+
     console.info(workSpaceUri.path);
     this.workspaceService.open(workSpaceUri, {
       preserveWindow: true,
     });
-    // Where '1' is the assignment number
 
     if (this.workspaceService.opened) {
       this.showMessage();
+      setTimeout(() => {
+        console.info(this.workspaceService.getWorkspaceRootUri);
+        
+      }, 1500);
     }
+
+    this.dispose();
   }
 
-  protected generatePath(): string {
-    let basePath = `${process.cwd()}`;
-    let assignmentPath = "resources\\assignments\\assignment-1";
-
-    let pathComponents = basePath.split("/");
-    let path: string = "";
-
-    pathComponents.forEach((pathItem) => {
-      path += `${pathItem}\\`;
-    });
-
-    path += assignmentPath;
-
-    return path;
+  private resolveAssignmentPath(assignmentPath: string): string {
+    const resourcePath = path.join(process.cwd(), 'resources', 'assignments', assignmentPath);
+    return resourcePath;
   }
+
   protected showMessage(): void {
     // Issue as of now: Message being fast to appear and disappear, is not readable
     this.messageService.info(
