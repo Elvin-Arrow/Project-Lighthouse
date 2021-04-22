@@ -155,7 +155,7 @@ export class LighthouseDashboardWidget extends ReactWidget {
   }
 
   protected getData() {
-    let log = `${process.cwd}/log.json`
+    let log = `${process.cwd}/resources/log.json`
     let errs: ErrorModel[] = [];
     try {
       let data = fs.readFileSync(log);

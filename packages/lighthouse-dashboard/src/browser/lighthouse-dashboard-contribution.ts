@@ -1,7 +1,9 @@
-import { injectable } from "inversify";
+import { injectable, inject } from "inversify";
 import { LighthouseDashboardWidget } from "./lighthouse-dashboard-widget";
-import { AbstractViewContribution } from "@theia/core/lib/browser";
+import { AbstractViewContribution, FrontendApplication, FrontendApplicationContribution } from "@theia/core/lib/browser";
 import { Command, CommandRegistry } from "@theia/core/lib/common/command";
+import { FrontendApplicationStateService } from "@theia/core/lib/browser/frontend-application-state";
+import Store = require("electron-store");
 
 export const LighthouseDashboardCommand: Command = {
   id: "lighthouse-dashboard:command",
@@ -9,8 +11,14 @@ export const LighthouseDashboardCommand: Command = {
 
 @injectable()
 export class LighthouseDashboardContribution extends AbstractViewContribution<
-  LighthouseDashboardWidget
-> {
+LighthouseDashboardWidget
+> implements FrontendApplicationContribution {
+
+  @inject(FrontendApplicationStateService)
+  protected readonly stateService: FrontendApplicationStateService;
+
+  private readonly store: Store;
+
   /**
    * `AbstractViewContribution` handles the creation and registering
    *  of the widget including commands, menus, and keybindings.
@@ -26,6 +34,16 @@ export class LighthouseDashboardContribution extends AbstractViewContribution<
       defaultWidgetOptions: { area: "main" },
       toggleCommandId: LighthouseDashboardCommand.id,
     });
+
+    this.store = new Store();
+  }
+
+  async onStart(app: FrontendApplication): Promise<void> {
+    if (this.store.get('authenticated')) {
+      this.stateService.reachedState('ready').then(
+        () => this.openView({ reveal: true })
+      );
+    }
   }
 
   /**
