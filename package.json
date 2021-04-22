@@ -109,6 +109,7 @@
     "lighthouse-builtin-magic-python": "https://open-vsx.org/api/magicstack/MagicPython/1.1.1/file/magicstack.MagicPython-1.1.1.vsix",
     "lighthouse-builtin-pyright": "https://open-vsx.org/api/ms-pyright/pyright/1.1.85/file/ms-pyright.pyright-1.1.85.vsix",
     "lighthouse-builtin-ms-python": "https://open-vsx.org/api/ms-python/python/2020.10.332292344/file/ms-python.python-2020.10.332292344.vsix",
-    "lighthouse-builtin-error-lens": "https://open-vsx.org/api/usernamehw/errorlens/3.2.4/file/usernamehw.errorlens-3.2.4.vsix"
+    "lighthouse-builtin-error-lens": "https://open-vsx.org/api/usernamehw/errorlens/3.2.4/file/usernamehw.errorlens-3.2.4.vsix",
+    "markdown-preview-enhanced": "https://open-vsx.org/api/shd101wyy/markdown-preview-enhanced/0.5.17/file/shd101wyy.markdown-preview-enhanced-0.5.17.vsix"
   }
 }
