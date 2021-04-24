@@ -40,7 +40,6 @@
     "@theia/core": "latest",
     "@theia/editor": "latest",
     "@theia/electron": "latest",
-   
     "@theia/file-search": "latest",
     "@theia/filesystem": "latest",
     "@theia/getting-started": "latest",
