@@ -81,7 +81,6 @@ export class WidgetTestWidget extends ReactWidget {
 
   private showDashboard(): void {
     this.commandService.executeCommand("lighthouse-dashboard:command");
-    this.close();
   }
 
   private logout(): void {
