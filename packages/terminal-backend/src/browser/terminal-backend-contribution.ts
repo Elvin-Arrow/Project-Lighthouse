@@ -1,7 +1,6 @@
 import { Command, CommandContribution, CommandRegistry } from '@theia/core/lib/common';
 import { inject, injectable } from 'inversify';
 import { HelloBackendWithClientService, HelloBackendService } from '../common/protocol';
-import { TerminalService } from '@theia/terminal/lib/browser/base/terminal-service';
 
 
 const SayHelloViaBackendCommandWithCallBack: Command = {
@@ -20,7 +19,7 @@ export class TerminalBackendCommandContribution implements CommandContribution {
     constructor(
         @inject(HelloBackendWithClientService) private readonly helloBackendWithClientService: HelloBackendWithClientService,
         @inject(HelloBackendService) private readonly helloBackendService: HelloBackendService,
-        @inject(TerminalService) protected readonly terminalService: TerminalService,
+
 
     ) { }
 
@@ -28,7 +27,7 @@ export class TerminalBackendCommandContribution implements CommandContribution {
         registry.registerCommand(SayHelloViaBackendCommandWithCallBack, {
             execute: () => {
 
-                let term = this.terminalService.currentTerminal;
+               /*  let term = this.terminalService.currentTerminal;
                 console.info(`Current terminal acquired: ${term?.title}`)
 
                 if (term) {
@@ -42,15 +41,15 @@ export class TerminalBackendCommandContribution implements CommandContribution {
                         this.helloBackendWithClientService.acquireTerminal(id);
                         this.helloBackendWithClientService.greet().then(r => console.log(r))
                     })
-                }
-                // this.helloBackendWithClientService.greet().then(r => console.log(r))
+                } */
+                this.helloBackendWithClientService.greet().then(r => console.log(r))
 
             }
 
         });
         registry.registerCommand(SayHelloViaBackendCommand, {
             execute: () => {
-                let term = this.terminalService.currentTerminal;
+                /* let term = this.terminalService.currentTerminal;
                 console.info(`Current terminal acquired: ${term?.title}`)
 
                 if (term) {
@@ -60,8 +59,8 @@ export class TerminalBackendCommandContribution implements CommandContribution {
                         this.helloBackendWithClientService.acquireTerminal(id);
                         this.helloBackendService.sayHelloTo('World').then(r => console.log(r))
                     })
-                }
-
+                } */
+                this.helloBackendService.sayHelloTo('World').then(r => console.log(r))
 
             }
         });
