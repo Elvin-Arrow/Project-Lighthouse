@@ -40,6 +40,7 @@
     "@theia/core": "latest",
     "@theia/editor": "latest",
     "@theia/electron": "latest",
+   
     "@theia/file-search": "latest",
     "@theia/filesystem": "latest",
     "@theia/getting-started": "latest",
@@ -63,6 +64,7 @@
     "@theia/userstorage": "latest",
     "@theia/workspace": "latest",
     "electron-store": "latest",
+    "react-loading": "latest",
     "@lighthouse/dashboard": "0.0.1",
     "@lighthouse/toolbox": "0.0.1",
     "@lighthouse/authenticate": "0.0.1",
@@ -92,7 +94,10 @@
   "theiaPluginsDir": "plugins",
   "theiaPlugins": {
     "lighthouse-builtin-cpp": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/cpp-1.39.1-prel.vsix",
+    "lighthouse-builtin-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.11/file/llvm-vs-code-extensions.vscode-clangd-0.1.11.vsix",
     "lighthouse-builtin-debug-auto-launch": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/debug-auto-launch-1.39.1-prel.vsix",
+    "lighthouse-builtin-cpptools-linux": "https://github.com/microsoft/vscode-cpptools/releases/download/1.3.1/cpptools-linux.vsix",
+    "lighthouse-builtin-cpptools-win":"https://github.com/microsoft/vscode-cpptools/releases/download/1.3.1/cpptools-win32.vsix",
     "vscode-builtin-json": "https://open-vsx.org/api/vscode/json/1.46.1/file/vscode.json-1.46.1.vsix",
     "vscode-builtin-json-language-features": "https://open-vsx.org/api/vscode/json-language-features/1.46.1/file/vscode.json-language-features-1.46.1.vsix",
     "lighthouse-builtin-java": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/java-1.39.1-prel.vsix",
@@ -110,6 +115,6 @@
     "lighthouse-builtin-pyright": "https://open-vsx.org/api/ms-pyright/pyright/1.1.85/file/ms-pyright.pyright-1.1.85.vsix",
     "lighthouse-builtin-ms-python": "https://open-vsx.org/api/ms-python/python/2020.10.332292344/file/ms-python.python-2020.10.332292344.vsix",
     "lighthouse-builtin-error-lens": "https://open-vsx.org/api/usernamehw/errorlens/3.2.4/file/usernamehw.errorlens-3.2.4.vsix",
-    "markdown-preview-enhanced": "https://open-vsx.org/api/shd101wyy/markdown-preview-enhanced/0.5.17/file/shd101wyy.markdown-preview-enhanced-0.5.17.vsix"
+    "lighthouse-builtin-markdown-preview-enhanced": "https://open-vsx.org/api/shd101wyy/markdown-preview-enhanced/0.5.17/file/shd101wyy.markdown-preview-enhanced-0.5.17.vsix"
   }
 }
