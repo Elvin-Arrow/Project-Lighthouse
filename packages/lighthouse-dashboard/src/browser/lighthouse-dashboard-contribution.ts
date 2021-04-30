@@ -3,6 +3,7 @@ import { LighthouseDashboardWidget } from "./lighthouse-dashboard-widget";
 import { AbstractViewContribution, FrontendApplication, FrontendApplicationContribution } from "@theia/core/lib/browser";
 import { Command, CommandRegistry } from "@theia/core/lib/common/command";
 import { FrontendApplicationStateService } from "@theia/core/lib/browser/frontend-application-state";
+import { CommandService } from "@theia/core";
 import Store = require("electron-store");
 
 export const LighthouseDashboardCommand: Command = {
@@ -15,7 +16,10 @@ LighthouseDashboardWidget
 > implements FrontendApplicationContribution {
 
   @inject(FrontendApplicationStateService)
-  protected readonly stateService: FrontendApplicationStateService;
+  private readonly stateService: FrontendApplicationStateService;
+
+  @inject(CommandService)
+  private readonly commandService: CommandService;
 
   private readonly store: Store;
 
@@ -41,7 +45,11 @@ LighthouseDashboardWidget
   async onStart(app: FrontendApplication): Promise<void> {
     if (this.store.get('authenticated')) {
       this.stateService.reachedState('ready').then(
-        () => this.openView({ reveal: true })
+        () => {
+          this.openView({ reveal: true });
+          this.commandService.executeCommand('AssignmentView.command');
+        }
+        
       );
     }
   }
