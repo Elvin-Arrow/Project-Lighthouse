@@ -1,26 +1,31 @@
 import * as React from "react";
-import { injectable, postConstruct, inject } from "inversify";
+import { inject, injectable, postConstruct } from "inversify";
 import { AlertMessage } from "@theia/core/lib/browser/widgets/alert-message";
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
+import { AssignmentService } from "./assignment_service";
+import { WorkspaceService } from "@theia/workspace/lib/browser"; // For handling the workspaces
 import { MessageService } from "@theia/core";
 import URI from "@theia/core/lib/common/uri"; // For opening the folder
-import { WorkspaceService } from "@theia/workspace/lib/browser"; // For handling the workspaces
-// import * as data from "./resources.json";
-import * as fs from "fs";
-import path = require('path');
-
-// const kAssignmentsJsonPath = `${process.cwd}/resources/log.json`;
 
 @injectable()
 export class AssignmentsWidget extends ReactWidget {
   static readonly ID = "assignments:widget";
   static readonly LABEL = "Assignments";
 
+  // @inject(AssignmentService)
+  // private readonly assignmentService: AssignmentService;
   @inject(MessageService)
-  protected readonly messageService!: MessageService;
+  private readonly messageService: MessageService;
 
   @inject(WorkspaceService)
-  protected readonly workspaceService: WorkspaceService;
+  private readonly workspaceService: WorkspaceService;
+
+  private readonly assignmentService: AssignmentService;
+
+  constructor() {
+    super();
+    this.assignmentService = new AssignmentService();
+  }
 
   @postConstruct()
   protected async init(): Promise<void> {
@@ -30,12 +35,19 @@ export class AssignmentsWidget extends ReactWidget {
     this.title.closable = true;
     this.title.iconClass = "fa fa-code";
     this.update();
+
   }
 
   protected render(): React.ReactNode {
     let assignments: any = [];
+    let assignmentsData;
+    try {
+      assignmentsData = this.assignmentService.getAssignments();
+    }
+    catch (e) {
+      console.error(`Error while firing the message service\n${e}`);
+    }
 
-    let assignmentsData = this.getData();
 
     assignmentsData.forEach((assignment: any) => {
       assignments.push(
@@ -50,7 +62,12 @@ export class AssignmentsWidget extends ReactWidget {
           <button
             className="theia-button secondary"
             title="Attempt assignment"
-            onClick={(_a) => this.attemptAssignment(assignment.assignmentPath)}
+            onClick={(_a) => {
+              console.info(`Requesting assignment service to open the assignment...`);
+
+              this.attemptAssignment(assignment.assignmentPath);
+
+            }}
           >
             Attempt
           </button>
@@ -80,50 +97,49 @@ export class AssignmentsWidget extends ReactWidget {
     ); */
   }
 
-  private getData(): any {
-    const assignmentPath = path.join(process.cwd(), 'resources', 'assignments.json');
-    // const assignmentPath = `${process.cwd}/resources/log.json`;
-    let rawJson = fs.readFileSync(assignmentPath, "utf-8");
+  public attemptAssignment(assignmentPath: string): void {
+    console.info(`Openning assignment...`);
 
-    let assignmentsData = JSON.parse(rawJson);
+    try {
+      // Close current workspace
+      if (this.workspaceService.opened) {
+        console.info(`A workspace is already openned`);
+        const currentWorkspace = this.workspaceService.workspace?.resource;
 
-    return assignmentsData;
-  }
-
-  private attemptAssignment(assignmentPath: string): void {
-    // Close current workspace
-    if (this.workspaceService.opened) {
-      const currentWorkspace = this.workspaceService.workspace?.resource;
-
-      if (currentWorkspace != undefined) {
-        this.workspaceService.close();
+        if (currentWorkspace != undefined) {
+          console.info(`Closing current workspace`);
+          this.workspaceService.close();
+        }
       }
+
+      // Open the selected assignment workspace
+      let workSpaceUri: URI = new URI(
+        this.assignmentService.resolveAssignmentPath(assignmentPath)
+      );
+
+      console.info(`Opening new workspace ${workSpaceUri.path}`);
+
+      this.workspaceService.open(workSpaceUri, {
+        preserveWindow: true,
+      });
+    } catch (e) {
+      console.error(`Error while opening workspace\n${e}`)
     }
 
-    // Open the selected assignment workspace
-    let workSpaceUri: URI = new URI(
-      this.resolveAssignmentPath(assignmentPath)
-    );
+    this.workspaceService.onWorkspaceChanged((files) => {
+      console.info(`Workspace changed!!!`);
+      console.info(files.length);
+    })
 
-    console.info(workSpaceUri.path);
-    this.workspaceService.open(workSpaceUri, {
-      preserveWindow: true,
-    });
+    setTimeout(() => {
+      if (this.workspaceService.opened) {
 
-    if (this.workspaceService.opened) {
-      this.showMessage();
-      setTimeout(() => {
         console.info(this.workspaceService.getWorkspaceRootUri);
-        
-      }, 1500);
-    }
+      }
+    }, 1500);
 
     this.dispose();
-  }
 
-  private resolveAssignmentPath(assignmentPath: string): string {
-    const resourcePath = path.join(process.cwd(), 'resources', 'assignments', assignmentPath);
-    return resourcePath;
   }
 
   protected showMessage(): void {
@@ -132,4 +148,5 @@ export class AssignmentsWidget extends ReactWidget {
       "Assignment workspace opened. Please open the assignment files from the Explorer pane."
     );
   }
+
 }
