@@ -4,6 +4,8 @@ import { AlertMessage } from "@theia/core/lib/browser/widgets/alert-message";
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { CommandService, MessageService } from "@theia/core";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
+import { ElectronCommands } from "@theia/core/lib/electron-browser/menu/electron-menu-contribution";
+import { EditorManager } from "@theia/editor/lib/browser";
 import Store = require("electron-store");
 
 @injectable()
@@ -19,6 +21,9 @@ export class WidgetTestWidget extends ReactWidget {
 
   @inject(CommandService)
   protected readonly commandService: CommandService;
+
+  @inject(EditorManager) 
+  protected readonly editorManager: EditorManager;
 
   private readonly store = new Store();
 
@@ -85,7 +90,16 @@ export class WidgetTestWidget extends ReactWidget {
 
   private logout(): void {
     this.store.delete("authenticated");
-    this.refreshWorkspace();
+    // this.refreshWorkspace();
+    if (this.workspaceService.opened) {
+      this.workspaceService.close();
+    } else {
+      this.editorManager.closeAll().then(() => {
+        this.commandService.executeCommand(ElectronCommands.RELOAD.id);
+      });
+      
+    }
+    
   }
 
   /**
@@ -106,7 +120,7 @@ export class WidgetTestWidget extends ReactWidget {
     this.commandService.executeCommand("lighthouse-authenticate:command");
   }
 
-  private refreshWorkspace(): void {
+  protected refreshWorkspace(): void {
     if (this.workspaceService.opened) {
       const currentWorkspace = this.workspaceService.workspace?.resource;
 

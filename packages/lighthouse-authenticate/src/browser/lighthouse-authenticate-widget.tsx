@@ -4,6 +4,8 @@ import { AlertMessage } from '@theia/core/lib/browser/widgets/alert-message';
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { MessageService, CommandService } from "@theia/core";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
+import { ElectronCommands } from "@theia/core/lib/electron-browser/menu/electron-menu-contribution"
+
 import Store = require("electron-store");
 // import URI from "@theia/core/lib/common/uri";
 
@@ -127,13 +129,14 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
       this.store.set("authenticated", true);
       this.store.set("username", "Muhammad");
 
-      this.refreshWorkspace();
+      // this.refreshWorkspace();
+      this.commandService.executeCommand(ElectronCommands.RELOAD.id);
       this.dispose();
       
     }
   }
 
-  private refreshWorkspace(): void {
+  protected refreshWorkspace(): void {
     if (this.workspaceService.opened) {
       const currentWorkspace = this.workspaceService.workspace?.resource;
 
