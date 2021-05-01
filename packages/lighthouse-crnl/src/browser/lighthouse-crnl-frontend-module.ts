@@ -14,4 +14,6 @@ export default new ContainerModule(bind => {
     bind(CommandContribution).to(LighthouseCrnlCommandContribution);
     bind(MenuContribution).to(LighthouseCrnlMenuContribution);
     bind(TabBarToolbarContribution).to(LighthouseTabBarToolbarContribution);
+    
+    
 });

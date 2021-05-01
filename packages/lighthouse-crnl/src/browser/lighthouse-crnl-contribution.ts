@@ -19,6 +19,8 @@ import { EditorManager } from "@theia/editor/lib/browser";
 
 import * as fs from "fs";
 
+
+
 export const LighthouseCrnlCommand = {
   id: "LighthouseCrnl.command",
   label: "Lighthouse compile",
@@ -36,7 +38,8 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     @inject(CommandService) protected readonly commandService: CommandService,
     @inject(TerminalService)
     protected readonly terminalService: TerminalService,
-    @inject(EditorManager) private readonly editorManager: EditorManager
+    @inject(EditorManager) private readonly editorManager: EditorManager,
+    
   ) {}
 
   registerCommands(registry: CommandRegistry): void {
@@ -46,13 +49,18 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
         this.commandService
           .executeCommand("workbench.action.debug.start")
           .then(() => {
+            this.terminalService.currentTerminal?.processId.then((terminalId) => {
+              console.info(`Acquired the current terminal id as: ${terminalId}`);
+              
+            })
+            /* 
             console.info(`Waiting for logger`);
             setTimeout(() => {
               console.log(`Generating log`);
 
               // Extract log from debugpy log
               this.extractLog();
-            }, 10000);
+            }, 10000); */
           });
         // console.log(`Generating log`);
         // setTimeout(() => {}, 10000);

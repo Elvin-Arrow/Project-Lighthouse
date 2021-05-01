@@ -2,10 +2,12 @@ import * as React from "react";
 import { injectable, postConstruct, inject } from "inversify";
 import { AlertMessage } from '@theia/core/lib/browser/widgets/alert-message';
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
-import { MessageService } from "@theia/core";
+import { MessageService, CommandService } from "@theia/core";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
+import { ElectronCommands } from "@theia/core/lib/electron-browser/menu/electron-menu-contribution"
+
 import Store = require("electron-store");
-import URI from "@theia/core/lib/common/uri";
+// import URI from "@theia/core/lib/common/uri";
 
 var path = require("path");
 
@@ -19,6 +21,9 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
 
   @inject(WorkspaceService)
   protected readonly workspaceService: WorkspaceService;
+
+  @inject(CommandService)
+  protected readonly commandService: CommandService;
 
   private readonly store = new Store();
 
@@ -124,27 +129,27 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
       this.store.set("authenticated", true);
       this.store.set("username", "Muhammad");
 
-      this.refreshWorkspace();
       this.dispose();
+      this.commandService.executeCommand(ElectronCommands.RELOAD.id);      
     }
   }
 
-  private refreshWorkspace(): void {
+  protected refreshWorkspace(): void {
     if (this.workspaceService.opened) {
       const currentWorkspace = this.workspaceService.workspace?.resource;
 
       if (currentWorkspace != undefined) {
         this.workspaceService.close();
         this.workspaceService.open(currentWorkspace);
-      } else {
-        this.workspaceService.open(
-          new URI(`${process.cwd()}\\resources\\assignments\\assignment-1`),
-          {
-            preserveWindow: true,
-          }
-        );
-      }
+      } 
+
+      this.launchDashboard();
+
     }
+  }
+
+  private launchDashboard(): void {
+    this.commandService.executeCommand("lighthouse-dashboard:command");
   }
 }
 

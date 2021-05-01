@@ -89,3 +89,15 @@ dist/win-unpacked/resources/app/package.json
 dist/win-unpacked/resources/app/scripts/theia-electron-main.js
 dist/win-unpacked/swiftshader/libEGL.dll
 dist/win-unpacked/swiftshader/libGLESv2.dll
+lighthouse-python/pyvenv.cfg
+lighthouse-python/Scripts/activate
+lighthouse-python/Scripts/activate.bat
+lighthouse-python/Scripts/Activate.ps1
+lighthouse-python/Scripts/deactivate.bat
+lighthouse-python/Scripts/easy_install-3.9.exe
+lighthouse-python/Scripts/easy_install.exe
+lighthouse-python/Scripts/pip.exe
+lighthouse-python/Scripts/pip3.9.exe
+lighthouse-python/Scripts/pip3.exe
+lighthouse-python/Scripts/python.exe
+lighthouse-python/Scripts/pythonw.exe

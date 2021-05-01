@@ -1,0 +1,32 @@
+{
+  "private": "true",
+  "name": "@lighthouse/terminal-backend",
+  "keywords": [
+    "theia-extension"
+  ],
+  "version": "0.0.1",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/core": "latest",
+    "@theia/terminal": "1.11.0"
+  },
+  "devDependencies": {
+    "rimraf": "latest",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/terminal-backend-frontend-module",
+      "backend": "lib/node/terminal-backend-backend-module"
+    }
+  ]
+}
