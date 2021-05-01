@@ -129,10 +129,8 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
       this.store.set("authenticated", true);
       this.store.set("username", "Muhammad");
 
-      // this.refreshWorkspace();
-      this.commandService.executeCommand(ElectronCommands.RELOAD.id);
       this.dispose();
-      
+      this.commandService.executeCommand(ElectronCommands.RELOAD.id);      
     }
   }
 
