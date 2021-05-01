@@ -5,6 +5,7 @@ import { FrontendApplicationStateService } from "@theia/core/lib/browser/fronten
 import { WorkspaceService } from "@theia/workspace/lib/browser"; // For handling the workspaces
 import { EditorManager } from "@theia/editor/lib/browser";
 import { CommandService } from "@theia/core";
+import { FileStat } from "@theia/filesystem/lib/common/files";
 
 export const AssignmentViewCommand = {
     id: 'AssignmentView.command',
@@ -33,6 +34,26 @@ export class AssignmentViewCommandContribution implements CommandContribution, F
         });
     }
 
+    private readmeFileExists(files: FileStat[] | undefined): boolean {
+        console.info(`Looking for markdown files...`);
+        let check = false;
+        try {
+            files?.forEach((file) => {
+                console.info(`File name: ${file.name}`);
+                if (file.name == 'readme.md') {
+                    console.info(`Required file found!`);
+
+                    check = true;
+                };
+            })
+        } catch (e) {
+            console.error(`Error while looking up markdown files\n${e}`);
+        }
+        
+
+        return check;
+    }
+
     registerCommands(registry: CommandRegistry): void {
         registry.registerCommand(AssignmentViewCommand, {
             execute: () => {
@@ -41,21 +62,30 @@ export class AssignmentViewCommandContribution implements CommandContribution, F
 
                 console.info(`This workspace has: ${currentWorkspace?.children?.length} files`);
 
-                currentWorkspace?.children?.forEach((file) => {
-                    console.info(`File: ${file.name}`);
-                    if (file.name == 'main.py') {
-                        this.editorManager.open(file.resource);
-                    } else if (file.name == 'readme.md') {
-                        this.editorManager.openToSide(file.resource);
+                let check = this.readmeFileExists(currentWorkspace?.children);
+                console.info(`Check: ${check}`);
 
-                        
-                        this.commandService.executeCommand('markdown-preview-enhanced.openPreviewToTheSide');
-                    }
-                })
+                if (check) {
+                    console.info(`Markdown file found`);
 
+                    this.editorManager.closeAll().then(() => {
+                        currentWorkspace?.children?.forEach((file) => {
+                            console.info(`File: ${file.name}`);
+                            if (file.name == 'main.py') {
+                                this.editorManager.open(file.resource);    
+                            } else if (file.name == 'readme.md') {
+                                this.editorManager.openToSide(file.resource).then(() => {
+                                    this.commandService.executeCommand('markdown-preview-enhanced.openPreviewToTheSide');
+                                });    
+                            }
+                        })
+                    });
+                }
             }
         });
     }
+
+    
 }
 
 @injectable()
