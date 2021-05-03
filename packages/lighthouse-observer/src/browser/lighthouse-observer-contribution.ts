@@ -11,15 +11,23 @@ export const LighthouseObserverCommand = {
 @injectable()
 export class LighthouseObserverCommandContribution implements CommandContribution {
     private timeoutId: number;
+    private isActive: boolean;
 
     constructor(
         @inject(MessageService) private readonly messageService: MessageService,
         @inject(EditorManager) private readonly editorManager: EditorManager
-    ) { }
+    ) {
+        this.isActive = true;
+     }
 
     startTimer() {
-        // wait 2 seconds before calling goInactive
-        this.timeoutId = window.setTimeout(this.goInactive.bind(this), 5000);
+        // wait 5 seconds before calling goInactive
+        console.info(`Waiting for 5 seconds...`);
+        this.timeoutId = window.setTimeout(() => {
+            // this.goInactive.bind(this)
+            this.messageService.info("User is now inactive");
+            this.isActive = false;
+        }, 5000);
     }
 
     goInactive() {
@@ -28,21 +36,12 @@ export class LighthouseObserverCommandContribution implements CommandContributio
 
     goActive() {
         // do something
+        if (!this.isActive) {
+            this.messageService.info("Welcome back");
+        }
+
+        this.isActive = true;
         this.startTimer();
-    }
-
-    registerCommands(registry: CommandRegistry): void {
-        registry.registerCommand(LighthouseObserverCommand, {
-            execute: () => {
-                let editors = this.editorManager.all;
-
-                if (editors.length > 0) {
-                    let currentEditor = editors[0];
-
-                    currentEditor.editor.onCursorPositionChanged(this.resetTimer.bind(this));
-                }
-            }
-        });
     }
 
     resetTimer(_: any) {
@@ -53,6 +52,26 @@ export class LighthouseObserverCommandContribution implements CommandContributio
         } catch (_) {
         }
     }
+    
+    registerCommands(registry: CommandRegistry): void {
+        registry.registerCommand(LighthouseObserverCommand, {
+            execute: () => {
+                console.info(`Observing the editor...`);
+
+                let editors = this.editorManager.all;
+
+                if (editors.length > 0) {
+                    console.info(`Editor handle acquired`);
+
+                    let currentEditor = editors[0];
+
+                    currentEditor.editor.onCursorPositionChanged(this.resetTimer.bind(this));
+                }
+            }
+        });
+    }
+
+    
 }
 
 @injectable()
