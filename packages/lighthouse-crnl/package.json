@@ -1,0 +1,31 @@
+{
+  "rpivate": "true",
+  "name": "@lighthouse/crnl",
+  "keywords": [
+    "theia-extension"
+  ],
+  "version": "0.0.2",
+  "files": [
+    "lib",
+    "src"
+  ],
+  "dependencies": {
+    "@theia/core": "latest",
+    "glob": "latest"
+  },
+  "devDependencies": {
+    "rimraf": "latest",
+    "typescript": "latest"
+  },
+  "scripts": {
+    "prepare": "yarn run clean && yarn run build",
+    "clean": "rimraf lib",
+    "build": "tsc",
+    "watch": "tsc -w"
+  },
+  "theiaExtensions": [
+    {
+      "frontend": "lib/browser/lighthouse-crnl-frontend-module"
+    }
+  ]
+}

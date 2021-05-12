@@ -1,0 +1,16 @@
+[
+  {
+    "assignmentNumber": 1,
+    "title": "Sum calculation",
+    "description": "Take two numbers as input from the user and display it's sum",
+    "solvingTime": "5 mins",
+    "assignmentPath": "assignment-1"
+  },
+  {
+    "assignmentNumber": 2,
+    "title": "Factorial calculation",
+    "description": "Write a program to calculate the factorial of a given number",
+    "solvingTime": "5 mins",
+    "assignmentPath": "assignment-2"
+  }
+]
