@@ -5,8 +5,9 @@ import path = require('path');
 
 export class AssignmentService {
 
-    
+
     public getAssignments(): any {
+        // Look for assignments in the home directory
         const assignmentPath = path.join(process.cwd(), 'resources', 'assignments.json');
 
         let rawJson = fs.readFileSync(assignmentPath, "utf-8");
@@ -22,5 +23,5 @@ export class AssignmentService {
         return resourcePath;
     }
 
-    
+
 }

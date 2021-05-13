@@ -125,12 +125,23 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
     console.info(
       `Got ${this.username} as username and ${this.password} as password`
     );
+    // Validates credentials
     if (this.username == "student" && this.password == "123456") {
+      // On successful validation 
+
+      // Set user as authenticated for subsequent launches
       this.store.set("authenticated", true);
+
+      // Store user identifier
       this.store.set("username", "Muhammad");
 
+      // Check to see if the user sign in for the first time
+
+      // If first time sign in then
+      // Create a folder for the user in the home directory
+
       this.dispose();
-      this.commandService.executeCommand(ElectronCommands.RELOAD.id);      
+      this.commandService.executeCommand(ElectronCommands.RELOAD.id);
     }
   }
 
@@ -141,7 +152,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
       if (currentWorkspace != undefined) {
         this.workspaceService.close();
         this.workspaceService.open(currentWorkspace);
-      } 
+      }
 
       this.launchDashboard();
 
