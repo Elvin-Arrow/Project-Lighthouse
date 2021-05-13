@@ -90,6 +90,8 @@ export class WidgetTestWidget extends ReactWidget {
 
   private logout(): void {
     this.store.delete("authenticated");
+    this.store.delete("username");
+    
     // this.refreshWorkspace();
     if (this.workspaceService.opened) {
       this.workspaceService.close();
@@ -106,7 +108,6 @@ export class WidgetTestWidget extends ReactWidget {
    * Check whether user is authenticated or not
    */
   private authState(): boolean {
-    // TODO Implement authentication logic
     const status = this.store.get("authenticated");
 
     if (status) {
@@ -116,18 +117,7 @@ export class WidgetTestWidget extends ReactWidget {
   }
 
   private lighthouseAuthenticate(): void {
-    // TODO Invoke the auth plugin
     this.commandService.executeCommand("lighthouse-authenticate:command");
   }
-
-  protected refreshWorkspace(): void {
-    if (this.workspaceService.opened) {
-      const currentWorkspace = this.workspaceService.workspace?.resource;
-
-      if (currentWorkspace != undefined) {
-        this.workspaceService.close();
-        this.workspaceService.open(currentWorkspace);
-      }
-    }
-  }
+  
 }
