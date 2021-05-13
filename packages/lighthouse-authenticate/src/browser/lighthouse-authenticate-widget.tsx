@@ -7,6 +7,7 @@ import { WorkspaceService } from "@theia/workspace/lib/browser";
 import { ElectronCommands } from "@theia/core/lib/electron-browser/menu/electron-menu-contribution"
 
 import Store = require("electron-store");
+import {AuthenticationService} from './auth_service';
 // import URI from "@theia/core/lib/common/uri";
 
 var path = require("path");
@@ -26,9 +27,10 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
   protected readonly commandService: CommandService;
 
   private readonly store = new Store();
+  private readonly authenticateionService = new AuthenticationService();
 
-  private username: String | undefined;
-  private password = new String();
+  private username  = "";
+  private password = "";
 
 
 
@@ -125,24 +127,20 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
     console.info(
       `Got ${this.username} as username and ${this.password} as password`
     );
+
     // Validates credentials
-    if (this.username == "student" && this.password == "123456") {
-      // On successful validation 
+    this.authenticateionService.authenticate(this.username, this.password).then((wasSuccess) => {
+      if (wasSuccess) {
+        this.dispose();
+        this.commandService.executeCommand(ElectronCommands.RELOAD.id);
+      }
+    }, (onFailure) => {
+      // Set state to show the wrong creds label to user
+    });
+    
 
-      // Set user as authenticated for subsequent launches
-      this.store.set("authenticated", true);
-
-      // Store user identifier
-      this.store.set("username", "Muhammad");
-
-      // Check to see if the user sign in for the first time
-
-      // If first time sign in then
-      // Create a folder for the user in the home directory
-
-      this.dispose();
-      this.commandService.executeCommand(ElectronCommands.RELOAD.id);
-    }
+      
+    
   }
 
   protected refreshWorkspace(): void {
