@@ -38,6 +38,7 @@
   "author": "Elvin Arrow",
   "license": "Apache-2.0",
   "dependencies": {
+    "sweetalert2": "11.0.9",
     "@theia/callhierarchy": "latest",
     "@theia/core": "latest",
     "@theia/editor": "latest",
