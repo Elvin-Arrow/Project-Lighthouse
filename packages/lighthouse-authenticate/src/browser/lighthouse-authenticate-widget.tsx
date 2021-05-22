@@ -5,9 +5,11 @@ import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { MessageService, CommandService } from "@theia/core";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
 import { ElectronCommands } from "@theia/core/lib/electron-browser/menu/electron-menu-contribution"
+import { EditorManager } from "@theia/editor/lib/browser";
 
 import Store = require("electron-store");
-import {AuthenticationService} from './auth_service';
+import { AuthenticationService } from './auth_service';
+import Swal from 'sweetalert2'
 // import URI from "@theia/core/lib/common/uri";
 
 var path = require("path");
@@ -26,10 +28,13 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
   @inject(CommandService)
   protected readonly commandService: CommandService;
 
+  @inject(EditorManager)
+  private readonly editorManager: EditorManager;
+
   private readonly store = new Store();
   private readonly authenticateionService = new AuthenticationService();
 
-  private username  = "";
+  private username = "";
   private password = "";
 
 
@@ -124,23 +129,27 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
   }
 
   private authenticate(): void {
-    console.info(
-      `Got ${this.username} as username and ${this.password} as password`
-    );
-
     // Validates credentials
     this.authenticateionService.authenticate(this.username, this.password).then((wasSuccess) => {
       if (wasSuccess) {
-        this.dispose();
-        this.commandService.executeCommand(ElectronCommands.RELOAD.id);
+        this.editorManager.closeAll().then(() => {
+          this.commandService.executeCommand(ElectronCommands.RELOAD.id);
+        });
+
       }
     }, (onFailure) => {
       // Set state to show the wrong creds label to user
-    });
-    
+      Swal.fire({
+        title: 'Authentication failed',
+        text: 'Incorrect username or password',
+        icon: 'error',
+      })
 
-      
-    
+    });
+
+
+
+
   }
 
   protected refreshWorkspace(): void {

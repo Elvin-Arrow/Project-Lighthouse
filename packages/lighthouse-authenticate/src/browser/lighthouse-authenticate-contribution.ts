@@ -1,4 +1,4 @@
-import { injectable } from "inversify";
+import { injectable, inject } from "inversify";
 import { MenuModelRegistry } from "@theia/core";
 import { LighthouseAuthenticateWidget } from "./lighthouse-authenticate-widget";
 import {
@@ -8,6 +8,7 @@ import {
 } from "@theia/core/lib/browser";
 import { Command, CommandRegistry } from "@theia/core/lib/common/command";
 import Store = require("electron-store");
+import { FrontendApplicationStateService } from "@theia/core/lib/browser/frontend-application-state";
 
 export const LighthouseAuthenticateCommand: Command = {
   id: "lighthouse-authenticate:command",
@@ -18,6 +19,10 @@ export const LighthouseAuthenticateCommand: Command = {
 export class LighthouseAuthenticateContribution
   extends AbstractViewContribution<LighthouseAuthenticateWidget>
   implements FrontendApplicationContribution {
+
+  @inject(FrontendApplicationStateService)
+  private readonly stateService: FrontendApplicationStateService;
+
   private store: Store;
   /**
    * `AbstractViewContribution` handles the creation and registering
@@ -39,12 +44,12 @@ export class LighthouseAuthenticateContribution
 
   // Show widget on start
   async initializeLayout(app: FrontendApplication): Promise<void> {
-    let authStatus = this.store.get("authenticated");
+    if (this.store.get("authenticated")) return
 
-    if (authStatus) {
-      return;
-    }
-    await this.openView();
+    this.stateService.reachedState('ready').then(
+      () => this.openView({ reveal: true })
+    );
+
   }
 
   /**

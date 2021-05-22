@@ -28,17 +28,16 @@ export class AuthenticationService {
 
                 // Check to see if the user sign in for the first time
                 if (this.isFirstAuthentication(username)) {
+                    console.info('First time user');
                     // Create a folder for the user in the home directory
                     try {
                         await this.generateUserDirectory(username);
-                    resolve(true);
                     } catch (err) {
                         reject(err);
                     }
-                    
+
                 }
-                // this.dispose();
-                // this.commandService.executeCommand(ElectronCommands.RELOAD.id);
+                resolve(true);
             } else {
                 reject(new Error('Failed to authenticate user'));
             }
