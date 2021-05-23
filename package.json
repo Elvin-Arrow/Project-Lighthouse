@@ -75,8 +75,6 @@
     "@lighthouse/assignments": "0.0.1",
     "@lighthouse/default-screen": "0.0.1",
     "lighthouse-resources": "0.0.1",
-    "resources-cpp": "0.0.1",
-    "resources-python": "0.0.1",
     "@lighthouse/terminal-backend": "0.0.1",
     "assignment-view": "0.0.1",
     "@lighthouse/markdown-view": "0.0.1"
