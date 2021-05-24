@@ -16,6 +16,7 @@ import {
 import { TerminalService } from "@theia/terminal/lib/browser/base/terminal-service";
 import { TerminalWidget } from "@theia/terminal/lib/browser/base/terminal-widget";
 import { EditorManager } from "@theia/editor/lib/browser";
+import { DebugSessionManager } from '@theia/debug/lib/browser/debug-session-manager';
 
 import * as fs from "fs";
 
@@ -33,35 +34,46 @@ export const LighthouseSubmitCommand = {
 
 @injectable()
 export class LighthouseCrnlCommandContribution implements CommandContribution {
+
   constructor(
     @inject(MessageService) private readonly messageService: MessageService,
     @inject(CommandService) protected readonly commandService: CommandService,
     @inject(TerminalService)
     protected readonly terminalService: TerminalService,
     @inject(EditorManager) private readonly editorManager: EditorManager,
-    
-  ) {}
+    @inject(DebugSessionManager)
+    private readonly debugSessionManager: DebugSessionManager,
+  ) { }
 
   registerCommands(registry: CommandRegistry): void {
     registry.registerCommand(LighthouseCrnlCommand, {
       execute: () => {
         // let terms: TerminalWidget[] = this.terminalService.all;
+
+
         this.commandService
           .executeCommand("workbench.action.debug.start")
           .then(() => {
             this.terminalService.currentTerminal?.processId.then((terminalId) => {
               console.info(`Acquired the current terminal id as: ${terminalId}`);
-              
+
+
             })
-            /* 
+
             console.info(`Waiting for logger`);
-            setTimeout(() => {
+            /* setTimeout(() => {
               console.log(`Generating log`);
 
               // Extract log from debugpy log
               this.extractLog();
             }, 10000); */
+
+            this.debugSessionManager.onDidStopDebugSession((e) => {
+              console.info('Debugger stopped');
+            })
           });
+
+
         // console.log(`Generating log`);
         // setTimeout(() => {}, 10000);
       },
@@ -153,9 +165,9 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
                   fs.unlinkSync(file);
                 });
               }
-              
 
-              
+
+
             }
           });
         }
@@ -168,7 +180,7 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
    * in the process root directory.
    *
    */
-   protected extractSubmissionLog(): void {
+  protected extractSubmissionLog(): void {
     var glob = require("glob");
     let logMap: any;
 
@@ -229,15 +241,15 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
               } catch (err) {
                 console.error(`Failed to parse log: ${err}`);
                 this.messageService.warn('You are awesome! You just successfully submitted the assignment');
-                
+
               } finally {
                 files.forEach((file: any) => {
                   fs.unlinkSync(file);
                 });
               }
-              
 
-              
+
+
             }
           });
         }
