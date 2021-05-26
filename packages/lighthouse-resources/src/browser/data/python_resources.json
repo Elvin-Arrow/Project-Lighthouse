@@ -151,27 +151,27 @@
 	},
 	{
 		"id": 26,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "String Slice",
+		"description": "The slicing operator returns a slice of the string using the syntax s[start : end]. The slice is a substring from index start to index end – 1. The starting index or ending index may be omitted. In this case, by default the starting index is 0 and the ending index is the last index.",
+		"code": " >>> s = 'Welcome' \n >>> s[1 : 4] \n 'elc'"
 	},
 	{
 		"id": 27,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Arithematic Operators with Strings (Operator Overloading)",
+		"description": "You can join, or concatenate, two strings by using the concatenation operator (+). You can also use the repetition operator (*) to concatenate the same string multiple times. Here are some examples:",
+		"code": ">>> s1 = 'Welcome' \n >>> s2 = 'Python' \n >>> s3 = s1 + ' to ' + s2 \n >>> s3 \n 'Welcome to Python' \n >>> s4 = 3 * s1 \n >>> s4 \n 'WelcomeWelcomeWelcome' \n >>> s5 = s1 * 3 \n >>> s5 \n 'WelcomeWelcomeWelcome' \n >>>"
 	},
 	{
 		"id": 28,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "String Index",
+		"description": "A string is a sequence of characters. A character in the string can be accessed through the index operator using the syntax:",
+		"code": "s[index]"
 	},
 	{
 		"id": 29,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Arithematic Operators with Lists (Operator Overloading)",
+		"description": "You can use the concatenation operator (+) to join two lists and the repetition operator (*) to replicate elements in a list. ",
+		"code": ">>> list1 = [2, 3] \n >>> list2 = [1, 9] \n >>> list3 = list1 + list2 \n >>> list3 \n [2, 3, 1, 9] \n >>> list4 = 3 * list1 \n >>> list4 \n [2, 3, 2, 3, 2, 3]"
 	},
 	{
 		"id": 30,
