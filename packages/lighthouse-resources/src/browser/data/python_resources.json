@@ -133,21 +133,21 @@
 	},
 	{
 		"id": 23,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Lists",
+		"description": "Python provides a type called a list that stores a sequential collection of elements. A list can store a collection of data of any size. Elements in a list can be accessed through an index. A list of colors can be initiated as following:",
+		"code": "colors = ['blue', 'red', 'green']"
 	},
 	{
 		"id": 24,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Lists Bound",
+		"description": "An element in a list can be accessed through the index operator, using the syntax given below. List indexes are 0 based; that is, they range from 0 to 'len(myList)-1' where 'len(myList)' returns the length of the array.",
+		"code": "myList[index]"
 	},
 	{
 		"id": 25,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Lists Slice",
+		"description": "The slicing operator returns a slice of the list using the syntax 'list[start : end]'. The slice is a sublist from index start to index end – 1. The starting index or ending index may be omitted. In this case, the starting index is 0 and the ending index is the last index. Here are some examples:",
+		"code": ">>> list1 = [2, 3, 5, 7, 9, 1] \n >>> list1[2 : 4] \n [5, 7] \n \n >>> list1 = [2, 3, 5, 2, 33, 21] \n >>> list1[ : 2] \n [2, 3] \n >>> list1[3 : ] \n [2, 33, 21]"
 	},
 	{
 		"id": 26,
