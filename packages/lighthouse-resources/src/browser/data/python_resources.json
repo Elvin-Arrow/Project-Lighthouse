@@ -1,0 +1,302 @@
+[
+	{
+		"id": 1,
+		"title": "Indentation",
+		"description": "Indentation matters in Python. The 'statement(s)' must be indented at least one space to the right of the 'if' keyword and each statement must be indented using the same number of spaces. Usually, four spaces are used.",
+		"code": "if (condition): \n \t statement"
+	},
+	{
+		"id": 2,
+		"title": "Input from user",
+		"description": "You can use the 'input' function to ask the user to input a value in the console. The following statement prompts the user to enter a value, and then it assigns the value to the variable:",
+		"code": "variable = input('Enter a value: ')"
+	},
+	{
+		"id": 3,
+		"title": "eval function",
+		"description": "You can use the function 'eval' to evaluate and convert a string to a numeric value. For example, the following code returns the numeric value of '34.5':",
+		"code": "eval('34.5')"
+	},
+	{
+		"id": 4,
+		"title": "Operators",
+		"description": "You can use the following operators in Python:",
+		"code": "+ \t Addition \n - \t Subtraction \n * \t Multiplication \n / \t Float Division \n // \t Integer Division \n ** \t Exponentiation \n % \t Remainder"		
+	},
+	{
+		"id": 5,
+		"title": "Comparison Operators (Relational Operators)",
+		"description": "You can use the following comparison operators (also known as relational operators):",
+		"code": "< \t less than \n <= \t less than or equal to \n > \t greater than \n >= \t greater than or equal to \n == \t equal to \n != \t not equal to"
+	},
+	{
+		"id": 6,
+		"title": "Logical Operators (Boolean Operators)",
+		"description": "You can use the logical operators 'not', 'and', and 'or' to create a compound condition. The 'not' operator negates 'True' to 'False' and 'False' to 'True'. The 'and' of two Boolean operands is true if and only if both operands are true. The 'or' of two Boolean operands is true if at least one of the operands is true.",
+		"code": "not \t logical negation \n and \t logical conjunction \n or  \t logical disjunction "
+	},
+	{
+		"id": 7,
+		"title": "Built-in Functions",
+		"description": "A function is a group of statements that performs a specific task. Python provides many useful built-in functions for common programming tasks. Following are some of the built-in functions:",
+		"code": "eval() \n print () \n input () \n max () \n min() \n pow() \n round()"
+	},
+	{
+		"id": 8,
+		"title": "print() function",
+		"description": "The 'print' statement is one of Python’s built-in functions that can be used to display a string on the console. A function performs actions. In the case of the print function, it displays a message to the console.",
+		"code": "print('Welcome to Python')"
+	},
+	{
+		"id": 9,
+		"title": "input() function",
+		"description": "The 'input' statement is one of Python's built-in functions that can be used to read input from the console and therefore enables the program to accept input from the user. The following statement prompts the user to enter a value, and then it assigns the value to the variable:",
+		"code": "variable = input('Enter a value: ')"
+	},
+	{
+		"id": 10,
+		"title": "max() function",
+		"description": "The 'max' statement is one of Python’s built-in functions that can be used to identify the largest number from a set of numbers. It accepts an array of numbers as input and returns the largest among the array of numbers. In the following code example, the 'max' function would return '35'.",
+		"code": "max(25, 30, 35)"
+	},
+	{
+		"id": 11,
+		"title": "min() function",
+		"description": "The 'min' statement is one of Python’s built-in functions that can be used to identify the smallest number from a set of numbers. It accepts an array of numbers as input and returns the smallest among the array of numbers. In the following code example, the 'min' function would return '5'.",
+		"code": "min(20, 5, 10)"
+	},
+	{
+		"id": 12,
+		"title": "pow() function",
+		"description": "The 'pow' statement is one of Python’s built-in functions that can be used to calculate exponentiation. The following code is same as '2 raised to the power 3' or '2 ** 3' and would return '8' as a result:",
+		"code": "pow(2, 3)"
+	},
+	{
+		"id": 13,
+		"title": "Variables",
+		"description": "A variable is a name that references a value stored in the computer’s memory. Rather than using 'x' and 'y' as variable names, choose descriptive names such as 'height' or 'radius'. The following code assigns the value '20' to the variable 'radius':",
+		"code": "radius = 20"
+	},
+	{
+		"id": 14,
+		"title": "Integers",
+		"description": "Integer types (int for short) are one of the two numeric data types and are used for representing whole numbers. The following is an example of an integer number:",
+		"code": "5"
+	},
+	{
+		"id": 15,
+		"title": "Float",
+		"description": "Float types are one of the two numeric data types and are used for representing numbers with a fractional part. The following is an example of a float number:",
+		"code": "5.0"
+	},
+	{
+		"id": 16,
+		"title": "Identifiers",
+		"description": "Identifiers are the name of the things that appear in a program. All identifiers must obey the following rules: \n • An identifier is a sequence of characters that consists of letters, digits, and underscores (_). \n • An identifier must start with a letter or an underscore. It cannot start with a digit. \n • An identifier cannot be a keyword. Keywords, also called reserved words, have special meanings in Python. For example, import is a keyword, which tells the Python interpreter to import a module to the program. \n • An identifier can be of any length. \n For example, the following identifiers are legal identifiers:",
+		"code": "area, radius, number1"
+	},
+	{
+		"id": 17,
+		"title": "Strings and Characters",
+		"description": "A string is a sequence of characters and can include text and numbers. String values must be enclosed in matching single quotes or double quotes. Python does not have a data type for characters. A single-character string represents a character", 
+		"code": "numChar = '4' \n message = 'Good morning'"
+	},
+	{
+		"id": 18,
+		"title": "Concatenatation",
+		"description": "The + operator can be used to concatenate two strings. For example, the following expressions would print 'Welcome to Python':",
+		"code": " message = 'Welcome ' + 'to ' + 'Python' \n print (message)"
+	},
+	{
+		"id": 19,
+		"title": "'in' and 'not in' Operators",
+		"description": "You can use the 'in' and 'not in' operators to test whether a string is in another string. For example, if the value of 's1' is 'Welcome', then the following expressions would return 'True' and 'False' respectively:",
+		"code": "'come' in s1 \n 'come' not in s1"
+	},
+	{
+		"id": 20,
+		"title": "'while' loop",
+		"description": "A 'while' loop executes statements repeatedly as long as a condition remains true. The syntax for the while loop is:",
+		"code": "while loop-continuation-condition: \n \t Statement(s)"
+	},
+	{
+		"id": 21,
+		"title": "Conditionals within 'while' loop",
+		"description": "A 'while' loop can have conditionals within the loop body such as an 'if' statement. For example:",
+		"code": "while True: \n number = int(input('Enter a number: ')) \n if (number % 2) == 0: \n \t print('Entered number is even') \n else: \n \t print('Entered number is odd')"
+	},
+	{
+		"id": 22,
+		"title": "Counting using 'while' loop",
+		"description": "A 'while' loop can be used to count iteratively. For example:",
+		"code": "while True: \n \t if condition: \n \t \t count += 1"
+	},
+	{
+		"id": 23,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 24,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 25,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 26,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 27,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 28,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 29,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 30,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 31,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 32,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 33,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 34,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 35,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 36,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 37,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 38,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 39,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 40,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 41,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 42,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 43,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 44,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 45,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 46,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 47,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 48,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 49,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	},
+	{
+		"id": 50,
+		"title": "Title",
+		"description": "Description",
+		"code": "code"
+	}
+]
