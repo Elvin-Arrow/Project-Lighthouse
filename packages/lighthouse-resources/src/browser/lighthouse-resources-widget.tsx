@@ -28,32 +28,5 @@ export class LighthouseResourcesWidget extends ReactWidget {
 
     protected render(): React.ReactNode {
         return <ReactComponent />;
-
-        // const content = "Please select a language from the sidebar.";
-        // const info = "Welcome to Lighthouse Resources!"
-        // return (
-        //     <div id="widget-container">
-        //         <AlertMessage type="INFO" header={info} />
-        //         <div><h1>Lighthouse Resources</h1></div>
-        //         <div className="main-area">{content}</div>
-        //         <div className="sidebar">
-        //             <div className="links">
-        //                 <h2>Select language</h2>
-        //                 <ul>
-        //                     <li><a onClick={(_a) => this.pythonResources()}>Python</a></li>
-        //                     <li><a onClick={(_a) => this.cppResources()}>C++</a></li>
-        //                 </ul>
-        //             </div>
-        //         </div>
-        //     </div>
-        // );
     }
-    // protected pythonResources(): void {
-    //     this.messageService.info('Language selected: Python');
-    //     this.commandService.executeCommand("resources-python:command");
-    // }
-    // protected cppResources(): void {
-    //     this.messageService.info('Language selected: C++');
-    //     this.commandService.executeCommand("resources-cpp:command");
-    // }
 }
