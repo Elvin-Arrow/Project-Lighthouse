@@ -253,50 +253,80 @@
 	},
 	{
 		"id": 43,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'randint' Function",
+		"description": "The randint(a, b) function can be used to generate a random integer between a and b, inclusively. The 'randint' function is defined in the 'random' module. The following code generates a random number and assigns it to the variable 'number':",
+		"code": "number = random.randint(0, 9)"
 	},
 	{
 		"id": 44,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'time' Function",
+		"description": "You can use the 'time()' function in the 'time' module to obtain the current system time. The following code assigns the current time to the 'currentTime' variable:",
+		"code": "currentTime = time.time()"
 	},
 	{
 		"id": 45,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'ceil' Function",
+		"description": "The 'ceil' function in the 'math' module rounds a number up to its nearest integer and returns that integer. The following code returns '3':",
+		"code": "ceil(2.1)"
 	},
 	{
 		"id": 46,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'floor' Function",
+		"description": "The 'floor' function in the 'math' module rounds a number up to its nearest integer and returns that integer. The following code returns '2'",
+		"code": "floor(2.3)"
 	},
 	{
 		"id": 47,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'sqrt' Function",
+		"description": "The 'sqrt' function in the 'math' module returns the square root of a number. The following code returns '2':",
+		"code": "sqrt(4.0)"
 	},
 	{
 		"id": 48,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'log' Function",
+		"description": "The 'log' function in the 'math' module returns the natural logarithm of a number. The following code returns '1.0':",
+		"code": "log(2.71828)"
 	},
 	{
 		"id": 49,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'degrees' Function'",
+		"description": "The 'degrees' function in the 'math' module converts an angle from radians to degrees. The following code would return '90':",
+		"code": "degrees(1.57)"
 	},
 	{
 		"id": 50,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'radian' Function",
+		"description": "The 'radian' function in the 'math' module converts and an angle from degrees to radians. The following code would return '1.57':",
+		"code": "radians(90)"
+	},
+	{
+		"id": 51,
+		"title": "'sin' Function",
+		"description": "The 'sin' function in the 'math' module returns the sine of a number. The following code would return '0':",
+		"code": "sin(3.14159)"
+	},
+	{
+		"id": 52,
+		"title": "'cos' Function",
+		"description": "The 'cos' function in the 'math' module returns the consine of a number. The following code would return '-1':",
+		"code": "cos(3.14159)"
+	},
+	{
+		"id": 53,
+		"title": "'asin' Function",
+		"description": "The 'asin' function in the 'math' module returns the angle in radians for the inverse of sine. The following code would return '1.57':",
+		"code": "asin(1.0)"
+	},
+	{
+		"id": 54,
+		"title": "'acos' Function",
+		"description": "The 'acos' function in the 'math' module returns the angle in radians for the inverse of cosine. The following code would return '0':",
+		"code": "acos(1.0)"
+	},
+	{
+		"id": 55,
+		"title": "'tan' Function",
+		"description": "The 'tan' function in the 'math' module returns the tangent of a number. The following code would return '0':",
+		"code": "tan(0.0)"
 	}
 ]
