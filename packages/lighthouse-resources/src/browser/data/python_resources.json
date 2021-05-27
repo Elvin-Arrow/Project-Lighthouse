@@ -175,81 +175,81 @@
 	},
 	{
 		"id": 30,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Iterating Lists with 'while' Loop",
+		"description": "The 'while' loop can be used to iterate the list like so:",
+		"code": "marks = [10, 50, 75, 83, 98, 84, 32] \n x = 0 \n while x < len(marks): \n \t print(marks[x]) \n \t x = x+1"
 	},
 	{
 		"id": 31,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'break' Statement in 'while' Loop",
+		"description": "You can use the keyword break in a loop to immediately terminate a loop. The following program adds integers from 1 to 20 in this order to sum until sum is greater than or equal to 100. The loop terminates when sum becomes greater than or equal to 100:",
+		"code": ">>> sum = 0 \n >>> number = 0 \n >>> while number < 20: \n >>> \t number += 1 \n >>> \t sum += number \n >>> \t if sum >= 100: \n >>> \t \t break \n >>> print('The number is', number) \n >>> print('The sum is', sum) \n The number is 14 \n The sum is 105"
 	},
 	{
 		"id": 32,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'continue' Statement in 'while' Loop",
+		"description": "You can also use the 'continue' keyword in a 'while' loop to end the current iteration. The program control goes to the end of the loop body. The following program adds all the integers from 1 to 20 except 10 and 11 to sum. The 'continue' statement is executed when number becomes 10 or 11. The 'continue' statement ends the current iteration so that the rest of the statement in the loop body is not executed; therefore, 'number' is not added to sum when it is 10 or 11:",
+		"code": ">>> sum = 0 \n >>> number = 0 \n >>> while number < 20: \n >>> \t number += 1 \n >>> \t if number == 10 or number == 11: \n >>> \t \t continue \n >>> \t sum += number \n >>> print('The sum is', sum) \n The sum is 189"
 	},
 	{
 		"id": 33,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'for' Loop",
+		"description": "The 'for' loop iterates through each value in a sequence. In general, the syntax of a for loop is:",
+		"code": "for i in range(initialValue, endValue): \n \t # Loop body"
 	},
 	{
 		"id": 34,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Multidimensional Lists",
+		"description": "A two-dimensional list is a list that contains other lists as its elements. You can use a list to store two-dimensional data, such as a matrix or a table, as well.",
+		"code": "matrix = [ \n \t [1, 2, 3, 4, 5], \n \t [6, 7, 0, 0, 0], \n \t [0, 1, 0, 0, 0], \n \t [1, 0, 0, 0, 8], \n \t [0, 0, 9, 0, 3], \n ]"
 	},
 	{
 		"id": 35,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Indexing in Multidimensional Lists",
+		"description": "Each value in matrix can be accessed using the following syntax, where i and j are the row and column indexes.",
+		"code": "matrix[i][j]"
 	},
 	{
 		"id": 36,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Traversing Elements in a 'for' Loop",
+		"description": "The elements in a Python list are iterable. Python supports a convenient 'for' loop, which enables you to traverse the list sequentially without using an index variable. For example, the following code displays all the elements in the list 'myList'",
+		"code": "for u in myList: \n \t print(u)"
 	},
 	{
 		"id": 37,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Linear Search in List",
+		"description": "The linear search approach compares the key element key sequentially with each element in the list. It continues to do so until the key matches an element in the list or the list is exhausted without a match being found. If a match is found, the linear search returns the matching element’s index in the list. If no match is found, the search returns -1. On average, the algorithm will have to examine half of the elements in a list before finding the key, if it exists. Since the execution time of a linear search increases linearly as the number of list elements increases, doing a linear search is inefficient for a large list. The linearSearch function below illustrates this approach:",
+		"code": "def linearSearch(lst, key): \n \t for i in range(len(lst)): \n \t \t if key == lst[i]: \n \t \t \t return i \n \t return -1"
 	},
 	{
 		"id": 38,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Selection Sort on List",
+		"description": "A selection sort finds the smallest element in the list and swaps it with the first element. It then finds the smallest element remaining and swaps it with the first element in the remaining list, and so on, until only a single element remains.",
+		"code": "# The function for sorting elements in ascending order \n def selectionSort(list): \n \t for i in range(len(list) - 1): \n \t \t # Find the minimum in the list[i : len(list)] \n \t \t currentMin = list[i] \n \t \t currentMinIndex = i \n \t for j in range(i + 1, len(list)): \n \t \t if currentMin > list[j]: \n \t \t \t currentMin = list[j] \n \t \t \t currentMinIndex = j \n \t # Swap list[i] with list[currentMinIndex] if necessary \n \t if currentMinIndex != i: \n \t \t list[currentMinIndex] = list[i] \n \t \t list[i] = currentMin"
 	},
 	{
 		"id": 39,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Insertion Sort on List",
+		"description": "The insertion-sort algorithm sorts a list of values by repeatedly inserting a new element into a sorted sublist until the whole list is sorted.",
+		"code": "# The function for sorting elements in ascending order \n def insertionSort(list): \n \t for i in range(1, len(list)): \n \t \t # Insert list[i] into a sorted sublist list[0 : i] so that list[0 : i+1] is sorted. \n \t \t currentElement = list[i] \n \t \t k = i - 1 \n \t \t while k >= 0 and list[k] > currentElement: \n \t \t \t list[k + 1] = list[k] \n \t \t \t k -= 1 \n \t \t # Insert the current element into list[k + 1] \n \t \t list[k + 1] = currentElement"
 	},
 	{
 		"id": 40,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Defining a Function",
+		"description": "A function definition consists of the function’s name, parameters, and body. \n A parameter is like a placeholder: When a function is invoked, you pass a value to the parameter. This value is referred to as an actual parameter or argument. Parameters are optional; that is, a function may not have any parameters. Some functions return a value, while other functions perform desired operations without returning a value. \n If a function returns a value, it is called a value-returning function. A return statement using the keyword return is required for a value-returning function to return a result. The function terminates when a return statement is executed. \n The syntax for defining a function is as follows:",
+		"code": "def functionName(list of parameters) \n \t # Function body"
 	},
 	{
 		"id": 41,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "Calling a Function",
+		"description": "Calling a function executes the code in the function. To use a function, you have to call or invoke it. The program that calls the function is called a caller. In the following code example, in line 1 the 'max' function is called and the value from the 'max' function is returned and assigned to the variable 'larger'; in line 2 the 'max' function is called and the returned value is printed:",
+		"code": "larger = max(3, 4) \n print(max(3, 4))"
 	},
 	{
 		"id": 42,
-		"title": "Title",
-		"description": "Description",
-		"code": "code"
+		"title": "'main' Function",
+		"description": "By convention, programs often define a function named 'main' that contains the main functionality for a program.",
+		"code": "def main(): \n \t # Statements for program \n main() # Call main function"
 	},
 	{
 		"id": 43,
