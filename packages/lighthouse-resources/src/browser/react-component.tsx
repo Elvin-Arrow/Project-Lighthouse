@@ -1,5 +1,6 @@
 import * as React from "react";
 // const Logo = require("../../images/lighthouse.svg") as string;
+const fs = require("fs");
 
 export class ReactComponent extends React.Component<{}, { content: string }> {
 
@@ -25,6 +26,7 @@ export class ReactComponent extends React.Component<{}, { content: string }> {
 						<ul>
 							<li><a onClick={(_a) => this.languagePython()}>Python</a></li>
 							<li><a onClick={(_a) => this.languageCPP()}>C++</a></li>
+							<li><button onClick={this.sayHello}>Click me!</button></li>
 						</ul>
 					</div>
 				</div>
@@ -79,11 +81,20 @@ export class ReactComponent extends React.Component<{}, { content: string }> {
 	}
 
 	private languageCPP(): void {
-		let cppContent = '<h4>C++ Resources</h4>';
+		fs.readFile("./data/python_resources.json", "utf8", (err: any, jsonString: any) => {
+			const resource = JSON.parse(jsonString);
+			console.error("The title is:", resource.title);
+		});
 
-		// let temp = this.state.content == "State 1" ? "State 2" : "State 1";
-		this.setState({
-			content: cppContent
-		}, () => { });
+		// this.setState({
+		// 	content: cppContent
+		// }, () => { });
+	}
+
+	protected sayHello(): void {
+		fs.readFile("./data/python_resources.json", "utf8", (err: any, jsonString: any) => {
+			const resource = JSON.parse(jsonString);
+			console.error("The title is:", resource.title);
+		});
 	}
 }
