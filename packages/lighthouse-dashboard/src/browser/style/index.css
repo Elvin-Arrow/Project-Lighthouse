@@ -1,48 +1,38 @@
-#widget-container h2 {
-    color: var(--theia-ui-font-color1);
-    font-size: 14px;
-    font-weight: 400;
-    padding: 10px;
-    text-transform: uppercase;
+div#lighthouse-dashboard\:widget {
+    padding: 10% 20%;
 }
-button{
-    padding: 5px;
+.header h6{
+	margin-top: -5px;
 }
-.main-area{
-    width: 80%;
-    float: left;
+h5{
+	padding: 5px 0;
+	font-size: 1.25rem;  /* Already present */
+	font-weight: normal; /* Already present */
 }
-.sidebar{
-    width: 15%;
-    float: right;
+.left{
+	float: left;
+	width: 45%;
 }
-ul li{
-    padding-bottom: 10px;
+.right{
+	float: right;
+	width: 45%;
 }
-h1{
-    padding: 20px;
-    text-decoration: none;
+.left .theia-button:first-of-type, .right .theia-button:first-of-type{
+	margin:0;
 }
-table {
-    width:100%;
-    margin-left: 20px;
-    color: #222222;
+.left .theia-button:first-of-type{
+	width: 100%;
 }
-table, th, td {
-    border: 1px solid #eee;
-    border-collapse: collapse;
+.progress-block{
+	border: 1px solid;
+	width: 100%;
+	margin-bottom: 10px;
 }
-th, td {
-    padding: 15px;
-    text-align: left;
+.section-title{
+	padding: 5px 10px;
 }
-#table1 tr:nth-child(even) {
-    background-color: #dddddd;
-}
-#table1 tr:nth-child(odd) {
-    background-color: #eeeeee;
-}
-#table1 th {
-    background-color: black;
-    color: #eeeeee;
+.progress-bar {
+    border-top: 1px solid;
+    height: 10px;
+    width: 100%;
 }

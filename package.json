@@ -77,7 +77,8 @@
     "lighthouse-resources": "0.0.1",
     "@lighthouse/terminal-backend": "0.0.1",
     "assignment-view": "0.0.1",
-    "@lighthouse/markdown-view": "0.0.1"
+    "@lighthouse/markdown-view": "0.0.1",
+	"react-native-paper": "latest"
   },
   "devDependencies": {
     "@theia/cli": "latest",
