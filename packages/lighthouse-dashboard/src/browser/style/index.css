@@ -3,6 +3,7 @@ div#lighthouse-dashboard\:widget {
 }
 .header h6{
 	margin-top: -5px;
+	text-transform: capitalize;
 }
 h5{
 	padding: 5px 0;
@@ -25,14 +26,18 @@ h5{
 }
 .progress-block{
 	border: 1px solid;
+	border-radius: 10px;
 	width: 100%;
 	margin-bottom: 10px;
 }
 .section-title{
 	padding: 5px 10px;
 }
-.progress-bar {
+/* .progress-bar {
     border-top: 1px solid;
     height: 10px;
     width: 100%;
+} */
+.theia-button{
+	border-radius: 3px !important;
 }
