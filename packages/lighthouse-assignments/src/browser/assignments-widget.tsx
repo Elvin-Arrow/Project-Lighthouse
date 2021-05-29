@@ -40,40 +40,41 @@ export class AssignmentsWidget extends ReactWidget {
 
   protected render(): React.ReactNode {
     let assignments: any = [];
-    let assignmentsData;
+    let assignmentsData: Record<string, any>[];
     try {
       assignmentsData = this.assignmentService.getAssignments();
+      assignmentsData.forEach((assignment) => {
+        assignments.push(
+          <div id="assignment-container-1">
+            <AlertMessage type="INFO" header={assignment.title} />
+            <div className="text description">
+              Description: {assignment.description}
+            </div>
+            <div className="sub-heading deadline">
+              Time: {assignment.solvingTime}
+            </div>
+            <button
+              className="theia-button secondary"
+              title="Attempt assignment"
+              onClick={(_a) => {
+                console.info(`Requesting assignment service to open the assignment...`);
+
+                this.attemptAssignment(assignment);
+
+              }}
+            >
+              Attempt
+            </button>
+          </div>
+        );
+      });
     }
     catch (e) {
       console.error(`Error while firing the message service\n${e}`);
     }
 
 
-    assignmentsData.forEach((assignment: any) => {
-      assignments.push(
-        <div id="assignment-container-1">
-          <AlertMessage type="INFO" header={assignment.title} />
-          <div className="text description">
-            Description: {assignment.description}
-          </div>
-          <div className="sub-heading deadline">
-            Time: {assignment.solvingTime}
-          </div>
-          <button
-            className="theia-button secondary"
-            title="Attempt assignment"
-            onClick={(_a) => {
-              console.info(`Requesting assignment service to open the assignment...`);
 
-              this.attemptAssignment(assignment.assignmentPath);
-
-            }}
-          >
-            Attempt
-          </button>
-        </div>
-      );
-    });
 
     return assignments;
     /* return (
@@ -97,56 +98,53 @@ export class AssignmentsWidget extends ReactWidget {
     ); */
   }
 
-  public attemptAssignment(assignmentPath: string): void {
+  public attemptAssignment(assignment: Record<string, any>): void {
     console.info(`Openning assignment...`);
-
-    try {
-      // Close current workspace
-      if (this.workspaceService.opened) {
-        console.info(`A workspace is already openned`);
-        const currentWorkspace = this.workspaceService.workspace?.resource;
-
-        if (currentWorkspace != undefined) {
-          console.info(`Closing current workspace`);
-          this.workspaceService.close();
-        }
-      }
-
-      // Open the selected assignment workspace
-      let workSpaceUri: URI = new URI(
-        this.assignmentService.resolveAssignmentPath(assignmentPath)
-      );
-
-      console.info(`Opening new workspace ${workSpaceUri.path}`);
-
-      this.workspaceService.open(workSpaceUri, {
-        preserveWindow: true,
-      });
-    } catch (e) {
-      console.error(`Error while opening workspace\n${e}`)
+    let flag = true;
+    // Create assignment files if not already exisitng
+    if (!this.assignmentService.assignmentFilesExist(assignment.name)) {
+      console.info('Files do not exist, creating files')
+      flag = this.assignmentService.createAssignmentFiles(assignment);
+      console.info(`Files creation successful: ${flag}`);
     }
 
-    this.workspaceService.onWorkspaceChanged((files) => {
-      console.info(`Workspace changed!!!`);
-      console.info(files.length);
-    })
+    if (flag) {
+      // Acquire assignment path
+      let assignmentPath = this.assignmentService.resolveAssignmentPath(assignment.name);
+      console.info(`Assignment resource path: ${assignmentPath}`);
+      try {
+        // Close current workspace
+        if (this.workspaceService.opened) {
+          console.info(`A workspace is already openned`);
+          const currentWorkspace = this.workspaceService.workspace?.resource;
 
-    setTimeout(() => {
-      if (this.workspaceService.opened) {
+          if (currentWorkspace != undefined) {
+            console.info(`Closing current workspace`);
+            this.workspaceService.close();
+          }
+        }
 
-        console.info(this.workspaceService.getWorkspaceRootUri);
+        // Open the selected assignment workspace
+        this.workspaceService.open(new URI().resolve(assignmentPath), {
+          preserveWindow: true,
+        });
+      } catch (e) {
+        console.error(`Error while opening workspace\n${e}`);
       }
-    }, 1500);
 
-    this.dispose();
+      this.workspaceService.onWorkspaceChanged((files) => {
+        console.info(`Workspace changed!!!`);
+        console.info(files.length);
+      });
+
+      this.dispose();
+    } else {
+      this.messageService.info(
+        "Could not open the assignment"
+      );
+    }
+
+
 
   }
-
-  protected showMessage(): void {
-    // Issue as of now: Message being fast to appear and disappear, is not readable
-    this.messageService.info(
-      "Assignment workspace opened. Please open the assignment files from the Explorer pane."
-    );
-  }
-
 }
