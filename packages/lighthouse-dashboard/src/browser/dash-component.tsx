@@ -1,17 +1,13 @@
 import * as React from "react";
-import { inject } from "inversify";
 import ProgressBar from "@ramonak/react-progress-bar";
 import Store = require("electron-store");
 import { CommandService } from "@theia/core";
 
 
-export class DashComponent extends React.Component<{}, { content: string }> {
+export class DashComponent extends React.Component<{ commandService: CommandService }, { content: string, }> {
 	private readonly store = new Store();
 
-	@inject(CommandService)
-	protected readonly commandService: CommandService;
-
-	constructor(props: any) {
+	constructor(props: { commandService: CommandService }) {
 		super(props);
 
 		this.state = {
@@ -69,10 +65,14 @@ export class DashComponent extends React.Component<{}, { content: string }> {
 
 	}
 	protected viewResources(): void {
-		this.commandService.executeCommand("lighthouse-resources:command");
+		console.info('Attempting to view resources...');
+		this.props.commandService.executeCommand("lighthouse-resources:command").then(() => {
+			console.info('Resources opened');
+		});
 	}
 
 	protected attemptAssignments(): void {
-		this.commandService.executeCommand("assignments:command");
+		console.info('Attempting to view assignments...');
+		this.props.commandService.executeCommand("assignments:command");
 	}
 }

@@ -1,7 +1,7 @@
 import * as React from "react";
-import { injectable, postConstruct } from "inversify";
+import { injectable, postConstruct, inject } from "inversify";
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
-// import { CommandService, MessageService } from "@theia/core";
+import { CommandService, /* MessageService */ } from "@theia/core";
 // import ProgressBar from "@ramonak/react-progress-bar";
 import { DashComponent } from './dash-component';
 
@@ -15,11 +15,12 @@ export class LighthouseDashboardWidget extends ReactWidget {
 	static readonly ID = "lighthouse-dashboard:widget";
 	static readonly LABEL = "Lighthouse Dashboard";
 
+
 	// @inject(MessageService)
 	// protected readonly messageService!: MessageService;
 
-	// @inject(CommandService)
-	// protected readonly commandService: CommandService;
+	@inject(CommandService)
+	protected readonly commandService: CommandService;
 
 	// private readonly store = new Store();
 
@@ -34,6 +35,6 @@ export class LighthouseDashboardWidget extends ReactWidget {
 	}
 
 	protected render(): React.ReactNode {
-		return <DashComponent />;
+		return <DashComponent commandService={this.commandService} />;
 	}
 }
