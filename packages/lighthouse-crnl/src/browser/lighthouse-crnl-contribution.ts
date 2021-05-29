@@ -17,9 +17,10 @@ import { TerminalService } from "@theia/terminal/lib/browser/base/terminal-servi
 import { TerminalWidget } from "@theia/terminal/lib/browser/base/terminal-widget";
 import { EditorManager } from "@theia/editor/lib/browser";
 import { DebugSessionManager } from '@theia/debug/lib/browser/debug-session-manager';
-
+import { LoggerService } from "./log_service";
+import { WorkspaceService } from "@theia/workspace/lib/browser";
 import * as fs from "fs";
-
+import glob = require("glob");
 
 
 export const LighthouseCrnlCommand = {
@@ -34,6 +35,7 @@ export const LighthouseSubmitCommand = {
 
 @injectable()
 export class LighthouseCrnlCommandContribution implements CommandContribution {
+  private readonly loggerService = new LoggerService();
 
   constructor(
     @inject(MessageService) private readonly messageService: MessageService,
@@ -43,39 +45,29 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     @inject(EditorManager) private readonly editorManager: EditorManager,
     @inject(DebugSessionManager)
     private readonly debugSessionManager: DebugSessionManager,
+    @inject(WorkspaceService)
+    private readonly workspaceService: WorkspaceService,
   ) { }
 
   registerCommands(registry: CommandRegistry): void {
     registry.registerCommand(LighthouseCrnlCommand, {
       execute: () => {
-        // let terms: TerminalWidget[] = this.terminalService.all;
-
-
         this.commandService
           .executeCommand("workbench.action.debug.start")
           .then(() => {
-            this.terminalService.currentTerminal?.processId.then((terminalId) => {
-              console.info(`Acquired the current terminal id as: ${terminalId}`);
+            this.debugSessionManager.onDidDestroyDebugSession(() => {
+              let editor = this.editorManager.currentEditor
 
+              let filePath = editor?.getResourceUri();
 
-            })
+              if (filePath) {
+                console.info(filePath.path);
+              }
 
-            console.info(`Waiting for logger`);
-            /* setTimeout(() => {
-              console.log(`Generating log`);
+              this.loggerService.generateExecutionLog(this.isAssignmentDir());
 
-              // Extract log from debugpy log
-              this.extractLog();
-            }, 10000); */
-
-            this.debugSessionManager.onDidStopDebugSession((e) => {
-              console.info('Debugger stopped');
             })
           });
-
-
-        // console.log(`Generating log`);
-        // setTimeout(() => {}, 10000);
       },
     });
 
@@ -96,13 +88,19 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     });
   }
 
+  private isAssignmentDir(): boolean {
+    if (this.workspaceService.workspace?.name.includes('Assignment')) {
+      return true;
+    }
+    return false;
+  }
   /**
    * Reads the debugpy execution logs and creates a file log.json
    * in the process root directory.
    *
    */
   protected extractLog(): void {
-    var glob = require("glob");
+
     let logMap: any;
 
     glob(
@@ -257,13 +255,13 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     );
   }
 
-  protected processLog(errLog: any): void {
+  protected processLog(errLog: Record<string, any>): void {
     console.info(`Attempting to save log`);
     // Generate execution log
     try {
       // Save log
       console.info(errLog);
-      let temp = JSON.parse(errLog);
+      // let temp = JSON.parse(errLog);
       let logPath = `E:/Foundary/Lighthouse/02-Lighthouse-Experimental/log.json`;
       let logJson = JSON.stringify([
         {
@@ -272,8 +270,8 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
             index: this.getIndex(),
             executionStatus: errLog ? true : false,
             err: {
-              text: temp["errText"],
-              position: temp["errLine"],
+              text: errLog["errText"],
+              position: errLog["errLine"],
             },
           },
         },
@@ -409,7 +407,7 @@ class CRnLTabBarToolbarItem implements TabBarToolbarItem {
     this.group = "navigation";
     this.tooltip = "Compile and run";
     this.icon = "fa fa-play";
-    // this.when = "editorLangId == python";
+    this.when = "editorLangId == python";
   }
 }
 
