@@ -22,7 +22,7 @@ export class WidgetTestWidget extends ReactWidget {
   @inject(CommandService)
   protected readonly commandService: CommandService;
 
-  @inject(EditorManager) 
+  @inject(EditorManager)
   protected readonly editorManager: EditorManager;
 
   private readonly store = new Store();
@@ -72,14 +72,24 @@ export class WidgetTestWidget extends ReactWidget {
         >
           View Dashboard
         </button>
-        <br></br>
-        <button
-          className="theia-button secondary"
-          title="Launch Dashboard"
-          onClick={(_a) => this.logout()}
-        >
-          Logout
-        </button>
+        <div className="">
+          <button
+            className="theia-button secondary"
+            title="Launch Dashboard"
+            onClick={(_a) => this.logout()}
+          >
+            Logout
+          </button>
+        </div>
+        <div className="">
+          <button
+            className="theia-button secondary"
+            title="Toggle error highlighting"
+            onClick={(_a) => this.commandService.executeCommand('errorLens.toggle')}
+          >
+            Toggle error highlighting
+          </button>
+        </div>
       </div>
     );
   }
@@ -91,7 +101,7 @@ export class WidgetTestWidget extends ReactWidget {
   private logout(): void {
     this.store.delete("authenticated");
     this.store.delete("username");
-    
+
     // this.refreshWorkspace();
     if (this.workspaceService.opened) {
       this.workspaceService.close();
@@ -99,9 +109,9 @@ export class WidgetTestWidget extends ReactWidget {
       this.editorManager.closeAll().then(() => {
         this.commandService.executeCommand(ElectronCommands.RELOAD.id);
       });
-      
+
     }
-    
+
   }
 
   /**
@@ -119,5 +129,5 @@ export class WidgetTestWidget extends ReactWidget {
   private lighthouseAuthenticate(): void {
     this.commandService.executeCommand("lighthouse-authenticate:command");
   }
-  
+
 }

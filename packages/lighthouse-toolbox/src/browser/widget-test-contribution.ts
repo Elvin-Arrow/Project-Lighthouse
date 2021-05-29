@@ -1,6 +1,6 @@
 import { injectable, interfaces, Container } from 'inversify';
 import { MenuModelRegistry } from '@theia/core';
-import { WidgetTestWidget } from './widget-test-widget';
+import { WidgetTestWidget } from './lighthouse-toolbox';
 import { AbstractViewContribution, CommonMenus, FrontendApplication, FrontendApplicationContribution } from '@theia/core/lib/browser';
 import { Command, CommandRegistry } from '@theia/core/lib/common/command';
 import { SourceTreeWidget } from '@theia/core/lib/browser/source-tree';

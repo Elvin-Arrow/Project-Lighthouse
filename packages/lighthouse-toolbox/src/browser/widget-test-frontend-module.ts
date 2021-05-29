@@ -1,5 +1,5 @@
 import { ContainerModule } from 'inversify';
-import { WidgetTestWidget } from './widget-test-widget';
+import { WidgetTestWidget } from './lighthouse-toolbox';
 import { WidgetTestContribution } from './widget-test-contribution';
 import { bindViewContribution, FrontendApplicationContribution, WidgetFactory } from '@theia/core/lib/browser';
 
