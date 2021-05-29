@@ -1,6 +1,7 @@
 import * as React from "react";
 // const Logo = require("../../images/lighthouse.svg") as string;
 const fs = require("fs");
+import path = require('path');
 
 export class ReactComponent extends React.Component<{}, { content: string }> {
 
@@ -13,6 +14,9 @@ export class ReactComponent extends React.Component<{}, { content: string }> {
 	}
 
 	public render(): React.ReactNode {
+		this.getPythonResource().then((resource) => {
+			// TODO Use the resource
+		})
 		return (
 			<div id="widget-container">
 				<div>
@@ -91,8 +95,20 @@ export class ReactComponent extends React.Component<{}, { content: string }> {
 		// }, () => { });
 	}
 
+	private getPythonResource(): Promise<Record<string, any>> {
+		return new Promise<Record<string, any>>((resolve, reject) => {
+			let dataPath = path.join(process.cwd(), 'resources', 'python_resources.json');
+			fs.readFile(dataPath, "utf8", (err: any, jsonString: any) => {
+				if (err) reject(err);
+				const resource = JSON.parse(jsonString);
+				resolve(resource);
+			});
+		});
+	}
+
 	protected sayHello(): void {
-		fs.readFile("./data/python_resources.json", "utf8", (err: any, jsonString: any) => {
+		let dataPath = path.join(process.cwd(), 'resources', 'python_resources.json');
+		fs.readFile(dataPath, "utf8", (err: any, jsonString: any) => {
 			const resource = JSON.parse(jsonString);
 			console.error("The title is:", resource.title);
 		});
