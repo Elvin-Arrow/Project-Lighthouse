@@ -62,7 +62,9 @@ export class AssignmentViewCommandContribution implements CommandContribution {
                             if (file.name == 'main.py') {
                                 this.editorManager.open(file.resource).then(() => {
                                     if (openReadme)
-                                        this.commandService.executeCommand('Markdown-View:command');
+                                        this.commandService.executeCommand('Markdown-View:command').then(() => {
+                                            // TODO Start observing the editor
+                                        });
                                 });
                             } else if (file.name == 'instructions.md') {
                                 openReadme = true;
