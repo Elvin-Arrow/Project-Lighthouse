@@ -37,7 +37,7 @@ export class MarkdownViewWidget extends ReactWidget {
 
         currentWorkspace?.children?.forEach((file) => {
             console.info(`File: ${file.name}`);
-            if (file.name == 'readme.md') {
+            if (file.name == 'instructions.md') {
                 const markdownPath = path.join(file.resource.path.toString());
 
                 content = fs.readFileSync(markdownPath.substr(1), 'utf-8');
@@ -47,9 +47,9 @@ export class MarkdownViewWidget extends ReactWidget {
             }
         })
 
-        return <ReactMarkdown children={content}/>
+        return <ReactMarkdown children={content} />
 
-      
+
 
 
     }

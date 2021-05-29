@@ -32,7 +32,7 @@ export class AssignmentViewCommandContribution implements CommandContribution {
         try {
             files?.forEach((file) => {
                 console.info(`File name: ${file.name}`);
-                if (file.name == 'readme.md') {
+                if (file.name == 'instructions.md') {
                     console.info(`Required file found!`);
 
                     check = true;
@@ -54,6 +54,7 @@ export class AssignmentViewCommandContribution implements CommandContribution {
                 let check = this.readmeFileExists(currentWorkspace?.children);
 
                 if (check) {
+                    console.info(`Assignment directory detected`)
                     this.editorManager.closeAll().then(() => {
                         let openReadme: boolean = false;
                         currentWorkspace?.children?.forEach((file) => {
@@ -63,7 +64,7 @@ export class AssignmentViewCommandContribution implements CommandContribution {
                                     if (openReadme)
                                         this.commandService.executeCommand('Markdown-View:command');
                                 });
-                            } else if (file.name == 'readme.md') {
+                            } else if (file.name == 'instructions.md') {
                                 openReadme = true;
                             }
                         })
