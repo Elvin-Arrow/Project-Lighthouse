@@ -2,13 +2,13 @@ import * as fs from "fs";
 import path = require('path');
 const homedir = require('os').homedir();
 import Store = require("electron-store");
+import { FileStat } from "@theia/filesystem/lib/common/files";
 
 export class AssignmentService {
     private readonly store: Store = new Store();
 
     public getAssignments(): Record<string, any>[] {
         // Look for assignments in the home directory
-        // const assignmentPath = path.join(process.cwd(), 'resources', 'assignments.json');
         const assignmentPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'assignments.json');
 
         let rawJson = fs.readFileSync(assignmentPath, "utf-8");
@@ -17,6 +17,12 @@ export class AssignmentService {
 
         return assignmentsData;
     }
+
+
+    public get assignmentsBaseDir(): string {
+        return path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments');
+    }
+
 
 
     public resolveAssignmentPath(assignmentName: string): string {
@@ -40,11 +46,63 @@ export class AssignmentService {
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'a-test.py'), assignment.files.test,)
             filesCreated = true;
             console.info('Files created successfully');
+
         } catch (e) {
             console.error(`Failed to creat files ${e}`);
         }
 
         return filesCreated;
+    }
+
+    public curateAssignmentStats(): void {
+        let assignmentStats: Record<string, any>[] = [];
+        let statsPath = path.join(this.assignmentsBaseDir, 'stats.json')
+
+        if (fs.existsSync(statsPath)) {
+            // Assinment stats exist append them
+            assignmentStats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
+        }
+
+        let assignmentsPath = path.join(this.assignmentsBaseDir, 'assignments.json');
+        let assignments = JSON.parse(fs.readFileSync(assignmentsPath, 'utf-8'));
+
+        if (Array.isArray(assignments)) {
+            console.info('Fetched the assignments array of length: ' + assignments.length);
+            assignments.forEach((assignment) => {
+
+                if (!this.assignmentExists(assignmentStats, assignment.id)) {
+                    assignmentStats.push({
+                        "id": assignment.id,
+                        "timespent": 0,
+                        "completed": false,
+                        "score": 0
+                    });
+                }
+
+            })
+
+        }
+
+        fs.writeFile(statsPath, JSON.stringify(assignmentStats), () => { });
+    }
+
+    public assignmentFilesExist(assignmentName: string): boolean {
+        console.info('Checking if files exist');
+        let codeFile = path.join(this.resolveAssignmentPath(assignmentName), 'main.py');
+        let instructionsFile = path.join(this.resolveAssignmentPath(assignmentName), 'instructions.md');
+        let testFile = path.join(this.resolveAssignmentPath(assignmentName), 'a-test.py');
+
+        return fs.existsSync(codeFile) && fs.existsSync(instructionsFile) && fs.existsSync(testFile);
+    }
+
+    public isAssignmentWorkspace(files: FileStat[]): boolean {
+        let flag = false;
+        files.forEach(file => {
+            if (file.name == 'instructions.md') {
+                flag = true;
+            };
+        })
+        return flag;
     }
 
     private dirExists(dir: string): boolean {
@@ -59,14 +117,7 @@ export class AssignmentService {
         fs.mkdirSync(dir, { recursive: true });
     }
 
-    public assignmentFilesExist(assignmentName: string): boolean {
-        console.info('Checking if files exist');
-        let codeFile = path.join(this.resolveAssignmentPath(assignmentName), 'main.py');
-        let instructionsFile = path.join(this.resolveAssignmentPath(assignmentName), 'instructions.md');
-        let testFile = path.join(this.resolveAssignmentPath(assignmentName), 'a-test.py');
 
-        return fs.existsSync(codeFile) && fs.existsSync(instructionsFile) && fs.existsSync(testFile);
-    }
 
     private resolveResourcePath(assignmentName: string, resourceName: string) {
         let assignmentPath = this.resolveAssignmentPath(assignmentName);
@@ -76,4 +127,11 @@ export class AssignmentService {
     }
 
 
+    private assignmentExists(stats: Record<string, any>[], id: string): boolean {
+        let doesExist = false;
+        stats.forEach(stat => {
+            if (stat.id == id) doesExist = true;
+        })
+        return doesExist;
+    }
 }

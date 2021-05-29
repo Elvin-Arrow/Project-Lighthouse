@@ -6,11 +6,14 @@ import { AssignmentService } from "./assignment_service";
 import { WorkspaceService } from "@theia/workspace/lib/browser"; // For handling the workspaces
 import { MessageService } from "@theia/core";
 import URI from "@theia/core/lib/common/uri"; // For opening the folder
+import Store = require("electron-store");
 
 @injectable()
 export class AssignmentsWidget extends ReactWidget {
   static readonly ID = "assignments:widget";
   static readonly LABEL = "Assignments";
+
+  private readonly store: Store = new Store();
 
   // @inject(AssignmentService)
   // private readonly assignmentService: AssignmentService;
@@ -109,6 +112,7 @@ export class AssignmentsWidget extends ReactWidget {
     }
 
     if (flag) {
+      this.assignmentService.curateAssignmentStats();
       // Acquire assignment path
       let assignmentPath = this.assignmentService.resolveAssignmentPath(assignment.name);
       console.info(`Assignment resource path: ${assignmentPath}`);
@@ -128,11 +132,18 @@ export class AssignmentsWidget extends ReactWidget {
         this.workspaceService.open(new URI().resolve(assignmentPath), {
           preserveWindow: true,
         });
+        this.store.set('assignmentId', assignment.id);
       } catch (e) {
         console.error(`Error while opening workspace\n${e}`);
       }
 
       this.workspaceService.onWorkspaceChanged((files) => {
+        if (this.assignmentService.isAssignmentWorkspace(files)) {
+          this.store.set('isAssignmentWorkspace', true);
+        } else {
+          this.store.set('isAssignmentWorkspace', false);
+          this.store.set('assignmentId', null);
+        }
         console.info(`Workspace changed!!!`);
         console.info(files.length);
       });
