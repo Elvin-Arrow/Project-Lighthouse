@@ -2,7 +2,9 @@ import * as React from "react";
 import { injectable, postConstruct, inject } from "inversify";
 import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { CommandService, MessageService } from "@theia/core";
-import { ProgressBar } from 'react-native-paper';
+// import { ProgressBar } from 'react-native-paper';
+import ProgressBar from "@ramonak/react-progress-bar";
+
 import Store = require("electron-store");
 // import { ErrorModel } from "./err_model";
 // import * as fs from "fs";
@@ -54,7 +56,8 @@ export class LighthouseDashboardWidget extends ReactWidget {
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Lists</div>
-						<div className="progress-bar"><ProgressBar progress={0.5}/></div>
+						<div className="progress-bar"><ProgressBar completed={60} isLabelVisible={false} bgColor={'#FFF'} /></div>
+						{/* <div className="progress-bar"><ProgressBar progress={0.5}/></div> */}
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Functions</div>
