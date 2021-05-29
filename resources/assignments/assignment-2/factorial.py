@@ -9,3 +9,4 @@ def main(n):
     print(res)
 
 
+print(fact(5))
