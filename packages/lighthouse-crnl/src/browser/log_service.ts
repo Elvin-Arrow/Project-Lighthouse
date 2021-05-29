@@ -3,10 +3,14 @@ import path = require('path');
 import glob = require("glob");
 import Store = require("electron-store");
 const homedir = require('os').homedir();
+import { nanoid } from 'nanoid'
 
 export class LoggerService {
     private readonly store = new Store();
     private isAssignment: boolean;
+    private assignmentId: string = '';
+    private assignmentArea: string = '';
+
     /**
      * Looks for log file in the python debugpy log files and generates
      * logs based on those files. If the log files do contain exceptions
@@ -33,9 +37,10 @@ export class LoggerService {
                     if (err) {
                         console.error("Unable to read the file");
                     } else {
+                        // TODO consolidate, error and execution logs
                         const errLog = this.parseLogForErrors(data);
 
-                        log = this.getExecutionLog(errLog != null);
+                        log = this.getExecutionLog(errLog);
                         this.storeExectionLog(log);
 
                         if (errLog) {
@@ -51,8 +56,26 @@ export class LoggerService {
                 files.forEach((file: any) => {
                     fs.unlinkSync(file);
                 });
+
+
             }
         )
+    }
+
+    public setAssignmentCredentials(id: string, area: string) {
+        this.assignmentId = id;
+        this.assignmentArea = area;
+        this.isAssignment = true;
+    }
+
+    public unsetAssignmentCredentials() {
+        this.assignmentId = '';
+        this.assignmentArea = '';
+        this.isAssignment = false;
+    }
+
+    public get baseAssignmentPath(): string {
+        return path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'assignments.json');
     }
 
     private parseLogForErrors(logData: string): Record<string, any> | null {
@@ -77,10 +100,13 @@ export class LoggerService {
             // Getting error text from the error
             let errText = lineByLineErr[4].split(", ")[1];
 
+            let exception = errText.split('(')[0];
+
 
             log = {
                 "errLine": lineNumber,
                 "errText": errText,
+                "exception": exception
             };
         } finally {
             return log;
@@ -88,14 +114,21 @@ export class LoggerService {
 
     }
 
-    private getExecutionLog(execuionStatus: boolean): Record<string, any> {
+    private getExecutionLog(errorLog: Record<string, any> | null): Record<string, any> {
         return {
-            "id": "1",
-            "executionDate": new Date().getDate(),
+            "id": nanoid(),
+            "executionDate": this.getDate(),
             "executionTime": new Date().getTime(),
             "user": this.store.get("username"),
-            "wasError": execuionStatus,
+            "wasError": errorLog != null,
+            "error": errorLog != null ? errorLog : {},
             "forAssignment": this.isAssignment,
+            "assignment": this.isAssignment
+                ? {
+                    "id": this.assignmentId,
+                    "area": this.assignmentArea
+                }
+                : {}
         };
     }
 
@@ -142,13 +175,23 @@ export class LoggerService {
 
         if (previousLogs) {
             console.log(previousLogs);
-            store.push(previousLogs);
+            if (Array.isArray(previousLogs))
+                previousLogs.push(log);
+            store = previousLogs;
+        } else {
+            store.push(log);
         }
 
-        store.push(log);
+
 
         fs.writeFileSync(logDir, JSON.stringify(store));
 
+    }
+
+    private getDate() {
+        let date = new Date();
+
+        return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
     }
 
 

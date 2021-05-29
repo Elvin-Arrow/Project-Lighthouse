@@ -19,8 +19,8 @@ import { EditorManager } from "@theia/editor/lib/browser";
 import { DebugSessionManager } from '@theia/debug/lib/browser/debug-session-manager';
 import { LoggerService } from "./log_service";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
+
 import * as fs from "fs";
-import glob = require("glob");
 
 
 export const LighthouseCrnlCommand = {
@@ -60,10 +60,17 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
 
               let filePath = editor?.getResourceUri();
 
+              // TODO fix the editor issue
+
               if (filePath) {
                 console.info(filePath.path);
               }
 
+              if (this.isAssignmentDir()) {
+                let creds = this.getAssignmentCredentials();
+                if (creds != null)
+                  this.loggerService.setAssignmentCredentials(creds.id, creds.area);
+              }
               this.loggerService.generateExecutionLog(this.isAssignmentDir());
 
             })
@@ -94,83 +101,27 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     }
     return false;
   }
-  /**
-   * Reads the debugpy execution logs and creates a file log.json
-   * in the process root directory.
-   *
-   */
-  protected extractLog(): void {
 
-    let logMap: any;
+  private getAssignmentCredentials(): Record<string, any> | null {
+    let name = this.workspaceService.workspace?.name
+    let details = null;
 
-    glob(
-      "E:/Foundary/Lighthouse/02-Lighthouse-Experimental/plugins/lighthouse-builtin-ms-python/extension/*.log",
-      (err: any, files: any) => {
-        if (err) {
-          return;
-        } else {
-          console.info(`Log acquired, processing...`);
-          let requiredFile = files[3];
-          console.info(`Processing file: ${requiredFile}`);
-
-          fs.readFile(requiredFile, "utf-8", (err, data) => {
-            if (err) {
-              console.error("Unable to read the file");
-            } else {
-              try {
-                console.info(`Parse started, splitting data...`);
-
-                let breakpoint = data.split("PyDB.do_wait_suspend")[1];
-                // Sending suspend notification.
-                console.info(`First split successful`);
-
-                let error = breakpoint.split(
-                  "Sending suspend notification."
-                )[0];
-
-                console.info(`Second split successful`);
-
-                let lineByLineErr = error.split("\r\n");
-                console.info(`Third split successful`);
-
-                // Getting line number from error
-                let errNumberLine = lineByLineErr[1].split(" ");
-                console.info(`Fourth split successful`);
-
-                let lineNumber = errNumberLine[errNumberLine.length - 1].split(
-                  ")"
-                )[0];
-                console.info(`Line number acquired`);
-
-                // Getting error text from the error
-                let errText = lineByLineErr[4].split(", ")[1];
-
-                console.info(`Error text acquired`);
-
-                logMap = JSON.stringify({
-                  errLine: lineNumber,
-                  errText: errText,
-                });
-
-                console.log(`Error on line: ${lineNumber}`);
-                console.log(errText);
-
-                this.processLog(logMap);
-              } catch (err) {
-                console.error(`Failed to parse log: ${err}`);
-              } finally {
-                files.forEach((file: any) => {
-                  fs.unlinkSync(file);
-                });
-              }
+    if (name) {
+      let assignmentPath = this.loggerService.baseAssignmentPath;
 
 
-
-            }
-          });
-        }
-      }
-    );
+      let assignments = JSON.parse(fs.readFileSync(assignmentPath, 'utf-8'));
+      if (assignments)
+        assignments.forEach((assignment: Record<string, any>) => {
+          if (name == assignment.name) {
+            details = {
+              "id": assignment.id,
+              "area": assignment.area
+            };
+          }
+        });
+    }
+    return details;
   }
 
   /**
