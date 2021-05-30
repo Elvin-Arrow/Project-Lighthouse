@@ -41,3 +41,42 @@ h5{
 .theia-button{
 	border-radius: 3px !important;
 }
+#graph-container{
+	border: 1px solid;
+	border-radius: 3px;
+	height: 12em;
+	width: 100%;
+}
+.metric-title {
+	font-weight: bold;
+}
+.metric-block {
+	margin-bottom: 20px;
+}
+table {
+    width:100%;
+    color: #222222;
+}
+table, th, td {
+    border-collapse: collapse;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+}
+table tr:nth-child(even) {
+    background-color: #dddddd;
+}
+table tr:nth-child(odd) {
+    background-color: #eeeeee;
+}
+table th {
+    background-color: black;
+    color: #eeeeee;
+}
+#report-header{
+	display: flex;
+}
+#report-header button{
+	height: 30px;
+}
