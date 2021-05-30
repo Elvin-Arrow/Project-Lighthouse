@@ -27,6 +27,7 @@ export class InterventionService {
                         this.messageService.warn('You seem to be struggling with the variable declaration, let me tell you a few things about variable declaration', 'Guide me', 'No thanks').then(value => {
                             if (value == 'Guide me') {
                                 console.info('Taking you to variables section');
+                                this.store.set('resource', 'variable');
                                 // TODO: Navigate to relevant resource
                             }
                         });
@@ -49,6 +50,7 @@ export class InterventionService {
                     default:
                         this.messageService.warn('Struggling are you? Maybe the book of wisdom can help', 'Guide me', 'No thanks').then(value => {
                             if (value == 'Guide me') {
+                                this.store.set('resource', 'basics');
                                 // TODO: Navigate to relevant resource
                             }
                         });

@@ -14,6 +14,7 @@ import { EditorManager } from "@theia/editor/lib/browser";
 import { DebugSessionManager } from '@theia/debug/lib/browser/debug-session-manager';
 import { LoggerService } from "./log_service";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
+import Swal from 'sweetalert2'
 
 import * as fs from "fs";
 import { InterventionService } from "./intervention_service";
@@ -91,12 +92,19 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
         this.commandService
           .executeCommand("workbench.action.debug.start")
           .then(() => {
+
             // TODO Write the submission logic
             // Trigger the test case execution
 
             // Acquire test execution result
 
             // Update scores
+
+            Swal.fire({
+              title: 'Submission successful',
+              text: 'Amazing you just submitted your assignment\nYour score: 10',
+              icon: 'success',
+            })
           });
       }
     });

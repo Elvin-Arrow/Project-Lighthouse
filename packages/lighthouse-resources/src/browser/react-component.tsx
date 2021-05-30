@@ -2,8 +2,10 @@ import * as React from "react";
 // const Logo = require("../../images/lighthouse.svg") as string;
 import fs = require("fs");
 import path = require('path');
+import Store = require("electron-store");
 
 export class ReactComponent extends React.Component<{}, { screen: string }> {
+	private readonly store: Store = new Store();
 
 	constructor(props: any) {
 		super(props);
@@ -49,15 +51,32 @@ export class ReactComponent extends React.Component<{}, { screen: string }> {
 	private viewPythonResources(): JSX.Element[] {
 		const resources = this.getPythonResource();
 		let content: JSX.Element[] = [];
+		let temp = this.store.get('resource', null);
 
-		resources.forEach((resource) => {
-			content.push(
-				<div className="resource-block">
-					<div className="title">{resource.title}</div>
-					<div className="description">{resource.description}<code>{resource.code}</code></div>
-				</div>
-			);
-		});
+		if (temp && temp == 'variable') {
+			resources.forEach(resource => {
+				if (resource.title == 'Variables' || resource.title == 'Identifiers') {
+					content.push(
+						<div className="resource-block">
+							<div className="title">{resource.title}</div>
+							<div className="description">{resource.description}<code>{resource.code}</code></div>
+						</div>
+					);
+				}
+			})
+		} else {
+			resources.forEach((resource) => {
+
+				content.push(
+					<div className="resource-block">
+						<div className="title">{resource.title}</div>
+						<div className="description">{resource.description}<code>{resource.code}</code></div>
+					</div>
+				);
+			});
+		}
+
+
 
 		return content;
 	}
