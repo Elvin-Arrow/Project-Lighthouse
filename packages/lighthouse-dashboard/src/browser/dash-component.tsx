@@ -16,9 +16,9 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 	}
 
 	public render(): React.ReactNode {
-		const username	= this.store.get("username")
+		const username = this.store.get("username")
 		let content;
-		if (this.state.screen == "Dashboard"){
+		if (this.state.screen == "Dashboard") {
 			content = this.getDashContent()
 		}
 		else if (this.state.screen == "Report") {
@@ -35,7 +35,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 		);
 	}
 
-	private getDashContent(){
+	private getDashContent() {
 		return (
 			<>
 				<div className="left">
@@ -60,7 +60,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 						<div className="section-title">Functions</div>
 						<ProgressBar completed={10} bgColor={'#0E639C'} />
 					</div>
-					<button className="theia-button secondary" title="View full report" onClick={(_a) => this.setState({screen: 'Report' })}>View Full Report</button>
+					<button className="theia-button secondary" title="View full report" onClick={(_a) => this.setState({ screen: 'Report' })}>View Full Report</button>
 				</div>
 				<div className="right">
 					<h5>The Lighthouse</h5>
@@ -70,8 +70,8 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 						{// TODO: Updated suggested resource as per content
 						}
 						<h5>Suggested Resources</h5>
-						<div>Suggestion 1</div>
-						<div>Suggestion 2</div>
+						<div>Variables</div>
+						<div>Conditionals</div>
 					</div>
 				</div>
 			</>
