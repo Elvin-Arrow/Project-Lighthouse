@@ -44,6 +44,10 @@ export class AssignmentService {
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'main.py'), assignment.files.main,)
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'instructions.md'), assignment.files.instructions,);
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'a-test.py'), assignment.files.test,)
+
+
+            this.writeDebugConfiguration(this.resolveResourcePath(path.join(assignment.name, '.theia'), 'launch.json'));
+
             filesCreated = true;
             console.info('Files created successfully');
 
@@ -117,8 +121,6 @@ export class AssignmentService {
         fs.mkdirSync(dir, { recursive: true });
     }
 
-
-
     private resolveResourcePath(assignmentName: string, resourceName: string) {
         let assignmentPath = this.resolveAssignmentPath(assignmentName);
         console.info(`Resolved file path to: ${path.join(assignmentPath, resourceName)}`);
@@ -133,5 +135,29 @@ export class AssignmentService {
             if (stat.id == id) doesExist = true;
         })
         return doesExist;
+    }
+
+
+    /**
+     * Write the debug launch configuration for the given directory
+     * @param configPath 
+     */
+    private writeDebugConfiguration(configPath: string): void {
+        let config = {
+            "configurations": [
+                {
+                    "name": "Python: Current File",
+                    "type": "python",
+                    "request": "launch",
+                    "program": "${file}",
+                    "console": "integratedTerminal",
+                    "logToFile": true
+                }
+            ]
+        }
+
+        fs.writeFile(configPath, JSON.stringify(config), (err) => {
+            if (err) console.error(err);
+        })
     }
 }
