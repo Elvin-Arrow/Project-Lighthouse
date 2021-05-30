@@ -52,6 +52,8 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 					<button className="theia-button" title="View resources" onClick={(_a) => this.viewResources()}>Resources</button>
 					<button className="theia-button" title="Attempt assignments" onClick={(_a) => this.attemptAssignments()}>Assignments</button>
 					<div className="suggested-resources">
+						{// TODO: Updated suggested resource as per content
+						}
 						<h5>Suggested Resources</h5>
 						<div>Suggestion 1</div>
 						<div>Suggestion 2</div>
