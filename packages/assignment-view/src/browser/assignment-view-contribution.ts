@@ -66,6 +66,7 @@ export class AssignmentViewCommandContribution implements CommandContribution {
                         currentWorkspace?.children?.forEach((file) => {
                             console.info(`File: ${file.name}`);
                             if (file.name == 'main.py') {
+                                this.editorManager.activeEditor?.close();
                                 this.editorManager.open(file.resource).then(() => {
                                     if (openReadme)
                                         this.commandService.executeCommand('Markdown-View:command').then(() => {
