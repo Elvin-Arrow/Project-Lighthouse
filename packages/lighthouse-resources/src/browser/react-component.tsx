@@ -37,7 +37,7 @@ export class ReactComponent extends React.Component<{}, { screen: string }> {
 						<ul>
 							<li><a onClick={(_a) => this.languagePython()}>Python</a></li>
 							<li><a onClick={(_a) => this.languageCPP()}>C++</a></li>
-							<li><button onClick={this.sayHello}>Click me!</button></li>
+							{/* <li><button onClick={this.sayHello}>Click me!</button></li> */}
 						</ul>
 					</div>
 				</div>
@@ -84,11 +84,11 @@ export class ReactComponent extends React.Component<{}, { screen: string }> {
 		return resource;
 	}
 
-	protected sayHello(): void {
-		let dataPath = path.join(process.cwd(), 'resources', 'python_resources.json');
-		fs.readFile(dataPath, "utf8", (err: any, jsonString: any) => {
-			const resource = JSON.parse(jsonString);
-			console.error("The title is:", resource.title);
-		});
-	}
+	// protected sayHello(): void {
+	// 	let dataPath = path.join(process.cwd(), 'resources', 'python_resources.json');
+	// 	fs.readFile(dataPath, "utf8", (err: any, jsonString: any) => {
+	// 		const resource = JSON.parse(jsonString);
+	// 		console.error("The title is:", resource.title);
+	// 	});
+	// }
 }

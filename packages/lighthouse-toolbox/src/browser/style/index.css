@@ -1,7 +1,7 @@
-#widget-container h2 {
-    color: var(--theia-ui-font-color1);
-    font-size: 12px;
-    font-weight: 400;
-    padding: 10px;
-    text-transform: uppercase;
+#toolbox-container {
+	padding: 30px 10px;
+}
+#toolbox-container button {
+	margin-bottom: 15px;
+	width: 200px;
 }

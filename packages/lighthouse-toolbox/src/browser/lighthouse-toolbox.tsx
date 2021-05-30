@@ -76,45 +76,15 @@ export class WidgetTestWidget extends ReactWidget {
     }
 
     return (
-      <div id="widget-container">
-        <h2>Access the dashboard</h2>
-        <br></br>
-        <button
-          className="theia-button secondary"
-          title="Launch Dashboard"
-          onClick={(_a) => this.showDashboard()}
-        >
-          View Dashboard
-        </button>
+      <div id="toolbox-container">
+        <button className="theia-button" title="Launch Dashboard" onClick={(_a) => this.showDashboard()}>View Dashboard</button>
         {instructionsBtn}
-        <div className="">
-          <button
-            className="theia-button secondary"
-            title="Toggle error highlighting"
-            onClick={(_a) => this.commandService.executeCommand('errorLens.toggle')}
-          >
-            Toggle error highlighting
-          </button>
-        </div>
-        <div className="">
-          <button
-            className="theia-button secondary"
-            title="Submit assignment"
-            onClick={(_a) => this.commandService.executeCommand('LighthouseCrnl.submit')}
-          >
-            Submit assignment
-          </button>
-        </div>
-
-        <div className="">
-          <button
-            className="theia-button secondary"
-            title="Launch Dashboard"
-            onClick={(_a) => this.logout()}
-          >
-            Logout
-          </button>
-        </div>
+	
+		<button className="theia-button" title="Toggle error highlighting" onClick={(_a) => this.commandService.executeCommand('errorLens.toggle')}>Toggle error highlighting</button>
+	
+		<button className="theia-button" title="Submit assignment" onClick={(_a) => this.commandService.executeCommand('LighthouseCrnl.submit')}>Submit assignment</button>
+	
+		<button className="theia-button secondary" title="Launch Dashboard" onClick={(_a) => this.logout()}>Logout</button>
       </div>
     );
   }
