@@ -61,6 +61,20 @@ export class WidgetTestWidget extends ReactWidget {
   }
 
   private renderToolbox(): React.ReactNode {
+    let instructionsBtn = null;
+
+    if (this.isAssignmentWorkspace) {
+      instructionsBtn = <div className="">
+        <button
+          className="theia-button secondary"
+          title="View instructions"
+          onClick={(_a) => this.commandService.executeCommand('Markdown-View:command')}
+        >
+          View instructions
+        </button>
+      </div>
+    }
+
     return (
       <div id="widget-container">
         <h2>Access the dashboard</h2>
@@ -72,15 +86,7 @@ export class WidgetTestWidget extends ReactWidget {
         >
           View Dashboard
         </button>
-        <div className="">
-          <button
-            className="theia-button secondary"
-            title="Launch Dashboard"
-            onClick={(_a) => this.logout()}
-          >
-            Logout
-          </button>
-        </div>
+        {instructionsBtn}
         <div className="">
           <button
             className="theia-button secondary"
@@ -88,6 +94,25 @@ export class WidgetTestWidget extends ReactWidget {
             onClick={(_a) => this.commandService.executeCommand('errorLens.toggle')}
           >
             Toggle error highlighting
+          </button>
+        </div>
+        <div className="">
+          <button
+            className="theia-button secondary"
+            title="Submit assignment"
+            onClick={(_a) => this.commandService.executeCommand('LighthouseCrnl.submit')}
+          >
+            Submit assignment
+          </button>
+        </div>
+
+        <div className="">
+          <button
+            className="theia-button secondary"
+            title="Launch Dashboard"
+            onClick={(_a) => this.logout()}
+          >
+            Logout
           </button>
         </div>
       </div>
@@ -128,6 +153,21 @@ export class WidgetTestWidget extends ReactWidget {
 
   private lighthouseAuthenticate(): void {
     this.commandService.executeCommand("lighthouse-authenticate:command");
+  }
+
+  private get isAssignmentWorkspace(): boolean {
+    let files = this.workspaceService.workspace?.children
+    let flag = false;
+
+    if (files) {
+      files.forEach(file => {
+        if (file.name == 'instructions.md') {
+          flag = true;
+        };
+      })
+    }
+
+    return flag;
   }
 
 }
