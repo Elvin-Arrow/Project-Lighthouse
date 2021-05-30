@@ -19,6 +19,8 @@ export class ReactComponent extends React.Component<{}, { screen: string }> {
 		let content;
 		if (this.state.screen == 'python') {
 			content = this.viewPythonResources();
+		} else if (this.state.screen == 'cpp') {
+			content = <div>C++ content coming soon...</div>;
 		} else {
 			content = <div>Please select a language from the sidebar.</div>;
 		}
@@ -67,10 +69,9 @@ export class ReactComponent extends React.Component<{}, { screen: string }> {
 	}
 
 	private languageCPP(): void {
-		fs.readFile("./data/python_resources.json", "utf8", (err: any, jsonString: any) => {
-			const resource = JSON.parse(jsonString);
-			console.error("The title is:", resource.title);
-		});
+		this.setState({
+			screen: 'cpp'
+		}, () => { });
 
 		// this.setState({
 		// 	content: cppContent
