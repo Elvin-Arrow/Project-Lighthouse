@@ -60,7 +60,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 						<div className="section-title">Functions</div>
 						<ProgressBar completed={10} bgColor={'#0E639C'} />
 					</div>
-					<button className="theia-button secondary" title="View full report" onClick={(_a) => this.getReportContent()}>View Full Report</button>
+					<button className="theia-button secondary" title="View full report" onClick={(_a) => this.setState({screen: 'Report' })}>View Full Report</button>
 				</div>
 				<div className="right">
 					<h5>The Lighthouse</h5>
@@ -81,11 +81,68 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 	private getReportContent() {
 		return (
 			<>
-				<div className="left">
+				<div id="report-header">
 					<h5>Full Progress Report</h5>
+					<button className="theia-button" onClick={(_a) => this.setState({ screen: 'Dashboard' })}>Go to Dashboard</button>
+				</div>
+				<div className="left">
+					<div id="graph-container">
+						{/* Graph to be added here */}
+					</div>
 				</div>
 				<div className="right">
-					<h5>Some heading</h5>
+					<div className="metric-block">
+						<div className="metric-title">Average Time to Complete</div>
+						<div className="metric-data">25 min</div>
+					</div>
+					<div className="metric-block">
+						<div className="metric-title">Average Number of Errors</div>
+						<div className="metric-data">23</div>
+					</div>
+					<div className="metric-block">
+						<div className="metric-title">Average Compilations Before Completion</div>
+						<div className="metric-data">100 min</div>
+					</div>
+				</div>
+				<div className="bottom">
+					<table>
+						<tr>
+							<th>Area</th>
+							<th>Assignments Attempted</th>
+							<th>Average Score</th>
+							<th>Performance Rating</th>
+						</tr>
+						<tr>
+							<td>Basics</td>
+							<td>2</td>
+							<td>9</td>
+							<td>10</td>
+						</tr>
+						<tr>
+							<td>Conditionals</td>
+							<td>1</td>
+							<td>8</td>
+							<td>9</td>
+						</tr>
+						<tr>
+							<td>Loops</td>
+							<td>1</td>
+							<td>8</td>
+							<td>7</td>
+						</tr>
+						<tr>
+							<td>Lists</td>
+							<td>1</td>
+							<td>7</td>
+							<td>6</td>
+						</tr>
+						<tr>
+							<td>Functions</td>
+							<td>1</td>
+							<td>8</td>
+							<td>9</td>
+						</tr>
+					</table>
 				</div>
 			</>
 		);
