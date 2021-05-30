@@ -54,7 +54,6 @@
     "@theia/electron": "latest",
     "@theia/file-search": "latest",
     "@theia/filesystem": "latest",
-    "@theia/getting-started": "latest",
     "@theia/git": "latest",
     "@theia/keymaps": "latest",
     "@theia/markers": "latest",
