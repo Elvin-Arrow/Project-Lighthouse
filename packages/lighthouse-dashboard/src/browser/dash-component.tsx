@@ -4,25 +4,40 @@ import Store = require("electron-store");
 import { CommandService } from "@theia/core";
 
 
-export class DashComponent extends React.Component<{ commandService: CommandService }, { content: string, }> {
+export class DashComponent extends React.Component<{ commandService: CommandService }, { screen: string, }> {
 	private readonly store = new Store();
 
 	constructor(props: { commandService: CommandService }) {
 		super(props);
 
 		this.state = {
-			content: "<div>Please select a language from the sidebar.</div>"
+			screen: "Dashboard"
 		};
 	}
 
 	public render(): React.ReactNode {
-		const username = this.store.get("username")
+		const username	= this.store.get("username")
+		let content;
+		if (this.state.screen == "Dashboard"){
+			content = this.getDashContent()
+		}
+		else if (this.state.screen == "Report") {
+			content = this.getReportContent()
+		}
 		return (
 			<div id="container">
 				<div className="header">
 					<h2>Lighthouse Dashboard</h2>
 					<h6>Welcome {username}!</h6>
 				</div>
+				<div>{content}</div>
+			</div>
+		);
+	}
+
+	private getDashContent(){
+		return (
+			<>
 				<div className="left">
 					<h5>Progress</h5>
 					<div className="progress-block">
@@ -45,7 +60,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 						<div className="section-title">Functions</div>
 						<ProgressBar completed={10} bgColor={'#0E639C'} />
 					</div>
-					<button className="theia-button secondary" title="View full report" onClick={(_a) => this.viewFullReport()}>View Full Report</button>
+					<button className="theia-button secondary" title="View full report" onClick={(_a) => this.getReportContent()}>View Full Report</button>
 				</div>
 				<div className="right">
 					<h5>The Lighthouse</h5>
@@ -59,13 +74,23 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 						<div>Suggestion 2</div>
 					</div>
 				</div>
-			</div>
+			</>
 		);
 	}
 
-	protected viewFullReport(): void {
-
+	private getReportContent() {
+		return (
+			<>
+				<div className="left">
+					<h5>Full Progress Report</h5>
+				</div>
+				<div className="right">
+					<h5>Some heading</h5>
+				</div>
+			</>
+		);
 	}
+
 	protected viewResources(): void {
 		console.info('Attempting to view resources...');
 		this.props.commandService.executeCommand("lighthouse-resources:command").then(() => {
