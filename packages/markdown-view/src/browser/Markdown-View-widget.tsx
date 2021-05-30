@@ -47,7 +47,9 @@ export class MarkdownViewWidget extends ReactWidget {
             }
         })
 
-        return <ReactMarkdown children={content} />
+        return <div id="instructions">
+            <ReactMarkdown children={content} />
+        </div>
 
 
 
