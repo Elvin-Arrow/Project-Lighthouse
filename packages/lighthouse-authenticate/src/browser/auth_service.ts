@@ -16,7 +16,7 @@ export class AuthenticationService {
      */
     public authenticate(username: string, password: string): Promise<boolean> {
         // Validates credentials
-        return new Promise<boolean>(async (resolve, reject) => {
+        return new Promise<boolean>((resolve, reject) => {
             if (username == "muhammad" && password == "123456") {
                 // On successful validation 
 
@@ -26,12 +26,14 @@ export class AuthenticationService {
                 // Store user identifier
                 this.store.set("username", "muhammad");
 
-                // Check to see if the user sign in for the first time
+                // Check to see if the user signed in for the first time
                 if (this.isFirstAuthentication(username)) {
                     console.info('First time user');
                     // Create a folder for the user in the home directory
                     try {
-                        await this.generateUserDirectory(username);
+                        this.generateUserDirectory(username);
+                        this.writeGlobalDefaultConfiguration();
+                        // TODO: Pull in all the user data and store it
                     } catch (err) {
                         reject(err);
                     }
@@ -52,17 +54,35 @@ export class AuthenticationService {
         return true;
     }
 
-    private generateUserDirectory(username: string): Promise<boolean> {
+    private generateUserDirectory(username: string): void {
         const userDir = path.join(homedir, 'lighthouse', `${username}`);
-        return new Promise((resolve, reject) => {
-            try {
-                fs.mkdir(userDir, { recursive: true }, () => {
-                    resolve(true);
-                });
-            } catch (err) {
-                reject(err);
-            }
-        })
+        fs.mkdirSync(userDir, { recursive: true });
+    }
 
+    private writeGlobalDefaultConfiguration(): void {
+        let configPath = path.join(homedir, '.theia');
+
+        if (!fs.existsSync(configPath)) {
+            // Create the dir
+            fs.mkdirSync(configPath, { recursive: true });
+        }
+
+        // Write the configuration if it doesn't exist
+        let config = {
+            "files.exclude": {
+                "/.git": true,
+                "/.svn": true,
+                "/.hg": true,
+                "/CVS": true,
+                "**/.DS_Store": true,
+                "a-test.*": true,
+                ".theia": true
+            }
+        };
+
+        let configFilePath = path.join(configPath, 'settings.json');
+
+        if (!fs.existsSync(configFilePath))
+            fs.writeFile(configFilePath, JSON.stringify(config), (err => { console.error(err); }))
     }
 }
