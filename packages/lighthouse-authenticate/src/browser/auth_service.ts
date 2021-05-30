@@ -70,13 +70,14 @@ export class AuthenticationService {
         // Write the configuration if it doesn't exist
         let config = {
             "files.exclude": {
-                "/.git": true,
+                ".git": true,
                 "/.svn": true,
                 "/.hg": true,
                 "/CVS": true,
                 "**/.DS_Store": true,
                 "a-test.*": true,
-                ".theia": true
+                ".theia": true,
+                ".gitignore": true,
             }
         };
 
