@@ -101,7 +101,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 					</div>
 					<div className="metric-block">
 						<div className="metric-title">Average Compilations Before Completion</div>
-						<div className="metric-data">100 min</div>
+						<div className="metric-data">25</div>
 					</div>
 				</div>
 				<div className="bottom">
@@ -116,31 +116,31 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 							<td>Basics</td>
 							<td>2</td>
 							<td>9</td>
-							<td>10</td>
+							<td>Good</td>
 						</tr>
 						<tr>
 							<td>Conditionals</td>
 							<td>1</td>
 							<td>8</td>
-							<td>9</td>
+							<td>Good</td>
 						</tr>
 						<tr>
 							<td>Loops</td>
 							<td>1</td>
 							<td>8</td>
-							<td>7</td>
+							<td>Average</td>
 						</tr>
 						<tr>
 							<td>Lists</td>
 							<td>1</td>
 							<td>7</td>
-							<td>6</td>
+							<td>Average</td>
 						</tr>
 						<tr>
 							<td>Functions</td>
-							<td>1</td>
-							<td>8</td>
-							<td>9</td>
+							<td>-</td>
+							<td>-</td>
+							<td>-</td>
 						</tr>
 					</table>
 				</div>
