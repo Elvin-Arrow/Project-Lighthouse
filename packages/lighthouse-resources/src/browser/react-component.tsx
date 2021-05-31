@@ -13,6 +13,13 @@ export class ReactComponent extends React.Component<{}, { screen: string }> {
 		this.state = {
 			screen: "<div>Please select a language from the sidebar.</div>"
 		};
+
+		let temp = this.store.get('resource', null);
+		this.store.set('resource', null);
+
+		if (temp && temp == 'variable') {
+			this.viewPythonResources();
+		}
 	}
 
 	public render(): React.ReactNode {
