@@ -62,6 +62,7 @@ export class WidgetTestWidget extends ReactWidget {
 
   private renderToolbox(): React.ReactNode {
     let instructionsBtn = null;
+    let submitBtn = null;
 
     if (this.isAssignmentWorkspace) {
       instructionsBtn = <div className="">
@@ -73,18 +74,21 @@ export class WidgetTestWidget extends ReactWidget {
           View instructions
         </button>
       </div>
+
+      submitBtn = <button className="theia-button" title="Submit assignment" onClick={(_a) => this.commandService.executeCommand('LighthouseCrnl.submit')}>Submit assignment</button>
     }
 
     return (
       <div id="toolbox-container">
         <button className="theia-button" title="Launch Dashboard" onClick={(_a) => this.showDashboard()}>View Dashboard</button>
+
         {instructionsBtn}
-	
-		<button className="theia-button" title="Toggle error highlighting" onClick={(_a) => this.commandService.executeCommand('errorLens.toggle')}>Toggle error highlighting</button>
-	
-		<button className="theia-button" title="Submit assignment" onClick={(_a) => this.commandService.executeCommand('LighthouseCrnl.submit')}>Submit assignment</button>
-	
-		<button className="theia-button secondary" title="Launch Dashboard" onClick={(_a) => this.logout()}>Logout</button>
+
+        <button className="theia-button" title="Toggle error highlighting" onClick={(_a) => this.commandService.executeCommand('errorLens.toggle')}>Toggle error highlighting</button>
+
+        {submitBtn}
+
+        <button className="theia-button secondary" title="Launch Dashboard" onClick={(_a) => this.logout()}>Logout</button>
       </div>
     );
   }
