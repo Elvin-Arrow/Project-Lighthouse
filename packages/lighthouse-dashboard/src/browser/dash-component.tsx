@@ -126,7 +126,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 				</div>
 				<div className="left">
 					<div id="graph-container">
-						<LineChart width={500} height={300} data={data}>
+						<LineChart width={420} height={220} data={data}>
 							<XAxis dataKey="name" />
 							<YAxis />
 							<CartesianGrid stroke="#eee" strokeDasharray="5 5" />

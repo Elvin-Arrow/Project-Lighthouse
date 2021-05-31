@@ -44,8 +44,9 @@ h5{
 #graph-container{
 	border: 1px solid;
 	border-radius: 3px;
-	height: 12em;
+	height: 16em;
 	width: 100%;
+	margin-bottom: 20px;
 }
 .metric-title {
 	font-weight: bold;
