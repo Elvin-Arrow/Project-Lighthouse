@@ -22,7 +22,7 @@ export class WidgetTestWidget extends ReactWidget {
   @inject(CommandService)
   protected readonly commandService: CommandService;
 
-  @inject(EditorManager) 
+  @inject(EditorManager)
   protected readonly editorManager: EditorManager;
 
   private readonly store = new Store();
@@ -61,25 +61,34 @@ export class WidgetTestWidget extends ReactWidget {
   }
 
   private renderToolbox(): React.ReactNode {
+    let instructionsBtn = null;
+    let submitBtn = null;
+
+    if (this.isAssignmentWorkspace) {
+      instructionsBtn = <div className="">
+        <button
+          className="theia-button secondary"
+          title="View instructions"
+          onClick={(_a) => this.commandService.executeCommand('Markdown-View:command')}
+        >
+          View instructions
+        </button>
+      </div>
+
+      submitBtn = <button className="theia-button" title="Submit assignment" onClick={(_a) => this.commandService.executeCommand('LighthouseCrnl.submit')}>Submit assignment</button>
+    }
+
     return (
-      <div id="widget-container">
-        <h2>Access the dashboard</h2>
-        <br></br>
-        <button
-          className="theia-button secondary"
-          title="Launch Dashboard"
-          onClick={(_a) => this.showDashboard()}
-        >
-          View Dashboard
-        </button>
-        <br></br>
-        <button
-          className="theia-button secondary"
-          title="Launch Dashboard"
-          onClick={(_a) => this.logout()}
-        >
-          Logout
-        </button>
+      <div id="toolbox-container">
+        <button className="theia-button" title="Launch Dashboard" onClick={(_a) => this.showDashboard()}>View Dashboard</button>
+
+        {instructionsBtn}
+
+        <button className="theia-button" title="Toggle error highlighting" onClick={(_a) => this.commandService.executeCommand('errorLens.toggle')}>Toggle error highlighting</button>
+
+        {submitBtn}
+
+        <button className="theia-button secondary" title="Launch Dashboard" onClick={(_a) => this.logout()}>Logout</button>
       </div>
     );
   }
@@ -90,6 +99,8 @@ export class WidgetTestWidget extends ReactWidget {
 
   private logout(): void {
     this.store.delete("authenticated");
+    this.store.delete("username");
+
     // this.refreshWorkspace();
     if (this.workspaceService.opened) {
       this.workspaceService.close();
@@ -97,16 +108,15 @@ export class WidgetTestWidget extends ReactWidget {
       this.editorManager.closeAll().then(() => {
         this.commandService.executeCommand(ElectronCommands.RELOAD.id);
       });
-      
+
     }
-    
+
   }
 
   /**
    * Check whether user is authenticated or not
    */
   private authState(): boolean {
-    // TODO Implement authentication logic
     const status = this.store.get("authenticated");
 
     if (status) {
@@ -116,18 +126,22 @@ export class WidgetTestWidget extends ReactWidget {
   }
 
   private lighthouseAuthenticate(): void {
-    // TODO Invoke the auth plugin
     this.commandService.executeCommand("lighthouse-authenticate:command");
   }
 
-  protected refreshWorkspace(): void {
-    if (this.workspaceService.opened) {
-      const currentWorkspace = this.workspaceService.workspace?.resource;
+  private get isAssignmentWorkspace(): boolean {
+    let files = this.workspaceService.workspace?.children
+    let flag = false;
 
-      if (currentWorkspace != undefined) {
-        this.workspaceService.close();
-        this.workspaceService.open(currentWorkspace);
-      }
+    if (files) {
+      files.forEach(file => {
+        if (file.name == 'instructions.md') {
+          flag = true;
+        };
+      })
     }
+
+    return flag;
   }
+
 }

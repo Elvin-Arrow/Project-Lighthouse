@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "resources-cpp",
+  "name": "@lighthouse/markdown-view",
   "keywords": [
     "theia-extension"
   ],
@@ -10,7 +10,8 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "latest"
+    "@theia/core": "latest",
+    "react-markdown": "latest"
   },
   "devDependencies": {
     "rimraf": "latest",
@@ -24,7 +25,7 @@
   },
   "theiaExtensions": [
     {
-      "frontend": "lib/browser/resources-cpp-frontend-module"
+      "frontend": "lib/browser/Markdown-View-frontend-module"
     }
   ]
 }

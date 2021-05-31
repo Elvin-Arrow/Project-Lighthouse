@@ -4,10 +4,15 @@ import { AbstractViewContribution, FrontendApplication, FrontendApplicationContr
 import { Command, CommandRegistry } from "@theia/core/lib/common/command";
 import { FrontendApplicationStateService } from "@theia/core/lib/browser/frontend-application-state";
 import { CommandService } from "@theia/core";
+import { EditorManager } from "@theia/editor/lib/browser";
 import Store = require("electron-store");
 
 export const LighthouseDashboardCommand: Command = {
-  id: "lighthouse-dashboard:command",
+	id: "lighthouse-dashboard:command",
+};
+
+export const LighthouseDashboardDispose: Command = {
+	id: "lighthouse-dashboard:dispose",
 };
 
 @injectable()
@@ -15,67 +20,50 @@ export class LighthouseDashboardContribution extends AbstractViewContribution<
 LighthouseDashboardWidget
 > implements FrontendApplicationContribution {
 
-  @inject(FrontendApplicationStateService)
-  private readonly stateService: FrontendApplicationStateService;
+	@inject(FrontendApplicationStateService)
+	private readonly stateService: FrontendApplicationStateService;
 
-  @inject(CommandService)
-  private readonly commandService: CommandService;
+	@inject(CommandService)
+	private readonly commandService: CommandService;
 
-  private readonly store: Store;
+	@inject(EditorManager)
+	private readonly editorManager: EditorManager;
 
-  /**
-   * `AbstractViewContribution` handles the creation and registering
-   *  of the widget including commands, menus, and keybindings.
-   *
-   * We can pass `defaultWidgetOptions` which define widget properties such as
-   * its location `area` (`main`, `left`, `right`, `bottom`), `mode`, and `ref`.
-   *
-   */
-  constructor() {
-    super({
-      widgetId: LighthouseDashboardWidget.ID,
-      widgetName: LighthouseDashboardWidget.LABEL,
-      defaultWidgetOptions: { area: "main" },
-      toggleCommandId: LighthouseDashboardCommand.id,
-    });
+	private readonly store: Store;
 
-    this.store = new Store();
-  }
+	constructor() {
+		super({
+			widgetId: LighthouseDashboardWidget.ID,
+			widgetName: LighthouseDashboardWidget.LABEL,
+			defaultWidgetOptions: { area: "main" },
+			toggleCommandId: LighthouseDashboardCommand.id,
+		});
 
-  async onStart(app: FrontendApplication): Promise<void> {
-    if (this.store.get('authenticated')) {
-      this.stateService.reachedState('ready').then(
-        () => {
-          this.openView({ reveal: true });
-          this.commandService.executeCommand('AssignmentView.command');
-        }
-        
-      );
-    }
-  }
+		this.store = new Store();
+	}
 
-  /**
-     * Example command registration to open the widget from the menu, and quick-open.
-     * For a simpler use case, it is possible to simply call:
-     ```ts
-        super.registerCommands(commands)
-     ```
-     *
-     * For more flexibility, we can pass `OpenViewArguments` which define 
-     * options on how to handle opening the widget:
-     * 
-     ```ts
-        toggle?: boolean
-        activate?: boolean;
-        reveal?: boolean;
-     ```
-     *
-     * @param commands
-     */
-  registerCommands(commands: CommandRegistry): void {
-    commands.registerCommand(LighthouseDashboardCommand, {
-      execute: () =>
-        super.openView({ activate: false, reveal: true, toggle: true }),
-    });
-  }
+	async onStart(app: FrontendApplication): Promise<void> {
+		if (this.store.get('authenticated')) {
+			this.stateService.reachedState('ready').then(
+				() => {
+					this.editorManager.closeAll().then(() => {
+						this.openView({ reveal: true });
+						this.commandService.executeCommand('AssignmentView.command');
+					});
+				}
+			);
+		}
+	}
+
+	registerCommands(commands: CommandRegistry): void {
+		commands.registerCommand(LighthouseDashboardCommand, {
+			execute: () =>
+				super.openView({ activate: false, reveal: true, toggle: true }),
+		});
+
+		commands.registerCommand(LighthouseDashboardDispose, {
+			execute: () =>
+				super.closeView(),
+		})
+	}
 }

@@ -5,8 +5,11 @@ import { ReactWidget } from "@theia/core/lib/browser/widgets/react-widget";
 import { MessageService, CommandService } from "@theia/core";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
 import { ElectronCommands } from "@theia/core/lib/electron-browser/menu/electron-menu-contribution"
+import { EditorManager } from "@theia/editor/lib/browser";
 
 import Store = require("electron-store");
+import { AuthenticationService } from './auth_service';
+import Swal from 'sweetalert2'
 // import URI from "@theia/core/lib/common/uri";
 
 var path = require("path");
@@ -25,10 +28,14 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
   @inject(CommandService)
   protected readonly commandService: CommandService;
 
-  private readonly store = new Store();
+  @inject(EditorManager)
+  private readonly editorManager: EditorManager;
 
-  private username: String | undefined;
-  private password = new String();
+  private readonly store = new Store();
+  private readonly authenticateionService = new AuthenticationService();
+
+  private username = "";
+  private password = "";
 
 
 
@@ -122,16 +129,27 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
   }
 
   private authenticate(): void {
-    console.info(
-      `Got ${this.username} as username and ${this.password} as password`
-    );
-    if (this.username == "student" && this.password == "123456") {
-      this.store.set("authenticated", true);
-      this.store.set("username", "Muhammad");
+    // Validates credentials
+    this.authenticateionService.authenticate(this.username, this.password).then((wasSuccess) => {
+      if (wasSuccess) {
+        this.editorManager.closeAll().then(() => {
+          this.commandService.executeCommand(ElectronCommands.RELOAD.id);
+        });
 
-      this.dispose();
-      this.commandService.executeCommand(ElectronCommands.RELOAD.id);      
-    }
+      }
+    }, (onFailure) => {
+      // Set state to show the wrong creds label to user
+      Swal.fire({
+        title: 'Authentication failed',
+        text: 'Incorrect username or password',
+        icon: 'error',
+      })
+
+    });
+
+
+
+
   }
 
   protected refreshWorkspace(): void {
@@ -141,7 +159,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
       if (currentWorkspace != undefined) {
         this.workspaceService.close();
         this.workspaceService.open(currentWorkspace);
-      } 
+      }
 
       this.launchDashboard();
 

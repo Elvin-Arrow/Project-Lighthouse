@@ -1,48 +1,82 @@
-#widget-container h2 {
-    color: var(--theia-ui-font-color1);
-    font-size: 14px;
-    font-weight: 400;
-    padding: 10px;
-    text-transform: uppercase;
+div#lighthouse-dashboard\:widget {
+    padding: 10% 20%;
 }
-button{
-    padding: 5px;
+.header h6{
+	margin-top: -5px;
+	text-transform: capitalize;
 }
-.main-area{
-    width: 80%;
-    float: left;
+h5{
+	padding: 5px 0;
+	font-size: 1.25rem;  /* Already present */
+	font-weight: normal; /* Already present */
 }
-.sidebar{
-    width: 15%;
-    float: right;
+.left{
+	float: left;
+	width: 45%;
 }
-ul li{
-    padding-bottom: 10px;
+.right{
+	float: right;
+	width: 45%;
 }
-h1{
-    padding: 20px;
-    text-decoration: none;
+.left .theia-button:first-of-type, .right .theia-button:first-of-type{
+	margin:0;
+}
+.left .theia-button:first-of-type{
+	width: 100%;
+}
+.progress-block{
+	border: 1px solid;
+	border-radius: 10px;
+	width: 100%;
+	margin-bottom: 10px;
+}
+.section-title{
+	padding: 5px 10px;
+}
+/* .progress-bar {
+    border-top: 1px solid;
+    height: 10px;
+    width: 100%;
+} */
+.theia-button{
+	border-radius: 3px !important;
+}
+#graph-container{
+	border: 1px solid;
+	border-radius: 3px;
+	height: 12em;
+	width: 100%;
+}
+.metric-title {
+	font-weight: bold;
+}
+.metric-block {
+	margin-bottom: 20px;
 }
 table {
     width:100%;
-    margin-left: 20px;
     color: #222222;
 }
 table, th, td {
-    border: 1px solid #eee;
     border-collapse: collapse;
 }
 th, td {
     padding: 15px;
     text-align: left;
 }
-#table1 tr:nth-child(even) {
+table tr:nth-child(even) {
     background-color: #dddddd;
 }
-#table1 tr:nth-child(odd) {
+table tr:nth-child(odd) {
     background-color: #eeeeee;
 }
-#table1 th {
+table th {
     background-color: black;
     color: #eeeeee;
+}
+#report-header{
+	display: flex;
+}
+#report-header button{
+	height: 30px;
 }

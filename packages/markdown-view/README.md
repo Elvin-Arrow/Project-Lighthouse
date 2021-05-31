@@ -4,4 +4,4 @@ The example extension demonstrates how to contribute a custom widget (i.e. a vie
 
 ## How to use the widget example
 
-In the running application, open the widget using the menu "View" => "ResourcesCpp Widget"
+In the running application, open the widget using the menu "View" => "MarkdownView Widget"
