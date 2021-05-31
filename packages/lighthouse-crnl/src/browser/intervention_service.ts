@@ -1,17 +1,20 @@
-import { MessageService } from "@theia/core";
+import { CommandService, MessageService } from "@theia/core";
 import Store = require("electron-store");
 
 export class InterventionService {
     private readonly store: Store = new Store();
     private readonly messageService: MessageService;
+    private readonly commandService: CommandService
 
-    constructor(messageService: MessageService) {
+    constructor(messageService: MessageService, commandService: CommandService) {
         this.messageService = messageService;
+        this.commandService = commandService;
     }
 
     public triggerIntervention() {
         if (this.shouldInterventionFire()) {
             let exp = this.store.get('exception');
+            this.store.set('exception', null);
 
             if (exp) {
                 switch (exp) {
@@ -29,6 +32,7 @@ export class InterventionService {
                                 console.info('Taking you to variables section');
                                 this.store.set('resource', 'variable');
                                 // TODO: Navigate to relevant resource
+                                this.commandService.executeCommand('lighthouse-resources:command');
                             }
                         });
                         break;

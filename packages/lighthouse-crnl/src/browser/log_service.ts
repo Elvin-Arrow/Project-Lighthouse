@@ -40,6 +40,7 @@ export class LoggerService {
                         if (err) {
                             reject(err);
                         } else {
+
                             const errLog = this.parseLogForErrors(data);
 
                             log = this.getExecutionLog(errLog);

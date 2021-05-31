@@ -44,7 +44,7 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     @inject(WorkspaceService)
     private readonly workspaceService: WorkspaceService,
   ) {
-    this.interventionService = new InterventionService(this.messageService);
+    this.interventionService = new InterventionService(this.messageService, this.commandService);
   }
 
   registerCommands(registry: CommandRegistry): void {
@@ -59,8 +59,7 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
 
               let filePath = editor?.getResourceUri();
 
-              // TODO fix the editor issue
-              console.info(`Current editor path: ${editor?.getResourceUri()}`);
+              this.commandService.executeCommand('AssignmentView.command');
 
               if (filePath) {
                 console.info(filePath.path);
@@ -76,6 +75,8 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
 
               this.loggerService.generateExecutionLog(this.isAssignmentDir()).then((wasError) => {
                 if (wasError) {
+                  console.info(`Triggering intervention`);
+
                   this.interventionService.triggerIntervention();
                 }
               }, (reason) => {
@@ -123,14 +124,17 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     let details = null;
 
     if (name) {
-      name = name.split('//').reverse()[0];
-      let assignmentPath = this.loggerService.baseAssignmentPath;
+      console.info(`Current workspace name: ${name}`);
+      let slicedName = name.split('\\').reverse()[0];
+      console.info(`Sliced workspace named: ${slicedName}`);
 
+      let assignmentPath = this.loggerService.baseAssignmentPath;
 
       let assignments = JSON.parse(fs.readFileSync(assignmentPath, 'utf-8'));
       if (assignments)
         assignments.forEach((assignment: Record<string, any>) => {
-          if (name == assignment.name) {
+          if (slicedName == assignment.name) {
+            console.info(`Current workspace: ${slicedName}`)
             details = {
               "id": assignment.id,
               "area": assignment.area
