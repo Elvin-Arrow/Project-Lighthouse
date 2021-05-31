@@ -77,7 +77,7 @@ export class AuthenticationService {
                 "**/.DS_Store": true,
                 "a-test.*": true,
                 ".theia": true,
-                ".gitignore": true,
+                "instructions.md": true
             }
         };
 
