@@ -159,26 +159,26 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 						</tr>
 						<tr>
 							<td>Basics</td>
-							<td>2</td>
-							<td>9</td>
+							<td>2 (Class Average: 2)</td>
+							<td>9 (Class Average: 7)</td>
 							<td>Good</td>
 						</tr>
 						<tr>
 							<td>Conditionals</td>
-							<td>1</td>
-							<td>8</td>
+							<td>1 (Class Average: 1)</td>
+							<td>8 (Class Average: 8)</td>
 							<td>Good</td>
 						</tr>
 						<tr>
 							<td>Loops</td>
-							<td>1</td>
-							<td>8</td>
+							<td>1 (Class Average: 1)</td>
+							<td>8 (Class Average: 6)</td>
 							<td>Average</td>
 						</tr>
 						<tr>
 							<td>Lists</td>
-							<td>1</td>
-							<td>7</td>
+							<td>1 (Class Average: 1)</td>
+							<td>7 (Class Average: 6)</td>
 							<td>Average</td>
 						</tr>
 						<tr>
