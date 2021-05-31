@@ -60,7 +60,9 @@ export class AssignmentViewCommandContribution implements CommandContribution {
                 let check = this.readmeFileExists(currentWorkspace?.children);
 
                 if (check) {
-                    console.info(`Assignment directory detected`)
+                    console.info(`Assignment directory detected`);
+                    this.commandService.executeCommand('lighthouse-dashboard:dispose');
+
                     this.editorManager.closeAll().then(() => {
                         let openReadme: boolean = false;
                         currentWorkspace?.children?.forEach((file) => {
@@ -111,8 +113,10 @@ export class AssignmentViewCommandContribution implements CommandContribution {
     private resetTimer() {
         console.info(`Starting timer`);
 
-        if (this.store.get('isActive', true))
+        if (this.store.get('isActive', true)) {
+            this.store.set('isActive', false);
             this.startTimer();
+        }
         else {
             // Wait for 1 minute before checking again
             console.info('User is inactive waiting for 1 minute');
