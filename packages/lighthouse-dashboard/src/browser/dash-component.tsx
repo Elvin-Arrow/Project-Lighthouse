@@ -2,6 +2,7 @@ import * as React from "react";
 import ProgressBar from "@ramonak/react-progress-bar";
 import Store = require("electron-store");
 import { CommandService } from "@theia/core";
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
 
 
 export class DashComponent extends React.Component<{ commandService: CommandService }, { screen: string, }> {
@@ -79,6 +80,44 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 	}
 
 	private getReportContent() {
+		const data = [
+			{
+				name: 'Week 0',
+				Performance: 0,
+			},
+			{
+				name: 'Week 2',
+				Performance: 10,
+			},
+			{
+				name: 'Week 4',
+				Performance: 30,
+			},
+			{
+				name: 'Week 6',
+				Performance: 35,
+			},
+			{
+				name: 'Week 8',
+				Performance: 50,
+			},
+			{
+				name: 'Week 10',
+				Performance: 60,
+			},
+			{
+				name: 'Week 12',
+				Performance: 80,
+			},
+			{
+				name: 'Week 14',
+				Performance: 90,
+			},
+			{
+				name: 'Week 16',
+				Performance: 90,
+			},
+		];
 		return (
 			<>
 				<div id="report-header">
@@ -87,7 +126,13 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 				</div>
 				<div className="left">
 					<div id="graph-container">
-						{/* Graph to be added here */}
+						<LineChart width={500} height={300} data={data}>
+							<XAxis dataKey="name" />
+							<YAxis />
+							<CartesianGrid stroke="#eee" strokeDasharray="5 5" />
+							<Line type="monotone" dataKey="Performance" stroke="#82ca9d" />
+							<Tooltip />
+						</LineChart>
 					</div>
 				</div>
 				<div className="right">
