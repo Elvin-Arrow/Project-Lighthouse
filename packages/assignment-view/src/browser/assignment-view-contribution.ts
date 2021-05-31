@@ -19,7 +19,7 @@ export const AssignmentViewCommand = {
 @injectable()
 export class AssignmentViewCommandContribution implements CommandContribution {
     private readonly store: Store = new Store();
-    private assignmentId: number | null = null;
+
 
     @inject(FrontendApplicationStateService)
     protected readonly stateService: FrontendApplicationStateService;
@@ -32,26 +32,6 @@ export class AssignmentViewCommandContribution implements CommandContribution {
         @inject(EditorManager) protected readonly editorManager: EditorManager,
     ) { }
 
-    private readmeFileExists(files: FileStat[] | undefined): boolean {
-        console.info(`Looking for markdown files...`);
-        let check = false;
-        try {
-            files?.forEach((file) => {
-                console.info(`File name: ${file.name}`);
-                if (file.name == 'instructions.md') {
-                    console.info(`Required file found!`);
-
-                    check = true;
-                };
-            })
-        } catch (e) {
-            console.error(`Error while looking up markdown files\n${e}`);
-        }
-
-
-        return check;
-    }
-
     registerCommands(registry: CommandRegistry): void {
         registry.registerCommand(AssignmentViewCommand, {
             execute: () => {
@@ -60,26 +40,18 @@ export class AssignmentViewCommandContribution implements CommandContribution {
                 let check = this.readmeFileExists(currentWorkspace?.children);
 
                 if (check) {
-                    console.info(`Assignment directory detected`);
                     this.commandService.executeCommand('lighthouse-dashboard:dispose');
+                    this.store.set('inactive', true);
 
                     this.editorManager.closeAll().then(() => {
                         let openReadme: boolean = false;
                         currentWorkspace?.children?.forEach((file) => {
-                            console.info(`File: ${file.name}`);
                             if (file.name == 'main.py') {
                                 this.editorManager.open(file.resource).then(() => {
                                     if (openReadme)
                                         this.commandService.executeCommand('Markdown-View:command').then(() => {
                                             this.commandService.executeCommand('LighthouseObserver.command');
 
-                                            let id = this.getAssignmentId(this.workspaceService.workspace?.name);
-
-                                            console.info(`Assignment ID acquired as: ${id}`);
-
-                                            if (id) {
-                                                this.assignmentId = id;
-                                            }
                                             // Start noting the time
                                             this.resetTimer();
                                         });
@@ -92,6 +64,22 @@ export class AssignmentViewCommandContribution implements CommandContribution {
                 }
             }
         });
+    }
+
+    private readmeFileExists(files: FileStat[] | undefined): boolean {
+        let check = false;
+        try {
+            files?.forEach((file) => {
+                console.info(`File name: ${file.name}`);
+                if (file.name == 'instructions.md') {
+                    check = true;
+                };
+            })
+        } catch (e) {
+            console.error(`Error while looking up markdown files\n${e}`);
+        }
+
+        return check;
     }
 
     private startTimer() {
@@ -113,8 +101,7 @@ export class AssignmentViewCommandContribution implements CommandContribution {
     private resetTimer() {
         console.info(`Starting timer`);
 
-        if (this.store.get('isActive', true)) {
-            this.store.set('isActive', false);
+        if (this.store.get('isActive', false)) {
             this.startTimer();
         }
         else {
@@ -132,14 +119,13 @@ export class AssignmentViewCommandContribution implements CommandContribution {
         if (fs.existsSync(statsPath)) {
             let stats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
 
-            console.info('Updating stats with the new time for assignment: ' + this.assignmentId);
-
             // Always true, condition added to enable smart suggestions
             if (Array.isArray(stats)) {
-                if (this.assignmentId) {
+                let id = this.store.get('assignmentId');
 
+                if (id) {
                     stats.forEach(stat => {
-                        if (stat.id == this.assignmentId) {
+                        if (stat.id == id) {
                             let time = new Date().getTime();
                             stat.timespent = time - stat.timespent
 
@@ -149,34 +135,9 @@ export class AssignmentViewCommandContribution implements CommandContribution {
                 }
 
                 fs.writeFile(statsPath, JSON.stringify(stats), () => {
-                    console.info(`Updated stats`);
+                    console.info(`Updated stats - Assignments view`);
                 })
             }
         }
-    }
-
-    private getAssignmentId(workspaceName: string | undefined): number | null {
-        let id: number | null = null;
-        if (workspaceName) {
-            workspaceName = workspaceName.split("\\").reverse()[0];
-            console.info(`Looking for assignment: ${workspaceName}`)
-            let assignPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'assignments.json');
-
-            if (fs.existsSync(assignPath)) {
-                let assignments: Record<string, any>[] = JSON.parse(fs.readFileSync(assignPath, 'utf-8'));
-
-                if (Array.isArray(assignments)) {
-                    assignments.forEach((assignment) => {
-
-                        if (assignment.name == workspaceName) {
-                            id = assignment.id;
-
-                            console.info(`Workspace found, updating ID to: ${id}`);
-                        }
-                    })
-                }
-            }
-        }
-        return id;
     }
 }

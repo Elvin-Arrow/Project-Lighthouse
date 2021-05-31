@@ -25,6 +25,22 @@ export class LighthouseObserverCommandContribution implements CommandContributio
         this.isActive = true;
     }
 
+    registerCommands(registry: CommandRegistry): void {
+        registry.registerCommand(LighthouseObserverCommand, {
+            execute: () => {
+                console.info(`Observing the editor...`);
+                let editor = this.editorManager.currentEditor;
+
+                if (editor) {
+                    editor.editor.onDocumentContentChanged((e) => {
+                        console.info(e.contentChanges);
+                        this.resetTimer()
+                    })
+                }
+            }
+        });
+    }
+
     private startTimer(): void {
         // wait 5 minutes before calling goInactive
         console.info(`Waiting for 5 minutes...`);
@@ -41,7 +57,7 @@ export class LighthouseObserverCommandContribution implements CommandContributio
 
     private goActive(): void {
         if (!this.isActive) {
-            this.messageService.info("We missed you");
+            this.messageService.info("I missed you, good to have you back ❤");
         }
 
         this.isActive = true;
@@ -56,22 +72,6 @@ export class LighthouseObserverCommandContribution implements CommandContributio
             window.clearTimeout(this.timeoutId);
             this.goActive();
         } finally { }
-    }
-
-    registerCommands(registry: CommandRegistry): void {
-        registry.registerCommand(LighthouseObserverCommand, {
-            execute: () => {
-                console.info(`Observing the editor...`);
-                let editor = this.editorManager.currentEditor;
-
-                if (editor) {
-                    editor.editor.onDocumentContentChanged((e) => {
-                        console.info(e.contentChanges);
-                        this.resetTimer()
-                    })
-                }
-            }
-        });
     }
 
     private storeTime(): void {

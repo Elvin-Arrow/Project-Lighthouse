@@ -106,24 +106,20 @@ export class AssignmentsWidget extends ReactWidget {
     let flag = true;
     // Create assignment files if not already exisitng
     if (!this.assignmentService.assignmentFilesExist(assignment.name)) {
-      console.info('Files do not exist, creating files')
       flag = this.assignmentService.createAssignmentFiles(assignment);
-      console.info(`Files creation successful: ${flag}`);
     }
 
     if (flag) {
       this.assignmentService.curateAssignmentStats();
       // Acquire assignment path
       let assignmentPath = this.assignmentService.resolveAssignmentPath(assignment.name);
-      console.info(`Assignment resource path: ${assignmentPath}`);
+
       try {
         // Close current workspace
         if (this.workspaceService.opened) {
-          console.info(`A workspace is already openned`);
           const currentWorkspace = this.workspaceService.workspace?.resource;
 
           if (currentWorkspace != undefined) {
-            console.info(`Closing current workspace`);
             this.workspaceService.close();
           }
         }
@@ -133,6 +129,9 @@ export class AssignmentsWidget extends ReactWidget {
           preserveWindow: true,
         });
         this.store.set('assignmentId', assignment.id);
+        this.store.set('assignmentName', assignment.name);
+        this.store.set('assignmentArea', assignment.area);
+
       } catch (e) {
         console.error(`Error while opening workspace\n${e}`);
       }
@@ -143,6 +142,8 @@ export class AssignmentsWidget extends ReactWidget {
         } else {
           this.store.set('isAssignmentWorkspace', false);
           this.store.set('assignmentId', null);
+          this.store.set('assignmentName', null);
+          this.store.set('assignmentArea', null);
         }
         console.info(`Workspace changed!!!`);
         console.info(files.length);

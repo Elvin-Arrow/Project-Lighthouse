@@ -9,8 +9,6 @@ import { FileStat } from "@theia/filesystem/lib/common/files";
 export class LoggerService {
     private readonly store = new Store();
     private isAssignment: boolean;
-    private assignmentId: string = '';
-    private assignmentArea: string = '';
 
     /**
      * Looks for log file in the python debugpy log files and generates
@@ -64,20 +62,6 @@ export class LoggerService {
 
     }
 
-    public setAssignmentCredentials(id: string, area: string) {
-        console.info(`Setting assignment details\n${id}\n${area}`);
-
-        this.assignmentId = id;
-        this.assignmentArea = area;
-        this.isAssignment = true;
-    }
-
-    public unsetAssignmentCredentials() {
-        this.assignmentId = '';
-        this.assignmentArea = '';
-        this.isAssignment = false;
-    }
-
     public get baseAssignmentPath(): string {
         return path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'assignments.json');
     }
@@ -119,6 +103,9 @@ export class LoggerService {
     }
 
     private getExecutionLog(errorLog: Record<string, any> | null): Record<string, any> {
+        let id = this.store.get('assignmentId');
+        let area = this.store.get('assignmentArea');
+
         return {
             "id": nanoid(),
             "executionDate": this.getDate(),
@@ -129,8 +116,8 @@ export class LoggerService {
             "forAssignment": this.isAssignment,
             "assignment": this.isAssignment
                 ? {
-                    "id": this.assignmentId,
-                    "area": this.assignmentArea
+                    "id": id,
+                    "area": area
                 }
                 : {}
         };

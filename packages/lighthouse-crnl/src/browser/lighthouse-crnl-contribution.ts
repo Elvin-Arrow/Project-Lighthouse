@@ -15,8 +15,6 @@ import { DebugSessionManager } from '@theia/debug/lib/browser/debug-session-mana
 import { LoggerService } from "./log_service";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
 import Swal from 'sweetalert2'
-
-import * as fs from "fs";
 import { InterventionService } from "./intervention_service";
 
 
@@ -65,14 +63,6 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
                 console.info(filePath.path);
               }
 
-              if (this.isAssignmentDir()) {
-                let creds = this.getAssignmentCredentials();
-                console.info(`Acquired assignment details as: ${creds}`);
-
-                if (creds != null)
-                  this.loggerService.setAssignmentCredentials(creds.id, creds.area);
-              }
-
               this.loggerService.generateExecutionLog(this.isAssignmentDir()).then((wasError) => {
                 if (wasError) {
                   console.info(`Triggering intervention`);
@@ -103,7 +93,8 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
 
             Swal.fire({
               title: 'Submission successful',
-              text: 'Amazing you just submitted your assignment\nYour score: 10',
+              text: 'Amazing you just submitted your assignment',
+              footer: 'Your score: 10',
               icon: 'success',
             })
           });
@@ -117,32 +108,6 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
       return true;
     }
     return false;
-  }
-
-  private getAssignmentCredentials(): Record<string, any> | null {
-    let name = this.workspaceService.workspace?.name
-    let details = null;
-
-    if (name) {
-      console.info(`Current workspace name: ${name}`);
-      let slicedName = name.split('\\').reverse()[0];
-      console.info(`Sliced workspace named: ${slicedName}`);
-
-      let assignmentPath = this.loggerService.baseAssignmentPath;
-
-      let assignments = JSON.parse(fs.readFileSync(assignmentPath, 'utf-8'));
-      if (assignments)
-        assignments.forEach((assignment: Record<string, any>) => {
-          if (slicedName == assignment.name) {
-            console.info(`Current workspace: ${slicedName}`)
-            details = {
-              "id": assignment.id,
-              "area": assignment.area
-            };
-          }
-        });
-    }
-    return details;
   }
 }
 
