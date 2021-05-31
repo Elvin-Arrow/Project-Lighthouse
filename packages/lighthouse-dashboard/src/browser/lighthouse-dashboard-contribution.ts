@@ -11,6 +11,10 @@ export const LighthouseDashboardCommand: Command = {
 	id: "lighthouse-dashboard:command",
 };
 
+export const LighthouseDashboardDispose: Command = {
+	id: "lighthouse-dashboard:dispose",
+};
+
 @injectable()
 export class LighthouseDashboardContribution extends AbstractViewContribution<
 LighthouseDashboardWidget
@@ -56,5 +60,10 @@ LighthouseDashboardWidget
 			execute: () =>
 				super.openView({ activate: false, reveal: true, toggle: true }),
 		});
+
+		commands.registerCommand(LighthouseDashboardDispose, {
+			execute: () =>
+				super.closeView(),
+		})
 	}
 }
