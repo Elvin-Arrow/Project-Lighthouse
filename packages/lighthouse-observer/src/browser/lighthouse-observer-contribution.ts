@@ -51,7 +51,7 @@ export class LighthouseObserverCommandContribution implements CommandContributio
             this.storeTime();
 
             this.isActive = false;
-            this.store.set('inactive', this.isActive);
+            this.store.set('isActive', this.isActive);
         }, 300000);
     }
 
