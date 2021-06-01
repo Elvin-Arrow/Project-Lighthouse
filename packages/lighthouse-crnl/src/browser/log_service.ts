@@ -8,7 +8,6 @@ import { FileStat } from "@theia/filesystem/lib/common/files";
 
 export class LoggerService {
     private readonly store = new Store();
-    private isAssignment: boolean;
 
     /**
      * Looks for log file in the python debugpy log files and generates
@@ -18,7 +17,8 @@ export class LoggerService {
      * @param {boolean} isAssignment
      */
     public generateExecutionLog(isAssignment: boolean): Promise<boolean> {
-        this.isAssignment = isAssignment;
+        console.info(`Current workspace is an assignment workpsace: ${isAssignment}`);
+
         let wasError: boolean = false;
 
         let log: Record<string, any> = {};
@@ -44,9 +44,14 @@ export class LoggerService {
                             log = this.getExecutionLog(errLog);
                             this.storeExectionLog(log);
 
+                            // Update assignment stats
+                            this.updateAssignmentStats(errLog != null);
+
                             if (errLog) {
                                 // Execution resulted in an error
                                 wasError = true;
+
+                                // Setting exception for use in triggering intervention
                                 this.store.set('exception', errLog.exception);
                             }
                         }
@@ -106,6 +111,8 @@ export class LoggerService {
         let id = this.store.get('assignmentId');
         let area = this.store.get('assignmentArea');
 
+        console.info(`Generating log for\nAssignment id: ${id}\nAssignment area: ${area}`);
+
         return {
             "id": nanoid(),
             "executionDate": this.getDate(),
@@ -113,8 +120,8 @@ export class LoggerService {
             "user": this.store.get("username"),
             "wasError": errorLog != null,
             "error": errorLog != null ? errorLog : {},
-            "forAssignment": this.isAssignment,
-            "assignment": this.isAssignment
+            "forAssignment": this.store.get('isAssignmentWorkspace', false),
+            "assignment": this.store.get('isAssignmentWorkspace', false)
                 ? {
                     "id": id,
                     "area": area
@@ -125,7 +132,7 @@ export class LoggerService {
 
     private storeExectionLog(log: Record<string, any>): void {
         let previousLogs: Record<string, any>[] | null = null;
-        let store: Record<string, any>[] = [];
+        let storeLog: Record<string, any>[] = [];
 
         // Look for current user directory
         // Check to see if logs already exist
@@ -142,12 +149,12 @@ export class LoggerService {
                 previousLogs.push(log);
             }
 
-            store = previousLogs;
+            storeLog = previousLogs;
         } else {
-            store.push(log);
+            storeLog.push(log);
         }
 
-        fs.writeFileSync(logDir, JSON.stringify(store));
+        fs.writeFile(logDir, JSON.stringify(storeLog), (err) => console.error(err));
     }
 
     private removeLogFile(files: FileStat[]): void {
@@ -158,6 +165,37 @@ export class LoggerService {
         });
     }
 
+    private updateAssignmentStats(wasError: boolean): void {
+        if (this.store.get('isAssignmentWorkspace', false)) {
+            // Current workspace is an assignment workspace
+            const assignmentId = this.store.get('assignmentId');
+            const assignmentPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'stats.json');
+
+            if (fs.existsSync(assignmentPath)) {
+                console.info(`Updating assignment stats for assignment: ${assignmentId}`);
+                fs.readFile(assignmentPath, 'utf-8', (err, data) => {
+                    if (err) console.error(err);
+                    let stats: Record<string, any>[] = JSON.parse(data);
+
+                    if (Array.isArray(stats)) {
+                        stats.forEach(stat => {
+                            if (stat.id == assignmentId) {
+                                // Current assignment stat found
+                                console.info(`Assignment ${assignmentId} found in stats files`);
+                                // Update stats
+                                stat.numberOfCompilations++;
+                                if (wasError) stat.numberOfErrors++;
+
+                                console.info(`Updated assignment stats for the compilation to\n${stats.toString()}`);
+
+                                fs.writeFile(assignmentPath, JSON.stringify(stats), (err) => { if (err) console.error(err) });
+                            }
+                        });
+                    }
+                });
+            }
+        }
+    }
     /**
    * Returns current date in [day], [month] and [year] format
    * @returns string
