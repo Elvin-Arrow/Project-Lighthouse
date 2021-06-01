@@ -96,11 +96,11 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 		const data = [
 			{
 				name: 'Week 0',
-				Performance: 0,
+				Performance: 35,
 			},
 			{
 				name: 'Week 2',
-				Performance: 10,
+				Performance: 40,
 			},
 			{
 				name: 'Week 4',
@@ -124,11 +124,11 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 			},
 			{
 				name: 'Week 14',
-				Performance: 80,
+				Performance: 55,
 			},
 			{
 				name: 'Week 16',
-				Performance: 65,
+				Performance: 60,
 			},
 		];
 		return (
@@ -172,33 +172,33 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 						</tr>
 						<tr>
 							<td>Basics</td>
-							<td>2 (Class Average: 2)</td>
+							<td>4 (Class Average: 3)</td>
 							<td>9 (Class Average: 7)</td>
 							<td>Good</td>
 						</tr>
 						<tr>
 							<td>Conditionals</td>
-							<td>1 (Class Average: 1)</td>
-							<td>8 (Class Average: 8)</td>
+							<td>2 (Class Average: 2)</td>
+							<td>8 (Class Average: 7)</td>
 							<td>Good</td>
 						</tr>
 						<tr>
 							<td>Loops</td>
 							<td>1 (Class Average: 1)</td>
-							<td>8 (Class Average: 6)</td>
+							<td>6 (Class Average: 5)</td>
 							<td>Average</td>
 						</tr>
 						<tr>
 							<td>Lists</td>
 							<td>1 (Class Average: 1)</td>
-							<td>7 (Class Average: 6)</td>
+							<td>7 (Class Average: 7)</td>
 							<td>Average</td>
 						</tr>
 						<tr>
 							<td>Functions</td>
-							<td>-</td>
-							<td>-</td>
-							<td>-</td>
+							<td>1 (Class Average: 1)</td>
+							<td>9 (Class Average: 6)</td>
+							<td>Good</td>
 						</tr>
 					</table>
 				</div>
