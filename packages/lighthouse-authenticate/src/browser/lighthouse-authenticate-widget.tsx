@@ -114,6 +114,8 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
                     </button>
                   </div>
                 </form>
+                { // TODO: Fix the continue as guest button
+                /* {<button className="theia-button" title="Continue as guest" onClick={(_a) => this.dispose()}>Continue as guest</button>} */}
               </div>
             </div>
           </div>
@@ -133,6 +135,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
     this.authenticateionService.authenticate(this.username, this.password).then((wasSuccess) => {
       if (wasSuccess) {
         this.editorManager.closeAll().then(() => {
+          this.dispose();
           this.commandService.executeCommand(ElectronCommands.RELOAD.id);
         });
 
