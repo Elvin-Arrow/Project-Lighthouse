@@ -11,12 +11,12 @@ import {
   TabBarToolbarRegistry,
 } from "@theia/core/lib/browser/shell/tab-bar-toolbar";
 import { EditorManager } from "@theia/editor/lib/browser";
+import { WorkspaceService } from "@theia/workspace/lib/browser";
 import { DebugSessionManager } from '@theia/debug/lib/browser/debug-session-manager';
 import { LoggerService } from "./log_service";
-import { WorkspaceService } from "@theia/workspace/lib/browser";
 import Swal from 'sweetalert2'
 import { InterventionService } from "./intervention_service";
-
+import Store = require("electron-store");
 
 export const LighthouseCrnlCommand = {
   id: "LighthouseCrnl.command",
@@ -32,6 +32,7 @@ export const LighthouseSubmitCommand = {
 export class LighthouseCrnlCommandContribution implements CommandContribution {
   private readonly loggerService = new LoggerService();
   private interventionService: InterventionService;
+  private readonly store: Store = new Store();
 
   constructor(
     @inject(CommandService) private readonly commandService: CommandService,
@@ -40,7 +41,7 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     @inject(DebugSessionManager)
     private readonly debugSessionManager: DebugSessionManager,
     @inject(WorkspaceService)
-    private readonly workspaceService: WorkspaceService,
+    private readonly workspaceService: WorkspaceService
   ) {
     this.interventionService = new InterventionService(this.messageService, this.commandService);
   }
@@ -57,14 +58,13 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
 
               let filePath = editor?.getResourceUri();
 
-              this.commandService.executeCommand('AssignmentView.command');
-
               if (filePath) {
                 console.info(filePath.path);
               }
 
               this.loggerService.generateExecutionLog(this.isAssignmentDir()).then((wasError) => {
                 if (wasError) {
+                  this.commandService.executeCommand('AssignmentView.command');
                   console.info(`Triggering intervention`);
 
                   this.interventionService.triggerIntervention();
@@ -85,29 +85,60 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
           .then(() => {
 
             // TODO Write the submission logic
-            // Trigger the test case execution
+            // Trigger the test case execution 
+            Swal.showLoading();
 
-            // Acquire test execution result
+            // Open the test file
+            /* if (this.openTestFile()) {
+              // Run the tests
+              // this.commandService.executeCommand('python.runCurrentTestFile');
 
-            // Update scores
+              // Acquire test execution result
 
-            Swal.fire({
-              title: 'Submission successful',
-              text: 'Amazing you just submitted your assignment',
-              footer: 'Your score: 10',
-              icon: 'success',
-            })
+              // Update scores
+
+             
+            } */
+
+            setTimeout(() => {
+              Swal.hideLoading();
+              Swal.fire({
+                title: 'Submission successful',
+                text: 'Amazing you just submitted your assignment',
+                footer: 'Your score: 10',
+                icon: 'success',
+              });
+            }, 700);
+
+            // Swal.hideLoading();
           });
       }
     });
   }
 
   private isAssignmentDir(): boolean {
-    if (this.workspaceService.workspace?.name.includes('Assignment')) {
+    console.info(`Checking for assignment before generating log\nIs assignment workspace: ${this.store.get('isAssignmentWorkspace')}`);
+    if (this.store.get('isAssignmentWorkspace', false)) {
       console.info(`Assignment directory detected`);
       return true;
     }
     return false;
+  }
+
+  protected openTestFile(): boolean {
+    let files = this.workspaceService.workspace?.children
+    let isOpen = false;
+
+    if (files) {
+      files.forEach(file => {
+        if (file.name == 'a-test.py') {
+          this.editorManager.open(file.resource);
+          isOpen = true;
+        }
+      })
+    }
+
+    return isOpen;
   }
 }
 

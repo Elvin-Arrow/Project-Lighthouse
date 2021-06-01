@@ -17,23 +17,34 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 	}
 
 	public render(): React.ReactNode {
-		const username = this.store.get("username")
-		let content;
-		if (this.state.screen == "Dashboard") {
-			content = this.getDashContent()
-		}
-		else if (this.state.screen == "Report") {
-			content = this.getReportContent()
-		}
-		return (
-			<div id="container">
-				<div className="header">
-					<h2>Lighthouse Dashboard</h2>
-					<h6>Welcome {username}!</h6>
+		// Only render Dashboard if authenticated
+		if (this.store.get('authenticated')) {
+			const username = this.store.get("username")
+			let content;
+			if (this.state.screen == "Dashboard") {
+				content = this.getDashContent()
+			}
+			else if (this.state.screen == "Report") {
+				content = this.getReportContent()
+			}
+			return (
+				<div id="container">
+					<div className="header">
+						<h2>Lighthouse Dashboard</h2>
+						<h6>Welcome {username}!</h6>
+					</div>
+					<div>{content}</div>
 				</div>
-				<div>{content}</div>
-			</div>
-		);
+			);
+		} else {
+			return (
+				<div id="container">
+					<div className="header">
+						<h2>Lighthouse Dashboard</h2>
+						<h6>Please login to view the Dashboard!</h6>
+					</div>
+				</div>);
+		}
 	}
 
 	private getDashContent() {
@@ -75,6 +86,8 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 						<div>Conditionals</div>
 					</div>
 				</div>
+				{ // TODO: Fix the contine to editor button
+				/* {<div><button className="theia-button" title="Cotinue to editor" onClick={(_a) => this.props.commandService.executeCommand('lighthouse-dashboard:dispose')}>Continue to editor</button></div>} */}
 			</>
 		);
 	}
@@ -99,23 +112,23 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 			},
 			{
 				name: 'Week 8',
-				Performance: 50,
+				Performance: 15,
 			},
 			{
 				name: 'Week 10',
-				Performance: 60,
+				Performance: 45,
 			},
 			{
 				name: 'Week 12',
-				Performance: 80,
+				Performance: 60,
 			},
 			{
 				name: 'Week 14',
-				Performance: 90,
+				Performance: 80,
 			},
 			{
 				name: 'Week 16',
-				Performance: 90,
+				Performance: 65,
 			},
 		];
 		return (
@@ -125,7 +138,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 					<button className="theia-button" onClick={(_a) => this.setState({ screen: 'Dashboard' })}>Go to Dashboard</button>
 				</div>
 				<div className="left">
-					<div id="graph-container">
+					<div id="">
 						<LineChart width={420} height={220} data={data}>
 							<XAxis dataKey="name" />
 							<YAxis />

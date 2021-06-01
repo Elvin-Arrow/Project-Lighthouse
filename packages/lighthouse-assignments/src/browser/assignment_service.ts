@@ -63,7 +63,7 @@ export class AssignmentService {
         let statsPath = path.join(this.assignmentsBaseDir, 'stats.json')
 
         if (fs.existsSync(statsPath)) {
-            // Assinment stats exist append them
+            // Assinment stats exist append to them
             assignmentStats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
         }
 
@@ -71,13 +71,13 @@ export class AssignmentService {
         let assignments = JSON.parse(fs.readFileSync(assignmentsPath, 'utf-8'));
 
         if (Array.isArray(assignments)) {
-            console.info('Fetched the assignments array of length: ' + assignments.length);
             assignments.forEach((assignment) => {
-
                 if (!this.assignmentExists(assignmentStats, assignment.id)) {
                     assignmentStats.push({
                         "id": assignment.id,
                         "timespent": 0,
+                        "numberOfCompilations": 0,
+                        "numberOfErrors": 0,
                         "completed": false,
                         "score": 0
                     });

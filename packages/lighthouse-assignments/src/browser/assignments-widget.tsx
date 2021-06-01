@@ -15,8 +15,6 @@ export class AssignmentsWidget extends ReactWidget {
 
   private readonly store: Store = new Store();
 
-  // @inject(AssignmentService)
-  // private readonly assignmentService: AssignmentService;
   @inject(MessageService)
   private readonly messageService: MessageService;
 
@@ -76,33 +74,12 @@ export class AssignmentsWidget extends ReactWidget {
       console.error(`Error while firing the message service\n${e}`);
     }
 
-
-
-
     return assignments;
-    /* return (
-      <div id="assignment-container-1">
-        <AlertMessage type="INFO" header={assignmentName} />
-        <div className="sub-heading language">Language: Python</div>
-        <div className="sub-heading deadline">Deadline: 24th March, 2021</div>
-        <div className="text description">
-          Description: Ask the user for a number. Depending on whether the
-          number is even or odd, print out an appropriate message to the user.
-        </div>
-        <button
-          className="theia-button secondary"
-          title="Attempt assignment"
-          onClick={(_a) => this.attemptAssignment()}
-        >
-          Attempt
-        </button>
-      </div>
-     
-    ); */
   }
 
   public attemptAssignment(assignment: Record<string, any>): void {
     console.info(`Openning assignment...`);
+
     let flag = true;
     // Create assignment files if not already exisitng
     if (!this.assignmentService.assignmentFilesExist(assignment.name)) {
@@ -128,26 +105,17 @@ export class AssignmentsWidget extends ReactWidget {
         this.workspaceService.open(new URI().resolve(assignmentPath), {
           preserveWindow: true,
         });
+
+        console.info(`Setting assignment info as\nAssignment ID: ${assignment.id}\nAssignment name: ${assignment.name}\nAssignment area: ${assignment.area}`);
+
         this.store.set('assignmentId', assignment.id);
         this.store.set('assignmentName', assignment.name);
         this.store.set('assignmentArea', assignment.area);
+        this.store.set('isAssignmentWorkspace', true);
 
       } catch (e) {
         console.error(`Error while opening workspace\n${e}`);
       }
-
-      this.workspaceService.onWorkspaceChanged((files) => {
-        if (this.assignmentService.isAssignmentWorkspace(files)) {
-          this.store.set('isAssignmentWorkspace', true);
-        } else {
-          this.store.set('isAssignmentWorkspace', false);
-          this.store.set('assignmentId', null);
-          this.store.set('assignmentName', null);
-          this.store.set('assignmentArea', null);
-        }
-        console.info(`Workspace changed!!!`);
-        console.info(files.length);
-      });
 
       this.dispose();
     } else {
@@ -155,8 +123,5 @@ export class AssignmentsWidget extends ReactWidget {
         "Could not open the assignment"
       );
     }
-
-
-
   }
 }

@@ -64,6 +64,7 @@ export class WidgetTestWidget extends ReactWidget {
     let instructionsBtn = null;
     let submitBtn = null;
 
+    // Only show assignment controls if it is an assignment workspace
     if (this.isAssignmentWorkspace) {
       instructionsBtn = <div className="">
         <button
@@ -82,11 +83,14 @@ export class WidgetTestWidget extends ReactWidget {
       <div id="toolbox-container">
         <button className="theia-button" title="Launch Dashboard" onClick={(_a) => this.showDashboard()}>View Dashboard</button>
 
-        {instructionsBtn}
-
-        <button className="theia-button" title="Toggle error highlighting" onClick={(_a) => this.commandService.executeCommand('errorLens.toggle')}>Toggle error highlighting</button>
+        {
+          // TODO: Add an assignments controls highlighting
+          instructionsBtn
+        }
 
         {submitBtn}
+
+        <button className="theia-button" title="Toggle error highlighting" onClick={(_a) => this.commandService.executeCommand('errorLens.toggle')}>Toggle error highlighting</button>
 
         <button className="theia-button secondary" title="Launch Dashboard" onClick={(_a) => this.logout()}>Logout</button>
       </div>
@@ -101,11 +105,13 @@ export class WidgetTestWidget extends ReactWidget {
     this.store.delete("authenticated");
     this.store.delete("username");
 
-    // this.refreshWorkspace();
     if (this.workspaceService.opened) {
       this.workspaceService.close();
     } else {
       this.editorManager.closeAll().then(() => {
+        if (this.store.get('isAssignmentWorkspace')) {
+          this.commandService.executeCommand('lighthouse-dashboard:dispose');
+        }
         this.commandService.executeCommand(ElectronCommands.RELOAD.id);
       });
 
