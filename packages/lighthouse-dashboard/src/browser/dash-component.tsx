@@ -3,7 +3,9 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import Store = require("electron-store");
 import { CommandService } from "@theia/core";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-
+import fs = require('fs');
+import path = require("path");
+const homedir = require('os').homedir();
 
 export class DashComponent extends React.Component<{ commandService: CommandService }, { screen: string, }> {
 	private readonly store = new Store();
@@ -48,29 +50,31 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 	}
 
 	private getDashContent() {
+		const performanceScores = this.getPerformanceScores();
+
 		return (
 			<>
 				<div className="left">
 					<h5>Progress</h5>
 					<div className="progress-block">
 						<div className="section-title">Basics</div>
-						<ProgressBar completed={80} bgColor={'#0E639C'} />
+						<ProgressBar completed={performanceScores[0] ?? 0} bgColor={'#0E639C'} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Conditionals</div>
-						<ProgressBar completed={50} bgColor={'#0E639C'} />
+						<ProgressBar completed={performanceScores[1] ?? 0} bgColor={'#0E639C'} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Loops</div>
-						<ProgressBar completed={30} bgColor={'#0E639C'} />
+						<ProgressBar completed={performanceScores[2] ?? 0} bgColor={'#0E639C'} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Lists</div>
-						<ProgressBar completed={20} bgColor={'#0E639C'} />
+						<ProgressBar completed={performanceScores[3] ?? 0} bgColor={'#0E639C'} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Functions</div>
-						<ProgressBar completed={10} bgColor={'#0E639C'} />
+						<ProgressBar completed={performanceScores[4] ?? 0} bgColor={'#0E639C'} />
 					</div>
 					<button className="theia-button secondary" title="View full report" onClick={(_a) => this.setState({ screen: 'Report' })}>View Full Report</button>
 				</div>
@@ -206,14 +210,36 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 		);
 	}
 
-	protected viewResources(): void {
+	private getPerformanceScores(): Array<number> {
+		let userPerformanceStats: Array<number> = [];
+
+		// Get current user
+		const username = this.store.get('username');
+
+		// Read the performance stats
+		const performanceStatsDir = path.join(homedir, 'lighthouse', `${username}`, 'performance_stats.json');
+
+		if (fs.existsSync(performanceStatsDir)) {
+			let performanceStats = JSON.parse(fs.readFileSync(performanceStatsDir, 'utf-8'));
+
+			// Always true
+			if (Array.isArray(performanceStats)) {
+				performanceStats.forEach(stat => {
+					userPerformanceStats.push(stat.performanceScore);
+				});
+			}
+		}
+		return userPerformanceStats;
+	}
+
+	private viewResources(): void {
 		console.info('Attempting to view resources...');
 		this.props.commandService.executeCommand("lighthouse-resources:command").then(() => {
 			console.info('Resources opened');
 		});
 	}
 
-	protected attemptAssignments(): void {
+	private attemptAssignments(): void {
 		console.info('Attempting to view assignments...');
 		this.props.commandService.executeCommand("assignments:command");
 	}
