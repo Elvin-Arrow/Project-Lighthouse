@@ -19,12 +19,9 @@ export class AssignmentService {
         return assignmentsData;
     }
 
-
     public get assignmentsBaseDir(): string {
-        return path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments');
+        return path.join(process.cwd(), 'resources');
     }
-
-
 
     public resolveAssignmentPath(assignmentName: string): string {
         // const resourcePath = path.join(process.cwd(), 'resources', 'assignments', assignmentPath);
@@ -60,7 +57,7 @@ export class AssignmentService {
 
     public curateAssignmentStats(): void {
         let assignmentStats: Record<string, any>[] = [];
-        let statsPath = path.join(this.assignmentsBaseDir, 'stats.json')
+        let statsPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'stats.json');
 
         if (fs.existsSync(statsPath)) {
             // Assinment stats exist append to them

@@ -81,6 +81,11 @@ export class AssignmentsWidget extends ReactWidget {
     console.info(`Openning assignment...`);
 
     let flag = true;
+
+    // Acquire assignment path
+    let assignmentPath = this.assignmentService.resolveAssignmentPath(assignment.name);
+    console.info(`Assignment path: ${assignmentPath}`);
+
     // Create assignment files if not already exisitng
     if (!this.assignmentService.assignmentFilesExist(assignment.name)) {
       flag = this.assignmentService.createAssignmentFiles(assignment);
@@ -88,8 +93,7 @@ export class AssignmentsWidget extends ReactWidget {
 
     if (flag) {
       this.assignmentService.curateAssignmentStats();
-      // Acquire assignment path
-      let assignmentPath = this.assignmentService.resolveAssignmentPath(assignment.name);
+      console.info(`Checking workspace status`);
 
       try {
         // Close current workspace
@@ -100,6 +104,8 @@ export class AssignmentsWidget extends ReactWidget {
             this.workspaceService.close();
           }
         }
+
+        console.info(`Assignment URI: ${new URI().resolve(assignmentPath)}`);
 
         // Open the selected assignment workspace
         this.workspaceService.open(new URI().resolve(assignmentPath), {
