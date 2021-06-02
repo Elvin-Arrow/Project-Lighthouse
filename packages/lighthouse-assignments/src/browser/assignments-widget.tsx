@@ -46,7 +46,7 @@ export class AssignmentsWidget extends ReactWidget {
       assignmentsData = this.assignmentService.getAssignments();
       assignmentsData.forEach((assignment) => {
         assignments.push(
-          <div id="assignment-container-1">
+          <div id="assignment-container-1 pad">
             <AlertMessage type="INFO" header={assignment.title} />
             <div className="text description">
               Description: {assignment.description}

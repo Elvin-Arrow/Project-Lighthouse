@@ -1,11 +1,16 @@
 #widget-container h2 {
-    color: var(--theia-ui-font-color1);
-    font-size: 12px;
-    font-weight: 400;
-    padding: 10px;
-    text-transform: uppercase;
+  color: var(--theia-ui-font-color1);
+  font-size: 12px;
+  font-weight: 400;
+  padding: 10px;
+  text-transform: uppercase;
 }
 
-.sub-heading, .text {
-    padding: 5px 5px 5px 10px;
+.sub-heading,
+.text {
+  padding: 5px 5px 5px 10px;
+}
+
+#pad {
+  padding: 2.5%;
 }
