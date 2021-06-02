@@ -44,6 +44,7 @@ export class AssignmentService {
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'main.py'), assignment.files.main,)
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'instructions.md'), assignment.files.instructions,);
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'a-test.py'), assignment.files.test,)
+            fs.writeFileSync(this.resolveResourcePath(assignment.name, 'testing_copy.py'), '',)
 
 
             this.writeDebugConfiguration(this.resolveResourcePath(path.join(assignment.name, '.theia'), 'launch.json'));
