@@ -1,7 +1,6 @@
 import Store = require("electron-store");
-const path = require("path");
+import path = require("path");
 const homedir = require('os').homedir();
-
 import * as fs from "fs";
 
 export class AuthenticationService {
@@ -39,6 +38,13 @@ export class AuthenticationService {
                     }
 
                 }
+
+                try {
+                    this.generatePerformanceStats(username);
+                } catch (err) {
+                    reject(err);
+                }
+
                 resolve(true);
             } else {
                 reject(new Error('Failed to authenticate user'));
@@ -85,5 +91,43 @@ export class AuthenticationService {
 
         if (!fs.existsSync(configFilePath))
             fs.writeFile(configFilePath, JSON.stringify(config), (err => { console.error(err); }))
+    }
+
+    private generatePerformanceStats(username: string): void {
+        const performanceStatsDir = path.join(homedir, 'lighthouse', `${username}`, 'performance_stats.json');
+
+        if (fs.existsSync(performanceStatsDir)) {
+            return
+        } else {
+            const stats =
+                [
+                    {
+                        "area": "basics",
+                        "performanceScore": 0,
+                        "standing": "",
+                    },
+                    {
+                        "area": "conditionals",
+                        "performanceScore": 0,
+                        "standing": "",
+                    },
+                    {
+                        "area": "loops",
+                        "performanceScore": 0,
+                        "standing": "",
+                    },
+                    {
+                        "area": "lists",
+                        "performanceScore": 0,
+                        "standing": "",
+                    },
+                    {
+                        "area": "functions",
+                        "performanceScore": 0,
+                        "standing": "",
+                    }
+                ];
+            fs.writeFile(performanceStatsDir, JSON.stringify(stats), (err) => { if (err) throw err });
+        }
     }
 }
