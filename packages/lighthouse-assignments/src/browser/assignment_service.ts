@@ -9,7 +9,8 @@ export class AssignmentService {
 
     public getAssignments(): Record<string, any>[] {
         // Look for assignments in the home directory
-        const assignmentPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'assignments.json');
+        // const assignmentPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'assignments.json');
+        const assignmentPath = path.join(process.cwd(), 'resources', 'assignments.json');
 
         let rawJson = fs.readFileSync(assignmentPath, "utf-8");
 
@@ -44,8 +45,6 @@ export class AssignmentService {
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'main.py'), assignment.files.main,)
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'instructions.md'), assignment.files.instructions,);
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'a-test.py'), assignment.files.test,)
-            fs.writeFileSync(this.resolveResourcePath(assignment.name, 'testing_copy.py'), '',)
-
 
             this.writeDebugConfiguration(this.resolveResourcePath(path.join(assignment.name, '.theia'), 'launch.json'));
 
