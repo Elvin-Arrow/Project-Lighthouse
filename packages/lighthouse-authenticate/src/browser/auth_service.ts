@@ -83,7 +83,8 @@ export class AuthenticationService {
                 "**/.DS_Store": true,
                 "a-test.*": true,
                 ".theia": true,
-                "instructions.md": true
+                "instructions.md": true,
+                "testing_copy.py": true
             }
         };
 
