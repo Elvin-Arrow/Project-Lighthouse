@@ -13,9 +13,12 @@ import {
 import { EditorManager } from "@theia/editor/lib/browser";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
 import { DebugSessionManager } from '@theia/debug/lib/browser/debug-session-manager';
+import { TerminalService } from "@theia/terminal/lib/browser/base/terminal-service";
 import { LoggerService } from "./log_service";
 import Swal from 'sweetalert2'
 import { InterventionService } from "./intervention_service";
+import { CompilationService } from "./compile_service";
+
 import Store = require("electron-store");
 
 export const LighthouseCrnlCommand = {
@@ -32,6 +35,7 @@ export const LighthouseSubmitCommand = {
 export class LighthouseCrnlCommandContribution implements CommandContribution {
   private readonly loggerService = new LoggerService();
   private interventionService: InterventionService;
+  private compilationService: CompilationService;
   private readonly store: Store = new Store();
 
   constructor(
@@ -41,9 +45,12 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     @inject(DebugSessionManager)
     private readonly debugSessionManager: DebugSessionManager,
     @inject(WorkspaceService)
-    private readonly workspaceService: WorkspaceService
+    private readonly workspaceService: WorkspaceService,
+    @inject(TerminalService)
+    private readonly terminalService: TerminalService,
   ) {
     this.interventionService = new InterventionService(this.messageService, this.commandService);
+    this.compilationService = new CompilationService(this.workspaceService, this.editorManager);
   }
 
   registerCommands(registry: CommandRegistry): void {
@@ -80,7 +87,25 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
 
     registry.registerCommand(LighthouseSubmitCommand, {
       execute: () => {
-        this.commandService
+        Swal.showLoading();
+        this.terminalService.newTerminal({
+          title: "Program test",
+          useServerTitle: false
+        }).then(term => {
+          term.start().then((id) => {
+            term.activate();
+            term.show();
+
+
+            let programPath = this.compilationService.getTestProgramPath();
+
+            if (programPath) {
+              term.sendText(`python ${programPath}\n`);
+            }
+          });
+
+        });
+        /* this.commandService
           .executeCommand("workbench.action.debug.start")
           .then(() => {
 
@@ -89,7 +114,7 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
             Swal.showLoading();
 
             // Open the test file
-            /* if (this.openTestFile()) {
+            if (this.openTestFile()) {
               // Run the tests
               // this.commandService.executeCommand('python.runCurrentTestFile');
 
@@ -98,7 +123,7 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
               // Update scores
 
              
-            } */
+            }
 
             setTimeout(() => {
               Swal.hideLoading();
@@ -111,7 +136,7 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
             }, 700);
 
             // Swal.hideLoading();
-          });
+          }); */
       }
     });
   }
@@ -125,21 +150,7 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     return false;
   }
 
-  protected openTestFile(): boolean {
-    let files = this.workspaceService.workspace?.children
-    let isOpen = false;
 
-    if (files) {
-      files.forEach(file => {
-        if (file.name == 'a-test.py') {
-          this.editorManager.open(file.resource);
-          isOpen = true;
-        }
-      })
-    }
-
-    return isOpen;
-  }
 }
 
 
