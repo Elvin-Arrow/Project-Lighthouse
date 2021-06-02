@@ -1,16 +1,132 @@
 [
   {
-    "assignmentNumber": 1,
-    "title": "Sum calculation",
-    "description": "Take two numbers as input from the user and display it's sum",
-    "solvingTime": "5 mins",
-    "assignmentPath": "assignment-1"
+    "id": "qBWV65WipdQEYKo8qKgSU",
+    "name": "BA1",
+    "title": "Playing with variables",
+    "description": "An assignment to practice programming basics",
+    "area": "basics",
+    "solvingTime": 0,
+    "files": {
+      "instructions": "Translate the following algorithm into Python code:\n- Step 1: Use a variable named miles with initial value 100.\n- Step 2: Multiply miles by 1.609 and assign it to a variable named kilometers.\n- Step 3: Display the value of kilometers.\n\nWhat is kilometers after Step 3?\n\n\n",
+      "main": "# Write your code here 👇\n",
+      "test": ""
+    }
   },
   {
-    "assignmentNumber": 2,
-    "title": "Factorial calculation",
-    "description": "Write a program to calculate the factorial of a given number",
-    "solvingTime": "5 mins",
-    "assignmentPath": "assignment-2"
+    "id": "wZP8XGAZ4tZrL-Rzvwf1j",
+    "name": "BA2",
+    "title": "User input and variable manipulation",
+    "description": "Compute the volume of a cylinder",
+    "area": "basics",
+    "solvingTime": 0,
+    "files": {
+      "instructions": "(Compute the volume of a cylinder) Write a program that reads in the radius and\nlength of a cylinder and computes the area and volume using the following formulas:\n\n$area = radius * radius * π$\n$volume = area * length$\n\nHere is a sample run:\n\n```python\nEnter the radius and length of a cylinder: 5.5, 12\n\nThe area is 95.0331\nThe volume is 1140.4\n```",
+      "main": "# Write your code here 👇\n",
+      "test": ""
+    }
+  },
+  {
+    "id": "WJD6wdYlGvCCk5Ytw7kgT",
+    "name": "CA1",
+    "title": "Check a number",
+    "description": "An assignment to practice conditional programming ",
+    "area": "conditionals",
+    "solvingTime": 0,
+    "files": {
+      "instructions": "(Check a number) Write a program that prompts the user to enter an integer and\nchecks whether the number is divisible by both 5 and 6, divisible by 5 or 6, or just\none of them (but not both). Here is a sample run:\n\n```python\nEnter an integer: 10\nIs 10 divisible by 5 and 6? False\nIs 10 divisible by 5 or 6? True\nIs 10 divisible by 5 or 6, but not both? True\n```",
+      "main": "# Write your code here 👇\n",
+      "test": ""
+    }
+  },
+  {
+    "id": "Xlsf44i-eMahX1u4WizpT",
+    "name": "CA2",
+    "title": "Financial: compare costs",
+    "description": "An assignment to practice conditional programming",
+    "area": "conditionals",
+    "solvingTime": 0,
+    "files": {
+      "instructions": "(Financial: compare costs) Suppose you shop for rice and find it in two different sized\npackages. You would like to write a program to compare the costs of the packages. The program prompts the user to enter the weight and price of each package and then displays the one with the better price. Here is a sample run:\n\n```python\nEnter weight and price for package 1: 50, 24.59\nEnter weight and price for package 2: 25, 11.99\nPackage 1 has the better price.\n```",
+      "main": "# Write your code here 👇\n",
+      "test": ""
+    }
+  },
+  {
+    "id": "vJc8RfwWqQ1qWTwYtghu7",
+    "name": "FA1",
+    "title": "Sum the digits in an integer",
+    "description": "An assignment to practice functions",
+    "area": "functions",
+    "solvingTime": 0,
+    "files": {
+      "instructions": "(Sum the digits in an integer) Write a function that computes the sum of the digits\nin an integer. Use the following function header:\n\n```python\ndef sumDigits(n):\n```\n\nFor example, sumDigits(234) returns 9 $(2 + 3 + 4)$  (Hint: Use the % operator\nto extract digits, and the // operator to remove the extracted digit. For instance, to\nextract 4 from 234, use $234 % (= 4)$. To remove 4 from 234, use $234 // 10 (=23)$. Use a loop to repeatedly extract and remove the digits until all the digits\nare extracted.) Write a test program that prompts the user to enter an integer and\ndisplays the sum of all its digits.",
+      "main": "# Write your code here 👇\n",
+      "test": ""
+    }
+  },
+  {
+    "id": "V94myvEK-jvPcsrWkQdOY",
+    "name": "FA2",
+    "title": "Palindrome integer",
+    "description": "An assignment to practice functions",
+    "area": "functions",
+    "solvingTime": 0,
+    "files": {
+      "instructions": "(Palindrome integer) Write the functions with the following headers:\n\n```python\n# Return the reversal of an integer, e.g. reverse(456) returns\n# 654\ndef reverse(number):\n# Return true if number is a palindrome\ndef isPalindrome(number):\n```\n\nUse the reverse function to implement isPalindrome. A number is a palindrome\nif its reversal is the same as itself. Write a test program that prompts the\nuser to enter an integer and reports whether the integer is a palindrome.",
+      "main": "# Write your code here 👇\n",
+      "test": ""
+    }
+  },
+  {
+    "id": "QgKPbnCyRx2RIOI_kmSbH",
+    "name": "LA1",
+    "title": "Reverse the numbers entered",
+    "description": "An assignment to practice use of lists in everyday programming",
+    "area": "lists",
+    "solvingTime": 0,
+    "files": {
+      "instructions": "(Reverse the numbers entered) Write a program that reads a list of integers and\ndisplays them in the reverse order in which they were read.",
+      "main": "# Write your code here 👇\n",
+      "test": ""
+    }
+  },
+  {
+    "id": "41awBKDuYMEpaM8AhtQBk",
+    "name": "LA2",
+    "title": "Assign grades",
+    "description": "An assignment to practice use of lists in everyday programming",
+    "area": "lists",
+    "solvingTime": 0,
+    "files": {
+      "instructions": "(Assign grades) Write a program that reads a list of scores and then assigns grades\nbased on the following scheme:\nThe grade is A if score is $>=$ best – 10.\nThe grade is B if score is $>=$ best – 20.\nThe grade is C if score is $>=$ best – 30.\nThe grade is D if score is $>=$ best – 40.\nThe grade is F otherwise.\nHere is a sample run:\n\n```python\nEnter scores: 40, 55, 70, 58\nStudent 0 score is 40 and grade is C\nStudent 1 score is 55 and grade is B\nStudent 2 score is 70 and grade is A\nStudent 3 score is 58 and grade is B\n```",
+      "main": "# Write your code here 👇\n",
+      "test": ""
+    }
+  },
+  {
+    "id": "vK5HMamgm_D4Q7e-k90hd",
+    "name": "LPA1",
+    "title": "Find the largest n",
+    "description": "An assignment to practice loop based scenarios",
+    "area": "loops",
+    "solvingTime": 0,
+    "files": {
+      "instructions": "(Find the largest $n$ such that $n^3 <$ 12,000) Use a **while** loop to find the largest integer $n$ such that $n^3$ is less than 12,000.",
+      "main": "# Write your code here 👇\n",
+      "test": ""
+    }
+  },
+  {
+    "id": "bauMfeTR1hOX-XOQpNnLm",
+    "name": "LPA2",
+    "title": "Find the two highest scores",
+    "description": "An assignment to practice loop based scenarios",
+    "area": "loops",
+    "solvingTime": 0,
+    "files": {
+      "instructions": "(Find the two highest scores) Write a program that prompts the user to enter the\nnumber of students and each student’s score, and displays the highest and second highest scores.",
+      "main": "# Write your code here 👇\n",
+      "test": ""
+    }
   }
 ]
