@@ -51,6 +51,8 @@ LighthouseDashboardWidget
 
 	async onStart(app: FrontendApplication): Promise<void> {
 		this.listenToWorkspaceChanges();
+		this.store.delete('isActive'); // Set user as inactive
+
 		if (this.store.get('authenticated')) {
 			this.stateService.reachedState('ready').then(
 				() => {
