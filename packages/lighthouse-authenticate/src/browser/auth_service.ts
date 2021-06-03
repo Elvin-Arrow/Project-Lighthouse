@@ -84,7 +84,9 @@ export class AuthenticationService {
                 "a-test.*": true,
                 ".theia": true,
                 "instructions.md": true,
-                "testing_copy.py": true
+                "testing_copy.py": true,
+                "__pycache__": true,
+                "testing.log": true
             }
         };
 
