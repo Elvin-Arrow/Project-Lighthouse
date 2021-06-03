@@ -8,6 +8,7 @@ import { ElectronCommands } from "@theia/core/lib/electron-browser/menu/electron
 import { EditorManager } from "@theia/editor/lib/browser";
 import Store = require("electron-store");
 
+
 @injectable()
 export class WidgetTestWidget extends ReactWidget {
   static readonly ID = "lighthouse-toolbox:widget";
@@ -63,6 +64,7 @@ export class WidgetTestWidget extends ReactWidget {
   private renderToolbox(): React.ReactNode {
     let instructionsBtn = null;
     let submitBtn = null;
+    // let errLens = this.store.get('errLens', true);
 
     // Only show assignment controls if it is an assignment workspace
     if (this.isAssignmentWorkspace) {
