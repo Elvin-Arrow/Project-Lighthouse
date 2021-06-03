@@ -82,6 +82,8 @@ export class AssignmentsWidget extends ReactWidget {
 
     let flag = true;
 
+    // TODO: Check if assignment is already attempted
+
     // Acquire assignment path
     let assignmentPath = this.assignmentService.resolveAssignmentPath(assignment.name);
     console.info(`Assignment path: ${assignmentPath}`);
