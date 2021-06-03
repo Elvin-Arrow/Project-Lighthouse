@@ -73,15 +73,18 @@
     "@theia/terminal": "latest",
     "@theia/userstorage": "latest",
     "@theia/workspace": "latest",
+    "@types/react-syntax-highlighter": "^13.5.0",
     "assignment-view": "0.0.1",
     "electron-store": "latest",
     "lighthouse-resources": "0.0.1",
     "nanoid": "3.1.23",
+    "prop-types": "^15.7.2",
     "react-loading": "latest",
     "react-native-paper": "latest",
-    "sweetalert2": "11.0.9",
+    "react-syntax-highlighter": "latest",
+    "react-toggle-button": "^2.2.0",
     "recharts": "latest",
-    "react-syntax-highlighter": "latest"
+    "sweetalert2": "11.0.9"
   },
   "devDependencies": {
     "@theia/cli": "latest",
