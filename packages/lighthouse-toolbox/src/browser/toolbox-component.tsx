@@ -10,6 +10,10 @@ export class Toolbox extends React.Component<{ workspaceService: WorkspaceServic
 
     constructor(props: { workspaceService: WorkspaceService, commandService: CommandService, editorManager: EditorManager }) {
         super(props);
+
+        // this.state = {
+        // 	screen: "python"
+        // };
     }
 
     public render(): React.ReactNode {
@@ -20,6 +24,7 @@ export class Toolbox extends React.Component<{ workspaceService: WorkspaceServic
         // Only show assignment controls if it is an assignment workspace
         if (this.isAssignmentWorkspace) {
             instructionsBtn = <div className="">
+
                 <button
                     className="theia-button secondary"
                     title="View instructions"
@@ -27,9 +32,8 @@ export class Toolbox extends React.Component<{ workspaceService: WorkspaceServic
                 >
                     View instructions
                 </button>
+
             </div>
-
-
 
             submitBtn = <button className="theia-button" title="Submit assignment" onClick={(_a) => this.props.commandService.executeCommand('LighthouseCrnl.submit')}>Submit assignment</button>
         }
@@ -47,10 +51,11 @@ export class Toolbox extends React.Component<{ workspaceService: WorkspaceServic
 
                 <button className="theia-button" title="Toggle error highlighting" onClick={(_a) => this.props.commandService.executeCommand('errorLens.toggle')}>Toggle error highlighting</button>
 
+                {/* <ToggleButton icon={LabelIcon} ></ToggleButton> */}
+
                 <button className="theia-button secondary" title="Launch Dashboard" onClick={(_a) => this.logout()}>Logout</button>
             </div>
         );
-
     }
 
     private get isAssignmentWorkspace(): boolean {
@@ -85,8 +90,6 @@ export class Toolbox extends React.Component<{ workspaceService: WorkspaceServic
                 }
                 this.props.commandService.executeCommand(ElectronCommands.RELOAD.id);
             });
-
         }
-
     }
 }
