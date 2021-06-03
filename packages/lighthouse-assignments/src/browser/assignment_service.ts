@@ -72,6 +72,7 @@ export class AssignmentService {
                 if (!this.assignmentExists(assignmentStats, assignment.id)) {
                     assignmentStats.push({
                         "id": assignment.id,
+                        "area": assignment.area,
                         "timespent": 0,
                         "numberOfCompilations": 0,
                         "numberOfErrors": 0,
