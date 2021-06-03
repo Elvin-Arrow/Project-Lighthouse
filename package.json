@@ -98,7 +98,10 @@
 	"build": {
 		"appId": "com.lighthouse.ide",
 		"productName": "Lighthouse Editor",
-		"target": "NSIS"
+		"win": {
+			"target": "nsis",
+			"icon": "resources/icon.ico"
+		}
 	},
 	"workspaces": [
 		"packages/*"
