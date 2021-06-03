@@ -101,3 +101,7 @@ lighthouse-python/Scripts/pip3.9.exe
 lighthouse-python/Scripts/pip3.exe
 lighthouse-python/Scripts/python.exe
 lighthouse-python/Scripts/pythonw.exe
+dist/Lighthouse Editor Setup 1.2.0.exe
+dist/Lighthouse Editor Setup 1.2.0.exe.blockmap
+dist/win-unpacked/Lighthouse Editor.exe
+dist/win-unpacked/resources/app.asar
