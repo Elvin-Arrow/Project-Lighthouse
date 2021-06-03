@@ -4,8 +4,6 @@ import * as React from "react";
 import { EditorManager } from "@theia/editor/lib/browser";
 import Store = require("electron-store");
 import { ElectronCommands } from "@theia/core/lib/electron-browser/menu/electron-menu-contribution";
-import { ToggleButton } from "react-native-paper";
-import { LabelIcon } from "@theia/core/lib/browser/label-parser";
 
 export class Toolbox extends React.Component<{ workspaceService: WorkspaceService, commandService: CommandService, editorManager: EditorManager }, {}> {
     private readonly store: Store = new Store();
@@ -29,9 +27,6 @@ export class Toolbox extends React.Component<{ workspaceService: WorkspaceServic
                 >
                     View instructions
                 </button>
-
-                <ToggleButton icon={LabelIcon} ></ToggleButton>
-
             </div>
 
 
