@@ -18,6 +18,7 @@ import { LoggerService } from "./log_service";
 import Swal from 'sweetalert2'
 import { InterventionService } from "./intervention_service";
 import { CompilationService } from "./compile_service";
+import { SubmissionService } from "./submission-service";
 
 import Store = require("electron-store");
 
@@ -34,6 +35,7 @@ export const LighthouseSubmitCommand = {
 @injectable()
 export class LighthouseCrnlCommandContribution implements CommandContribution {
   private readonly loggerService = new LoggerService();
+  private readonly submissionService: SubmissionService = new SubmissionService();
   private interventionService: InterventionService;
   private compilationService: CompilationService;
   private readonly store: Store = new Store();
@@ -60,83 +62,82 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
         this.commandService
           .executeCommand("workbench.action.debug.start")
           .then(() => {
-            this.debugSessionManager.onDidDestroyDebugSession(() => {
-              let editor = this.editorManager.currentEditor
+            if (this.store.get('isAssignmentWorkspace'))
+              this.debugSessionManager.onDidDestroyDebugSession(() => {
+                let editor = this.editorManager.currentEditor
 
-              let filePath = editor?.getResourceUri();
+                let filePath = editor?.getResourceUri();
 
-              if (filePath) {
-                console.info(filePath.path);
-              }
-
-              this.loggerService.generateExecutionLog(this.isAssignmentDir()).then((wasError) => {
-                if (wasError) {
-                  this.commandService.executeCommand('AssignmentView.command');
-                  console.info(`Triggering intervention`);
-
-                  this.interventionService.triggerIntervention();
+                if (filePath) {
+                  console.info(filePath.path);
                 }
-              }, (reason) => {
-                console.error(reason);
-              });
 
-            })
+                this.loggerService.generateExecutionLog(this.isAssignmentDir()).then((wasError) => {
+                  if (wasError) {
+                    this.commandService.executeCommand('AssignmentView.command');
+                  }
+
+                  console.info(`Triggering intervention`);
+                  this.interventionService.triggerIntervention();
+                }, (reason) => {
+                  console.error(reason);
+                });
+
+              })
           });
       },
     });
 
     registry.registerCommand(LighthouseSubmitCommand, {
       execute: () => {
+        Swal.fire({ title: "Processing assignment", icon: 'info' });
         Swal.showLoading();
+
         this.terminalService.newTerminal({
           title: "Program test",
           useServerTitle: false
         }).then(term => {
-          term.start().then((id) => {
+          term.start().then(() => {
             term.activate();
+            this.terminalService.open(term);
             term.show();
-
 
             let programPath = this.compilationService.getTestProgramPath();
 
             if (programPath) {
-              term.sendText(`python ${programPath}\n`);
+              term.sendText(`python ${programPath}\n\r`);
+
+              setTimeout(() => {
+                const score = this.submissionService.processAssignmentSubmission();
+
+                Swal.hideLoading();
+                Swal.fire({
+                  title: score >= 5 ? 'Submission successful' : 'You can do better 😟',
+                  text: this.submissionService.getSubmissionMessage(score),
+                  footer: `Your score: ${score}`,
+                  icon: score >= 5 ? 'success' : 'warning',
+                });
+
+                term.close();
+              }, 1000)
+
+
+            } else {
+              setTimeout(() => {
+                term.close();
+                term.dispose();
+                Swal.hideLoading();
+                Swal.fire({
+                  title: 'Submission failed',
+                  text: 'Couldn\'t submit the assignment',
+                  icon: 'error',
+                });
+              }, 250);
             }
+
           });
 
         });
-        /* this.commandService
-          .executeCommand("workbench.action.debug.start")
-          .then(() => {
-
-            // TODO Write the submission logic
-            // Trigger the test case execution 
-            Swal.showLoading();
-
-            // Open the test file
-            if (this.openTestFile()) {
-              // Run the tests
-              // this.commandService.executeCommand('python.runCurrentTestFile');
-
-              // Acquire test execution result
-
-              // Update scores
-
-             
-            }
-
-            setTimeout(() => {
-              Swal.hideLoading();
-              Swal.fire({
-                title: 'Submission successful',
-                text: 'Amazing you just submitted your assignment',
-                footer: 'Your score: 10',
-                icon: 'success',
-              });
-            }, 700);
-
-            // Swal.hideLoading();
-          }); */
       }
     });
   }

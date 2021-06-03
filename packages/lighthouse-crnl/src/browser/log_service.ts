@@ -71,6 +71,20 @@ export class LoggerService {
         return path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'assignments.json');
     }
 
+    public processAssignmentSubmission(): void {
+        console.info('Processing assignment submission info');
+
+        let submissionOutput = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', `${this.store.get('assignmentName')}`, 'testing.log');
+
+        if (fs.existsSync(submissionOutput)) {
+            fs.readFile(submissionOutput, 'utf-8', (err, data) => {
+                if (err) console.error(err);
+
+                console.info(data);
+            });
+        }
+    }
+
     private parseLogForErrors(logData: string): Record<string, any> | null {
         let log: Record<string, any> | null = null;
 
