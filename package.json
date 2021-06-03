@@ -1,128 +1,137 @@
 {
-  "private": true,
-  "name": "@lighthouse/editor",
-  "version": "1.2.0",
-  "description": "Lighthouse editor",
-  "main": "scripts/theia-electron-main.js",
-  "engines": {
-    "yarn": "1.0.x || >=1.2.1",
-    "node": ">=12.14.1 <13"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/Elvin-Arrow/project-lighthouse.git"
-  },
-  "theia": {
-    "target": "electron",
-    "frontend": {
-      "config": {
-        "applicationName": "Lighthouse editor"
-      }
-    },
-    "backend": {
-      "config": {
-        "startupTimeout": -1
-      }
-    }
-  },
-  "scripts": {
-    "prepare": "lerna run prepare && yarn build && yarn download:plugins",
-    "build": "theia rebuild:electron && theia build",
-    "start": "electron scripts/theia-electron-main.js",
-    "package": "electron-builder",
-    "watch:extensions": "lerna run --parallel watch",
-    "watch:editor": "theia build --watch",
-    "package:preview": "electron-builder --dir",
-    "download:plugins": "theia download:plugins"
-  },
-  "author": "Elvin Arrow",
-  "license": "Apache-2.0",
-  "dependencies": {
-    "@lighthouse/assignments": "0.0.1",
-    "@lighthouse/authenticate": "0.0.1",
-    "@lighthouse/crnl": "0.0.2",
-    "@lighthouse/dashboard": "0.0.1",
-    "@lighthouse/default-screen": "0.0.1",
-    "@lighthouse/markdown-view": "0.0.1",
-    "@lighthouse/observer": "0.0.1",
-    "@lighthouse/terminal-backend": "0.0.1",
-    "@lighthouse/toolbox": "0.0.1",
-    "@ramonak/react-progress-bar": "^3.1.0",
-    "@theia/callhierarchy": "latest",
-    "@theia/core": "latest",
-    "@theia/editor": "latest",
-    "@theia/electron": "latest",
-    "@theia/file-search": "latest",
-    "@theia/filesystem": "latest",
-    "@theia/git": "latest",
-    "@theia/keymaps": "latest",
-    "@theia/markers": "latest",
-    "@theia/messages": "latest",
-    "@theia/mini-browser": "latest",
-    "@theia/monaco": "latest",
-    "@theia/navigator": "latest",
-    "@theia/outline-view": "latest",
-    "@theia/output": "latest",
-    "@theia/plugin-ext": "latest",
-    "@theia/plugin-ext-vscode": "latest",
-    "@theia/preferences": "latest",
-    "@theia/preview": "latest",
-    "@theia/process": "latest",
-    "@theia/search-in-workspace": "latest",
-    "@theia/task": "latest",
-    "@theia/terminal": "latest",
-    "@theia/userstorage": "latest",
-    "@theia/workspace": "latest",
-    "@types/react-syntax-highlighter": "^13.5.0",
-    "assignment-view": "0.0.1",
-    "electron-store": "latest",
-    "lighthouse-resources": "0.0.1",
-    "nanoid": "3.1.23",
-    "prop-types": "^15.7.2",
-    "react-loading": "latest",
-    "react-native-paper": "latest",
-    "react-syntax-highlighter": "latest",
-    "react-toggle-button": "^2.2.0",
-    "recharts": "latest",
-    "sweetalert2": "11.0.9"
-  },
-  "devDependencies": {
-    "@theia/cli": "latest",
-    "bufferutil": "4",
-    "electron-builder": "^22.4.1",
-    "lerna": "2.4.0",
-    "rimraf": "latest",
-    "utf-8-validate": "5"
-  },
-  "workspaces": [
-    "packages/*"
-  ],
-  "resolutions": {
-    "**/fs-extra": "^4.0.3"
-  },
-  "theiaPluginsDir": "plugins",
-  "theiaPlugins": {
-    "lighthouse-builtin-cpp": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/cpp-1.39.1-prel.vsix",
-    "lighthouse-builtin-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.11/file/llvm-vs-code-extensions.vscode-clangd-0.1.11.vsix",
-    "lighthouse-builtin-debug-auto-launch": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/debug-auto-launch-1.39.1-prel.vsix",
-    "lighthouse-builtin-cpptools-win": "https://github.com/microsoft/vscode-cpptools/releases/download/1.3.1/cpptools-win32.vsix",
-    "vscode-builtin-json": "https://open-vsx.org/api/vscode/json/1.46.1/file/vscode.json-1.46.1.vsix",
-    "vscode-builtin-json-language-features": "https://open-vsx.org/api/vscode/json-language-features/1.46.1/file/vscode.json-language-features-1.46.1.vsix",
-    "lighthouse-builtin-java": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/java-1.39.1-prel.vsix",
-    "lighthouse-builtin-python": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/python-1.39.1-prel.vsix",
-    "vscode-builtin-theme-abyss": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-abyss-1.39.1-prel.vsix",
-    "vscode-builtin-theme-defaults": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-defaults-1.39.1-prel.vsix",
-    "vscode-builtin-theme-kimbie-dark": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-kimbie-dark-1.39.1-prel.vsix",
-    "vscode-builtin-theme-monokai": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-monokai-1.39.1-prel.vsix",
-    "vscode-builtin-theme-dimmed": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-monokai-dimmed-1.39.1-prel.vsix",
-    "vscode-builtin-theme-quietlight": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-quietlight-1.39.1-prel.vsix",
-    "vscode-builtin-theme-red": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-red-1.39.1-prel.vsix",
-    "vscode-builtin-theme-solarized-dark": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-solarized-dark-1.39.1-prel.vsix",
-    "vscode-builtin-theme-tomorrow-night-blue": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-tomorrow-night-blue-1.39.1-prel.vsix",
-    "lighthouse-builtin-magic-python": "https://open-vsx.org/api/magicstack/MagicPython/1.1.1/file/magicstack.MagicPython-1.1.1.vsix",
-    "lighthouse-builtin-pyright": "https://open-vsx.org/api/ms-pyright/pyright/1.1.85/file/ms-pyright.pyright-1.1.85.vsix",
-    "lighthouse-builtin-ms-python": "https://open-vsx.org/api/ms-python/python/2020.10.332292344/file/ms-python.python-2020.10.332292344.vsix",
-    "lighthouse-builtin-error-lens": "https://open-vsx.org/api/usernamehw/errorlens/3.2.4/file/usernamehw.errorlens-3.2.4.vsix",
-    "lighthouse-builtin-markdown-preview-enhanced": "https://open-vsx.org/api/shd101wyy/markdown-preview-enhanced/0.5.17/file/shd101wyy.markdown-preview-enhanced-0.5.17.vsix"
-  }
+	"private": true,
+	"name": "@lighthouse/editor",
+	"version": "1.2.0",
+	"description": "Lighthouse editor",
+	"main": "scripts/theia-electron-main.js",
+	"engines": {
+		"yarn": "1.0.x || >=1.2.1",
+		"node": ">=12.14.1 <13"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/Elvin-Arrow/project-lighthouse.git"
+	},
+	"theia": {
+		"target": "electron",
+		"frontend": {
+			"config": {
+				"applicationName": "Lighthouse editor"
+			}
+		},
+		"backend": {
+			"config": {
+				"startupTimeout": -1
+			}
+		}
+	},
+	"scripts": {
+		"prepare": "lerna run prepare && yarn build && yarn download:plugins",
+		"build": "theia rebuild:electron && theia build",
+		"start": "electron scripts/theia-electron-main.js",
+		"package": "electron-builder",
+		"watch:extensions": "lerna run --parallel watch",
+		"watch:editor": "theia build --watch",
+		"package:preview": "electron-builder --dir",
+		"download:plugins": "theia download:plugins",
+		"dist": "electron-builder"
+	},
+	"author": "Elvin Arrow",
+	"license": "Apache-2.0",
+	"dependencies": {
+		"@lighthouse/assignments": "0.0.1",
+		"@lighthouse/authenticate": "0.0.1",
+		"@lighthouse/crnl": "0.0.2",
+		"@lighthouse/dashboard": "0.0.1",
+		"@lighthouse/default-screen": "0.0.1",
+		"@lighthouse/markdown-view": "0.0.1",
+		"@lighthouse/observer": "0.0.1",
+		"@lighthouse/terminal-backend": "0.0.1",
+		"@lighthouse/toolbox": "0.0.1",
+		"@ramonak/react-progress-bar": "^3.1.0",
+		"@theia/callhierarchy": "latest",
+		"@theia/core": "latest",
+		"@theia/editor": "latest",
+		"@theia/electron": "latest",
+		"@theia/file-search": "latest",
+		"@theia/filesystem": "latest",
+		"@theia/git": "latest",
+		"@theia/keymaps": "latest",
+		"@theia/markers": "latest",
+		"@theia/messages": "latest",
+		"@theia/mini-browser": "latest",
+		"@theia/monaco": "latest",
+		"@theia/navigator": "latest",
+		"@theia/outline-view": "latest",
+		"@theia/output": "latest",
+		"@theia/plugin-ext": "latest",
+		"@theia/plugin-ext-vscode": "latest",
+		"@theia/preferences": "latest",
+		"@theia/preview": "latest",
+		"@theia/process": "latest",
+		"@theia/search-in-workspace": "latest",
+		"@theia/task": "latest",
+		"@theia/terminal": "latest",
+		"@theia/userstorage": "latest",
+		"@theia/workspace": "latest",
+		"@types/react-syntax-highlighter": "^13.5.0",
+		"assignment-view": "0.0.1",
+		"electron-store": "latest",
+		"lighthouse-resources": "0.0.1",
+		"nanoid": "3.1.23",
+		"prop-types": "^15.7.2",
+		"react-loading": "latest",
+		"react-native-paper": "latest",
+		"react-syntax-highlighter": "latest",
+		"react-toggle-button": "^2.2.0",
+		"recharts": "latest",
+		"sweetalert2": "11.0.9"
+	},
+	"devDependencies": {
+		"@theia/cli": "latest",
+		"bufferutil": "4",
+		"electron-builder": "^22.10.5",
+		"lerna": "2.4.0",
+		"rimraf": "latest",
+		"utf-8-validate": "5"
+	},
+	"build": {
+		"appId": "com.lighthouse.ide",
+		"productName": "Lighthouse Editor",
+		"win": {
+			"target": "nsis",
+			"icon": "resources/icon.ico"
+		}
+	},
+	"workspaces": [
+		"packages/*"
+	],
+	"resolutions": {
+		"**/fs-extra": "^4.0.3"
+	},
+	"theiaPluginsDir": "plugins",
+	"theiaPlugins": {
+		"lighthouse-builtin-cpp": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/cpp-1.39.1-prel.vsix",
+		"lighthouse-builtin-clangd": "https://open-vsx.org/api/llvm-vs-code-extensions/vscode-clangd/0.1.11/file/llvm-vs-code-extensions.vscode-clangd-0.1.11.vsix",
+		"lighthouse-builtin-debug-auto-launch": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/debug-auto-launch-1.39.1-prel.vsix",
+		"lighthouse-builtin-cpptools-win": "https://github.com/microsoft/vscode-cpptools/releases/download/1.3.1/cpptools-win32.vsix",
+		"vscode-builtin-json": "https://open-vsx.org/api/vscode/json/1.46.1/file/vscode.json-1.46.1.vsix",
+		"vscode-builtin-json-language-features": "https://open-vsx.org/api/vscode/json-language-features/1.46.1/file/vscode.json-language-features-1.46.1.vsix",
+		"lighthouse-builtin-java": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/java-1.39.1-prel.vsix",
+		"lighthouse-builtin-python": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/python-1.39.1-prel.vsix",
+		"vscode-builtin-theme-abyss": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-abyss-1.39.1-prel.vsix",
+		"vscode-builtin-theme-defaults": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-defaults-1.39.1-prel.vsix",
+		"vscode-builtin-theme-kimbie-dark": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-kimbie-dark-1.39.1-prel.vsix",
+		"vscode-builtin-theme-monokai": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-monokai-1.39.1-prel.vsix",
+		"vscode-builtin-theme-dimmed": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-monokai-dimmed-1.39.1-prel.vsix",
+		"vscode-builtin-theme-quietlight": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-quietlight-1.39.1-prel.vsix",
+		"vscode-builtin-theme-red": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-red-1.39.1-prel.vsix",
+		"vscode-builtin-theme-solarized-dark": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-solarized-dark-1.39.1-prel.vsix",
+		"vscode-builtin-theme-tomorrow-night-blue": "https://github.com/theia-ide/vscode-builtin-extensions/releases/download/v1.39.1-prel/theme-tomorrow-night-blue-1.39.1-prel.vsix",
+		"lighthouse-builtin-magic-python": "https://open-vsx.org/api/magicstack/MagicPython/1.1.1/file/magicstack.MagicPython-1.1.1.vsix",
+		"lighthouse-builtin-pyright": "https://open-vsx.org/api/ms-pyright/pyright/1.1.85/file/ms-pyright.pyright-1.1.85.vsix",
+		"lighthouse-builtin-ms-python": "https://open-vsx.org/api/ms-python/python/2020.10.332292344/file/ms-python.python-2020.10.332292344.vsix",
+		"lighthouse-builtin-error-lens": "https://open-vsx.org/api/usernamehw/errorlens/3.2.4/file/usernamehw.errorlens-3.2.4.vsix",
+		"lighthouse-builtin-markdown-preview-enhanced": "https://open-vsx.org/api/shd101wyy/markdown-preview-enhanced/0.5.17/file/shd101wyy.markdown-preview-enhanced-0.5.17.vsix"
+	}
 }
