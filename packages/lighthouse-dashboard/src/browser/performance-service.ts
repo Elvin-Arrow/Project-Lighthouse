@@ -23,7 +23,7 @@ export class PerformanceService {
                 });
             }
 
-            fs.writeFileSync(performanceStats, JSON.stringify(performanceStats));
+            fs.writeFileSync(performanceStatsPath, JSON.stringify(performanceStats));
         }
     }
 
