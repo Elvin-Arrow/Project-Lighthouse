@@ -17,43 +17,41 @@ export class Toolbox extends React.Component<{ workspaceService: WorkspaceServic
     }
 
     public render(): React.ReactNode {
-        let instructionsBtn = null;
-        let submitBtn = null;
+		let instructionsBtn, divider, submitBtn;
         // let errLens = this.store.get('errLens', true);
 
         // Only show assignment controls if it is an assignment workspace
         if (this.isAssignmentWorkspace) {
-            instructionsBtn = <div className="">
+            
+			instructionsBtn = <button className="theia-button secondary" title="View instructions" onClick={(_a) => this.props.commandService.executeCommand('Markdown-View:command')}>View Instructions</button>
 
-                <button
-                    className="theia-button secondary"
-                    title="View instructions"
-                    onClick={(_a) => this.props.commandService.executeCommand('Markdown-View:command')}
-                >
-                    View instructions
-                </button>
+            submitBtn = <button className="theia-button" title="Submit assignment" onClick={(_a) => this.props.commandService.executeCommand('LighthouseCrnl.submit')}>Submit Assignment</button>
 
-            </div>
-
-            submitBtn = <button className="theia-button" title="Submit assignment" onClick={(_a) => this.props.commandService.executeCommand('LighthouseCrnl.submit')}>Submit assignment</button>
+			divider = <hr />
         }
 
         return (
             <div id="toolbox-container">
-                <button className="theia-button" title="Launch Dashboard" onClick={(_a) => this.showDashboard()}>View Dashboard</button>
+				<div className="toolbox-section">
+					<button className="theia-button" title="Launch Dashboard" onClick={(_a) => this.showDashboard()}>View Dashboard</button>
 
-                {
-                    // TODO: Add an assignments controls highlighting
-                    instructionsBtn
-                }
+					<button className="theia-button" title="View Resources" onClick={(_a) => this.props.commandService.executeCommand('lighthouse-resources:command')}>View Resources</button>
 
-                {submitBtn}
+					<button className="theia-button" title="Toggle error highlighting" onClick={(_a) => this.props.commandService.executeCommand('errorLens.toggle')}>Toggle Error Highlighting</button>
 
-                <button className="theia-button" title="Toggle error highlighting" onClick={(_a) => this.props.commandService.executeCommand('errorLens.toggle')}>Toggle error highlighting</button>
+					<hr />
+				</div>
+				<div className="toolbox-section">
+					{/* TODO: Add an assignments controls highlighting */}
+					{instructionsBtn}
+					{submitBtn}
+					{divider}
+				</div>
 
                 {/* <ToggleButton icon={LabelIcon} ></ToggleButton> */}
-
-                <button className="theia-button secondary" title="Launch Dashboard" onClick={(_a) => this.logout()}>Logout</button>
+				<div className="toolbox-section">
+	                <button className="theia-button secondary" title="Logout" onClick={(_a) => this.logout()}>Logout</button>
+				</div>
             </div>
         );
     }
