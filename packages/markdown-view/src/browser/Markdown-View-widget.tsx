@@ -44,8 +44,7 @@ export class MarkdownViewWidget extends ReactWidget {
             }
         })
 
-        return <div id="instructions">
-            // TODO: Fix CSS
+        return <div id="instructions" className="markdown-preview">
             <ReactMarkdown children={content} />
         </div>
 

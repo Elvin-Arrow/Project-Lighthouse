@@ -12,10 +12,10 @@
   padding-left: 2.5%;
   padding-right: 2.5%;
 }
-.markdown-preview pre code{
-	display: block;
-    background-color: #444;
-	color: #ccc;
-    padding: 10px;
-    margin: 10px 0;
+.markdown-preview pre code {
+  display: block;
+  background-color: #444;
+  color: #ccc;
+  padding: 10px;
+  margin: 10px 0;
 }
