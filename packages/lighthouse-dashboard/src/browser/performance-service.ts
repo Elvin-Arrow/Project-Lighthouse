@@ -11,19 +11,19 @@ export class PerformanceService {
         let performanceStatsPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'performance_stats.json');
 
         if (fs.existsSync(performanceStatsPath)) {
+            console.info(`Reading the performance stats json`);
             let performanceStats = JSON.parse(fs.readFileSync(performanceStatsPath, 'utf-8'));
-
+            console.info(`Read the performance stats json successfully`);
             if (Array.isArray(performanceStats)) {
                 let index = 0;
                 performanceStats.forEach(stat => {
                     let avgScores = this.getAreaWiseAverageScores();
                     stat.performanceScore = avgScores[index];
+                    index++;
                 });
             }
 
-            fs.writeFile(performanceStatsPath, JSON.stringify(performanceStats), (err) => {
-                console.error(err);
-            });
+            fs.writeFileSync(performanceStats, JSON.stringify(performanceStats));
         }
     }
 
