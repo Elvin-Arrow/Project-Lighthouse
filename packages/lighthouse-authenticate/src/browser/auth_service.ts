@@ -32,7 +32,6 @@ export class AuthenticationService {
                     try {
                         this.generateUserDirectory(username);
                         this.writeGlobalDefaultConfiguration();
-                        // TODO: Pull in all the user data and store it
                     } catch (err) {
                         reject(err);
                     }

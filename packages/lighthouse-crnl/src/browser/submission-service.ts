@@ -24,7 +24,6 @@ export class SubmissionService {
 
                 this.updateAssignmentsStats(score);
             } else {
-                // TODO: Check how many test cases failed and calculate score accordingly
                 let numberOfTestCases = testLog.split('Ran ')[1].split(' ')[0]
 
                 console.info(`Number of test cases: ${numberOfTestCases}`);

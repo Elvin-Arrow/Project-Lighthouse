@@ -58,7 +58,6 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
   registerCommands(registry: CommandRegistry): void {
     registry.registerCommand(LighthouseCrnlCommand, {
       execute: () => {
-        // TODO: Check for launch configrations before launch
         this.commandService
           .executeCommand("workbench.action.debug.start")
           .then(() => {
