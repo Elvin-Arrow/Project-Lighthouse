@@ -44,6 +44,7 @@ export class AssignmentsWidget extends ReactWidget {
     let assignmentsData: Record<string, any>[];
     try {
       assignmentsData = this.assignmentService.getAssignments();
+      // TODO: Get assignment stats
       assignmentsData.forEach((assignment) => {
         assignments.push(
           <div id="assignment-container-1 pad">
@@ -53,6 +54,12 @@ export class AssignmentsWidget extends ReactWidget {
             </div>
             <div className="sub-heading deadline">
               Time: {assignment.solvingTime}
+            </div>
+            <div className="sub-heading deadline">
+              Attempted: {assignment.solvingTime}
+            </div>
+            <div className="sub-heading deadline">
+              Score: {assignment.solvingTime}
             </div>
             <button
               className="theia-button secondary"
@@ -81,8 +88,6 @@ export class AssignmentsWidget extends ReactWidget {
     console.info(`Openning assignment...`);
 
     let flag = true;
-
-    // TODO: Check if assignment is already attempted
 
     // Acquire assignment path
     let assignmentPath = this.assignmentService.resolveAssignmentPath(assignment.name);
