@@ -107,6 +107,24 @@ export class AssignmentService {
         return flag;
     }
 
+    public getAssignmentStats(id: string): Record<string, any> {
+        let assignmentStat: Record<string, any> = {};
+        let assignmentStatsPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'stats.json');
+
+        if (fs.existsSync(assignmentStatsPath)) {
+            let assignmentStats = JSON.parse(fs.readFileSync(assignmentStatsPath, 'utf-8'));
+
+            if (Array.isArray(assignmentStats)) {
+                assignmentStats.forEach(stat => {
+                    if (stat.id == id) {
+                        assignmentStat = stat;
+                    }
+                });
+            }
+        }
+        return assignmentStat;
+    }
+
     private dirExists(dir: string): boolean {
         if (fs.existsSync(dir)) {
             return true;

@@ -44,8 +44,10 @@ export class AssignmentsWidget extends ReactWidget {
     let assignmentsData: Record<string, any>[];
     try {
       assignmentsData = this.assignmentService.getAssignments();
-      // TODO: Get assignment stats
+
       assignmentsData.forEach((assignment) => {
+        let assignmentStat = this.assignmentService.getAssignmentStats(assignment.id);
+
         assignments.push(
           <div id="assignment-container-1 pad">
             <AlertMessage type="INFO" header={assignment.title} />
@@ -56,10 +58,10 @@ export class AssignmentsWidget extends ReactWidget {
               Time: {assignment.solvingTime}
             </div>
             <div className="sub-heading deadline">
-              Attempted: {assignment.solvingTime}
+              Attempted: {assignmentStat.completed}
             </div>
             <div className="sub-heading deadline">
-              Score: {assignment.solvingTime}
+              Score: {assignmentStat.score}
             </div>
             <button
               className="theia-button secondary"
