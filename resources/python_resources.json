@@ -206,21 +206,21 @@
     "id": 30,
     "title": "Iterating Lists with 'while' Loop",
     "description": "The 'while' loop can be used to iterate the list like so:",
-    "code": "marks = [10, 50, 75, 83, 98, 84, 32] \n x = 0 \n while x < len(marks): \n \t print(marks[x]) \n \t x = x+1",
+    "code": "```python\nmarks = [10, 50, 75, 83, 98, 84, 32] \n x = 0 \n while x < len(marks): \n \t print(marks[x]) \n \t x = x+1\n```",
     "tags": ["loops"]
   },
   {
     "id": 31,
     "title": "'break' Statement in 'while' Loop",
     "description": "You can use the keyword break in a loop to immediately terminate a loop. The following program adds integers from 1 to 20 in this order to sum until sum is greater than or equal to 100. The loop terminates when sum becomes greater than or equal to 100:",
-    "code": ">>> sum = 0 \n >>> number = 0 \n >>> while number < 20: \n >>> \t number += 1 \n >>> \t sum += number \n >>> \t if sum >= 100: \n >>> \t \t break \n >>> print('The number is', number) \n >>> print('The sum is', sum) \n The number is 14 \n The sum is 105",
+    "code": "```\n>>> sum = 0 \n >>> number = 0 \n >>> while number < 20: \n >>> \t number += 1 \n >>> \t sum += number \n >>> \t if sum >= 100: \n >>> \t \t break \n >>> print('The number is', number) \n >>> print('The sum is', sum) \n The number is 14 \n The sum is 105\n```",
     "tags": ["loops"]
   },
   {
     "id": 32,
     "title": "'continue' Statement in 'while' Loop",
     "description": "You can also use the 'continue' keyword in a 'while' loop to end the current iteration. The program control goes to the end of the loop body. The following program adds all the integers from 1 to 20 except 10 and 11 to sum. The 'continue' statement is executed when number becomes 10 or 11. The 'continue' statement ends the current iteration so that the rest of the statement in the loop body is not executed; therefore, 'number' is not added to sum when it is 10 or 11:",
-    "code": ">>> sum = 0 \n >>> number = 0 \n >>> while number < 20: \n >>> \t number += 1 \n >>> \t if number == 10 or number == 11: \n >>> \t \t continue \n >>> \t sum += number \n >>> print('The sum is', sum) \n The sum is 189",
+    "code": ">>> sum = 0 \n>>> number = 0 \n>>> while number < 20: \n>>> \t number += 1 \n>>> \t if number == 10 or number == 11: \n >>>\t\tcontinue \n>>>\t sum += number \n >>> print('The sum is', sum) \n The sum is 189",
     "tags": ["loops"]
   },
   {
