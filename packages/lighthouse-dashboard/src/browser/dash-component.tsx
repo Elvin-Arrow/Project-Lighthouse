@@ -6,9 +6,11 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts'
 import fs = require('fs');
 import path = require("path");
 const homedir = require('os').homedir();
+import { PerformanceService } from "./performance-service";
 
 export class DashComponent extends React.Component<{ commandService: CommandService }, { screen: string, }> {
 	private readonly store = new Store();
+	private readonly performanceService: PerformanceService = new PerformanceService();
 
 	constructor(props: { commandService: CommandService }) {
 		super(props);
@@ -50,7 +52,8 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 	}
 
 	private getDashContent() {
-		const performanceScores = this.getPerformanceScores();
+		this.performanceService.updatePerformanceStats();
+		const areaWisePerformance = this.getPerformanceScores();
 
 		return (
 			<>
@@ -58,23 +61,23 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 					<h5>Progress</h5>
 					<div className="progress-block">
 						<div className="section-title">Basics</div>
-						<ProgressBar completed={performanceScores[0] ?? 0} bgColor={'#0E639C'} />
+						<ProgressBar completed={areaWisePerformance[0] ?? 0} bgColor={'#0E639C'} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Conditionals</div>
-						<ProgressBar completed={performanceScores[1] ?? 0} bgColor={'#0E639C'} />
+						<ProgressBar completed={areaWisePerformance[1] ?? 0} bgColor={'#0E639C'} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Loops</div>
-						<ProgressBar completed={performanceScores[2] ?? 0} bgColor={'#0E639C'} />
+						<ProgressBar completed={areaWisePerformance[2] ?? 0} bgColor={'#0E639C'} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Lists</div>
-						<ProgressBar completed={performanceScores[3] ?? 0} bgColor={'#0E639C'} />
+						<ProgressBar completed={areaWisePerformance[3] ?? 0} bgColor={'#0E639C'} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Functions</div>
-						<ProgressBar completed={performanceScores[4] ?? 0} bgColor={'#0E639C'} />
+						<ProgressBar completed={areaWisePerformance[4] ?? 0} bgColor={'#0E639C'} />
 					</div>
 					<button className="theia-button secondary" title="View full report" onClick={(_a) => this.setState({ screen: 'Report' })}>View Full Report</button>
 				</div>
@@ -83,15 +86,11 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 					<button className="theia-button" title="View resources" onClick={(_a) => this.viewResources()}>Resources</button>
 					<button className="theia-button" title="Attempt assignments" onClick={(_a) => this.attemptAssignments()}>Assignments</button>
 					<div className="suggested-resources">
-						{// TODO: Updated suggested resource as per content
-						}
 						<h5>Suggested Resources</h5>
 						<div>Variables</div>
 						<div>Conditionals</div>
 					</div>
 				</div>
-				{ // TODO: Fix the contine to editor button
-				/* {<div><button className="theia-button" title="Cotinue to editor" onClick={(_a) => this.props.commandService.executeCommand('lighthouse-dashboard:dispose')}>Continue to editor</button></div>} */}
 			</>
 		);
 	}
@@ -100,15 +99,15 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 		const data = [
 			{
 				name: 'Week 0',
-				Performance: 35,
+				Performance: 75,
 			},
 			{
 				name: 'Week 2',
-				Performance: 40,
+				Performance: 60,
 			},
 			{
 				name: 'Week 4',
-				Performance: 30,
+				Performance: 40,
 			},
 			{
 				name: 'Week 6',
@@ -116,7 +115,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 			},
 			{
 				name: 'Week 8',
-				Performance: 15,
+				Performance: 40,
 			},
 			{
 				name: 'Week 10',
@@ -128,11 +127,11 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 			},
 			{
 				name: 'Week 14',
-				Performance: 55,
+				Performance: 65,
 			},
 			{
 				name: 'Week 16',
-				Performance: 60,
+				Performance: 80,
 			},
 		];
 		return (
@@ -176,32 +175,32 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 						</tr>
 						<tr>
 							<td>Basics</td>
-							<td>4 (Class Average: 3)</td>
-							<td>9 (Class Average: 7)</td>
+							<td>{this.performanceService.getNumberOfAttemptedAssignments('basics')} (Class Average: 3)</td>
+							<td>{this.performanceService.getAverageAssignmentScore('basics')} (Class Average: 7)</td>
 							<td>Good</td>
 						</tr>
 						<tr>
 							<td>Conditionals</td>
-							<td>2 (Class Average: 2)</td>
-							<td>8 (Class Average: 7)</td>
+							<td>{this.performanceService.getNumberOfAttemptedAssignments('conditionals')} (Class Average: 2)</td>
+							<td>{this.performanceService.getAverageAssignmentScore('conditionals')} (Class Average: 7)</td>
 							<td>Good</td>
 						</tr>
 						<tr>
 							<td>Loops</td>
-							<td>1 (Class Average: 1)</td>
-							<td>6 (Class Average: 5)</td>
+							<td>{this.performanceService.getNumberOfAttemptedAssignments('loops')} (Class Average: 1)</td>
+							<td>{this.performanceService.getAverageAssignmentScore('loops')} (Class Average: 5)</td>
 							<td>Average</td>
 						</tr>
 						<tr>
 							<td>Lists</td>
-							<td>1 (Class Average: 1)</td>
-							<td>7 (Class Average: 7)</td>
+							<td>{this.performanceService.getNumberOfAttemptedAssignments('lists')} (Class Average: 1)</td>
+							<td>{this.performanceService.getAverageAssignmentScore('lists')} (Class Average: 7)</td>
 							<td>Average</td>
 						</tr>
 						<tr>
 							<td>Functions</td>
-							<td>1 (Class Average: 1)</td>
-							<td>9 (Class Average: 6)</td>
+							<td>{this.performanceService.getNumberOfAttemptedAssignments('functions')} (Class Average: 1)</td>
+							<td>{this.performanceService.getAverageAssignmentScore('functions')} (Class Average: 6)</td>
 							<td>Good</td>
 						</tr>
 					</table>
@@ -210,7 +209,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 		);
 	}
 
-	private getPerformanceScores(): Array<number> {
+	protected getPerformanceScores(): Array<number> {
 		let userPerformanceStats: Array<number> = [];
 
 		// Get current user
