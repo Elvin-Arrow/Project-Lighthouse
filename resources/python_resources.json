@@ -3,210 +3,210 @@
     "id": 1,
     "title": "Indentation",
     "description": "Indentation matters in Python. The 'statement(s)' must be indented at least one space to the right of the 'if' keyword and each statement must be indented using the same number of spaces. Usually, four spaces are used.",
-    "code": "```python\nif (condition): \n \t statement\n```",
+    "code": "```\nif (condition): \n \t statement\n```",
     "tags": ["syntax"]
   },
   {
     "id": 2,
     "title": "Input from user",
     "description": "You can use the 'input' function to ask the user to input a value in the console. The following statement prompts the user to enter a value, and then it assigns the value to the variable:",
-    "code": "```python\nvariable = input('Enter a value: ')\n```",
+    "code": "```\nvariable = input('Enter a value: ')\n```",
     "tags": ["input"]
   },
   {
     "id": 3,
     "title": "eval function",
     "description": "You can use the function 'eval' to evaluate and convert a string to a numeric value. For example, the following code returns the numeric value of '34.5':",
-    "code": "```python\neval('34.5')\n```",
+    "code": "```\neval('34.5')\n```",
     "tags": ["input"]
   },
   {
     "id": 4,
     "title": "Operators",
     "description": "You can use the following operators in Python:",
-    "code": "+ \t Addition \n - \t Subtraction \n * \t Multiplication \n / \t Float Division \n // \t Integer Division \n ** \t Exponentiation \n % \t Remainder",
+    "code": "```+ \t Addition \n - \t Subtraction \n * \t Multiplication \n / \t Float Division \n // \t Integer Division \n ** \t Exponentiation \n % \t Remainder```",
     "tags": ["operators"]
   },
   {
     "id": 5,
     "title": "Comparison Operators (Relational Operators)",
     "description": "You can use the following comparison operators (also known as relational operators):",
-    "code": "< \t less than \n <= \t less than or equal to \n > \t greater than \n >= \t greater than or equal to \n == \t equal to \n != \t not equal to",
+    "code": "```< \t less than \n <= \t less than or equal to \n > \t greater than \n >= \t greater than or equal to \n == \t equal to \n != \t not equal to```",
     "tags": ["operators"]
   },
   {
     "id": 6,
     "title": "Logical Operators (Boolean Operators)",
     "description": "You can use the logical operators 'not', 'and', and 'or' to create a compound condition. The 'not' operator negates 'True' to 'False' and 'False' to 'True'. The 'and' of two Boolean operands is true if and only if both operands are true. The 'or' of two Boolean operands is true if at least one of the operands is true.",
-    "code": "not \t logical negation \n and \t logical conjunction \n or  \t logical disjunction ",
+    "code": "```not \t logical negation \n and \t logical conjunction \n or  \t logical disjunction```",
     "tags": ["operators"]
   },
   {
     "id": 7,
     "title": "Built-in Functions",
     "description": "A function is a group of statements that performs a specific task. Python provides many useful built-in functions for common programming tasks. Following are some of the built-in functions:",
-    "code": "eval() \n print () \n input () \n max () \n min() \n pow() \n round()",
+    "code": "```eval() \n print () \n input () \n max () \n min() \n pow() \n round()```",
     "tags": ["basics", "functions"]
   },
   {
     "id": 8,
     "title": "print() function",
     "description": "The 'print' statement is one of Python’s built-in functions that can be used to display a string on the console. A function performs actions. In the case of the print function, it displays a message to the console.",
-    "code": "print('Welcome to Python')",
+    "code": "```print('Welcome to Python')```",
     "tags": ["basics", "functions"]
   },
   {
     "id": 9,
     "title": "input() function",
     "description": "The 'input' statement is one of Python's built-in functions that can be used to read input from the console and therefore enables the program to accept input from the user. The following statement prompts the user to enter a value, and then it assigns the value to the variable:",
-    "code": "variable = input('Enter a value: ')",
+    "code": "```variable = input('Enter a value: ')```",
     "tags": ["basics", "functions"]
   },
   {
     "id": 10,
     "title": "max() function",
     "description": "The 'max' statement is one of Python’s built-in functions that can be used to identify the largest number from a set of numbers. It accepts an array of numbers as input and returns the largest among the array of numbers. In the following code example, the 'max' function would return '35'.",
-    "code": "max(25, 30, 35)",
+    "code": "```max(25, 30, 35)```",
     "tags": ["basics", "functions"]
   },
   {
     "id": 11,
     "title": "min() function",
     "description": "The 'min' statement is one of Python’s built-in functions that can be used to identify the smallest number from a set of numbers. It accepts an array of numbers as input and returns the smallest among the array of numbers. In the following code example, the 'min' function would return '5'.",
-    "code": "min(20, 5, 10)",
+    "code": "```min(20, 5, 10)```",
     "tags": ["basics", "functions"]
   },
   {
     "id": 12,
     "title": "pow() function",
     "description": "The 'pow' statement is one of Python’s built-in functions that can be used to calculate exponentiation. The following code is same as '2 raised to the power 3' or '2 ** 3' and would return '8' as a result:",
-    "code": "pow(2, 3)",
+    "code": "```pow(2, 3)```",
     "tags": ["basics", "functions"]
   },
   {
     "id": 13,
     "title": "Variables",
     "description": "A variable is a name that references a value stored in the computer’s memory. Rather than using 'x' and 'y' as variable names, choose descriptive names such as 'height' or 'radius'. The following code assigns the value '20' to the variable 'radius':",
-    "code": "```python\nradius = 20\n```",
+    "code": "```\nradius = 20\n```",
     "tags": ["variables"]
   },
   {
     "id": 14,
     "title": "Integers",
     "description": "Integer types (int for short) are one of the two numeric data types and are used for representing whole numbers. The following is an example of an integer number:",
-    "code": "```python\n5\n```",
+    "code": "```\n5\n```",
     "tags": ["variables"]
   },
   {
     "id": 15,
     "title": "Float",
     "description": "Float types are one of the two numeric data types and are used for representing numbers with a fractional part. The following is an example of a float number:",
-    "code": "```python\n5.0\n```",
+    "code": "```\n5.0\n```",
     "tags": ["variables"]
   },
   {
     "id": 16,
     "title": "Identifiers",
     "description": "Identifiers are the name of the things that appear in a program. All identifiers must obey the following rules: \n • An identifier is a sequence of characters that consists of letters, digits, and underscores (_). \n • An identifier must start with a letter or an underscore. It cannot start with a digit. \n • An identifier cannot be a keyword. Keywords, also called reserved words, have special meanings in Python. For example, import is a keyword, which tells the Python interpreter to import a module to the program. \n • An identifier can be of any length. \n For example, the following identifiers are legal identifiers:",
-    "code": "```python\narea, radius, number1\n```",
+    "code": "```\narea, radius, number1\n```",
     "tags": ["variables"]
   },
   {
     "id": 17,
     "title": "Strings and Characters",
     "description": "A string is a sequence of characters and can include text and numbers. String values must be enclosed in matching single quotes or double quotes. Python does not have a data type for characters. A single-character string represents a character",
-    "code": "```python\nnumChar = '4' \n message = 'Good morning'\n```",
+    "code": "```\nnumChar = '4' \n message = 'Good morning'\n```",
     "tags": ["variables"]
   },
   {
     "id": 18,
     "title": "Concatenatation",
     "description": "The + operator can be used to concatenate two strings. For example, the following expressions would print 'Welcome to Python':",
-    "code": "```python\nmessage = 'Welcome ' + 'to ' + 'Python' \n print (message)\n```",
+    "code": "```\nmessage = 'Welcome ' + 'to ' + 'Python' \n print (message)\n```",
     "tags": ["variables", "string"]
   },
   {
     "id": 19,
     "title": "'in' and 'not in' Operators",
     "description": "You can use the 'in' and 'not in' operators to test whether a string is in another string. For example, if the value of 's1' is 'Welcome', then the following expressions would return 'True' and 'False' respectively:",
-    "code": "```python\n'come' in s1 \n 'come' not in s1\n```",
+    "code": "```\n'come' in s1 \n 'come' not in s1\n```",
     "tags": ["variables", "string"]
   },
   {
     "id": 20,
     "title": "'while' loop",
     "description": "A 'while' loop executes statements repeatedly as long as a condition remains true. The syntax for the while loop is:",
-    "code": "while loop-continuation-condition: \n \t Statement(s)",
+    "code": "```while loop-continuation-condition: \n \t Statement(s)```",
     "tags": ["loops"]
   },
   {
     "id": 21,
     "title": "Conditionals within 'while' loop",
     "description": "A 'while' loop can have conditionals within the loop body such as an 'if' statement. For example:",
-    "code": "while True: \n number = int(input('Enter a number: ')) \n if (number % 2) == 0: \n \t print('Entered number is even') \n else: \n \t print('Entered number is odd')",
+    "code": "```while True: \n number = int(input('Enter a number: ')) \n if (number % 2) == 0: \n \t print('Entered number is even') \n else: \n \t print('Entered number is odd')```",
     "tags": ["loops"]
   },
   {
     "id": 22,
     "title": "Counting using 'while' loop",
     "description": "A 'while' loop can be used to count iteratively. For example:",
-    "code": "while True: \n \t if condition: \n \t \t count += 1",
+    "code": "```while True: \n \t if condition: \n \t \t count += 1```",
     "tags": ["loops"]
   },
   {
     "id": 23,
     "title": "Lists",
     "description": "Python provides a type called a list that stores a sequential collection of elements. A list can store a collection of data of any size. Elements in a list can be accessed through an index. A list of colors can be initiated as following:",
-    "code": "colors = ['blue', 'red', 'green']",
+    "code": "```colors = ['blue', 'red', 'green']```",
     "tags": ["lists"]
   },
   {
     "id": 24,
     "title": "Lists Bound",
     "description": "An element in a list can be accessed through the index operator, using the syntax given below. List indexes are 0 based; that is, they range from 0 to 'len(myList)-1' where 'len(myList)' returns the length of the array.",
-    "code": "myList[index]",
+    "code": "```myList[index]```",
     "tags": ["lists"]
   },
   {
     "id": 25,
     "title": "Lists Slice",
     "description": "The slicing operator returns a slice of the list using the syntax 'list[start : end]'. The slice is a sublist from index start to index end – 1. The starting index or ending index may be omitted. In this case, the starting index is 0 and the ending index is the last index. Here are some examples:",
-    "code": ">>> list1 = [2, 3, 5, 7, 9, 1] \n >>> list1[2 : 4] \n [5, 7] \n \n >>> list1 = [2, 3, 5, 2, 33, 21] \n >>> list1[ : 2] \n [2, 3] \n >>> list1[3 : ] \n [2, 33, 21]",
+    "code": "```>>> list1 = [2, 3, 5, 7, 9, 1] \n >>> list1[2 : 4] \n [5, 7] \n \n >>> list1 = [2, 3, 5, 2, 33, 21] \n >>> list1[ : 2] \n [2, 3] \n >>> list1[3 : ] \n [2, 33, 21]```",
     "tags": ["lists"]
   },
   {
     "id": 26,
     "title": "String Slice",
     "description": "The slicing operator returns a slice of the string using the syntax s[start : end]. The slice is a substring from index start to index end – 1. The starting index or ending index may be omitted. In this case, by default the starting index is 0 and the ending index is the last index.",
-    "code": " >>> s = 'Welcome' \n >>> s[1 : 4] \n 'elc'",
+    "code": "``` >>> s = 'Welcome' \n >>> s[1 : 4] \n 'elc'```",
     "tags": ["string", "lists"]
   },
   {
     "id": 27,
     "title": "Arithematic Operators with Strings (Operator Overloading)",
     "description": "You can join, or concatenate, two strings by using the concatenation operator (+). You can also use the repetition operator (*) to concatenate the same string multiple times. Here are some examples:",
-    "code": ">>> s1 = 'Welcome' \n >>> s2 = 'Python' \n >>> s3 = s1 + ' to ' + s2 \n >>> s3 \n 'Welcome to Python' \n >>> s4 = 3 * s1 \n >>> s4 \n 'WelcomeWelcomeWelcome' \n >>> s5 = s1 * 3 \n >>> s5 \n 'WelcomeWelcomeWelcome' \n >>>",
+    "code": "```>>> s1 = 'Welcome' \n >>> s2 = 'Python' \n >>> s3 = s1 + ' to ' + s2 \n >>> s3 \n 'Welcome to Python' \n >>> s4 = 3 * s1 \n >>> s4 \n 'WelcomeWelcomeWelcome' \n >>> s5 = s1 * 3 \n >>> s5 \n 'WelcomeWelcomeWelcome' \n >>>```",
     "tags": ["string", "operators"]
   },
   {
     "id": 28,
     "title": "String Index",
     "description": "A string is a sequence of characters. A character in the string can be accessed through the index operator using the syntax:",
-    "code": "s[index]",
+    "code": "```s[index]```",
     "tags": ["string"]
   },
   {
     "id": 29,
     "title": "Arithematic Operators with Lists (Operator Overloading)",
     "description": "You can use the concatenation operator (+) to join two lists and the repetition operator (*) to replicate elements in a list. ",
-    "code": ">>> list1 = [2, 3] \n >>> list2 = [1, 9] \n >>> list3 = list1 + list2 \n >>> list3 \n [2, 3, 1, 9] \n >>> list4 = 3 * list1 \n >>> list4 \n [2, 3, 2, 3, 2, 3]",
+    "code": "```>>> list1 = [2, 3] \n >>> list2 = [1, 9] \n >>> list3 = list1 + list2 \n >>> list3 \n [2, 3, 1, 9] \n >>> list4 = 3 * list1 \n >>> list4 \n [2, 3, 2, 3, 2, 3]```",
     "tags": ["lists"]
   },
   {
     "id": 30,
     "title": "Iterating Lists with 'while' Loop",
     "description": "The 'while' loop can be used to iterate the list like so:",
-    "code": "```python\nmarks = [10, 50, 75, 83, 98, 84, 32] \n x = 0 \n while x < len(marks): \n \t print(marks[x]) \n \t x = x+1\n```",
+    "code": "```\nmarks = [10, 50, 75, 83, 98, 84, 32] \n x = 0 \n while x < len(marks): \n \t print(marks[x]) \n \t x = x+1\n```",
     "tags": ["loops"]
   },
   {
@@ -220,168 +220,168 @@
     "id": 32,
     "title": "'continue' Statement in 'while' Loop",
     "description": "You can also use the 'continue' keyword in a 'while' loop to end the current iteration. The program control goes to the end of the loop body. The following program adds all the integers from 1 to 20 except 10 and 11 to sum. The 'continue' statement is executed when number becomes 10 or 11. The 'continue' statement ends the current iteration so that the rest of the statement in the loop body is not executed; therefore, 'number' is not added to sum when it is 10 or 11:",
-    "code": ">>> sum = 0 \n>>> number = 0 \n>>> while number < 20: \n>>> \t number += 1 \n>>> \t if number == 10 or number == 11: \n >>>\t\tcontinue \n>>>\t sum += number \n >>> print('The sum is', sum) \n The sum is 189",
+    "code": "```>>> sum = 0 \n>>> number = 0 \n>>> while number < 20: \n>>> \t number += 1 \n>>> \t if number == 10 or number == 11: \n >>>\t\tcontinue \n>>>\t sum += number \n >>> print('The sum is', sum) \n The sum is 189```",
     "tags": ["loops"]
   },
   {
     "id": 33,
     "title": "'for' Loop",
     "description": "The 'for' loop iterates through each value in a sequence. In general, the syntax of a for loop is:",
-    "code": "for i in range(initialValue, endValue): \n \t # Loop body",
+    "code": "```for i in range(initialValue, endValue): \n \t # Loop body```",
     "tags": ["loops"]
   },
   {
     "id": 34,
     "title": "Multidimensional Lists",
     "description": "A two-dimensional list is a list that contains other lists as its elements. You can use a list to store two-dimensional data, such as a matrix or a table, as well.",
-    "code": "matrix = [ \n \t [1, 2, 3, 4, 5], \n \t [6, 7, 0, 0, 0], \n \t [0, 1, 0, 0, 0], \n \t [1, 0, 0, 0, 8], \n \t [0, 0, 9, 0, 3], \n ]",
+    "code": "```matrix = [ \n \t [1, 2, 3, 4, 5], \n \t [6, 7, 0, 0, 0], \n \t [0, 1, 0, 0, 0], \n \t [1, 0, 0, 0, 8], \n \t [0, 0, 9, 0, 3], \n ]```",
     "tags": ["lists"]
   },
   {
     "id": 35,
     "title": "Indexing in Multidimensional Lists",
     "description": "Each value in matrix can be accessed using the following syntax, where i and j are the row and column indexes.",
-    "code": "matrix[i][j]",
+    "code": "```matrix[i][j]```",
     "tags": ["lists"]
   },
   {
     "id": 36,
     "title": "Traversing Elements in a 'for' Loop",
     "description": "The elements in a Python list are iterable. Python supports a convenient 'for' loop, which enables you to traverse the list sequentially without using an index variable. For example, the following code displays all the elements in the list 'myList'",
-    "code": "for u in myList: \n \t print(u)",
+    "code": "```for u in myList: \n \t print(u)```",
     "tags": ["lists"]
   },
   {
     "id": 37,
     "title": "Linear Search in List",
     "description": "The linear search approach compares the key element key sequentially with each element in the list. It continues to do so until the key matches an element in the list or the list is exhausted without a match being found. If a match is found, the linear search returns the matching element’s index in the list. If no match is found, the search returns -1. On average, the algorithm will have to examine half of the elements in a list before finding the key, if it exists. Since the execution time of a linear search increases linearly as the number of list elements increases, doing a linear search is inefficient for a large list. The linearSearch function below illustrates this approach:",
-    "code": "def linearSearch(lst, key): \n \t for i in range(len(lst)): \n \t \t if key == lst[i]: \n \t \t \t return i \n \t return -1",
+    "code": "```def linearSearch(lst, key): \n \t for i in range(len(lst)): \n \t \t if key == lst[i]: \n \t \t \t return i \n \t return -1```",
     "tags": ["lists"]
   },
   {
     "id": 38,
     "title": "Selection Sort on List",
     "description": "A selection sort finds the smallest element in the list and swaps it with the first element. It then finds the smallest element remaining and swaps it with the first element in the remaining list, and so on, until only a single element remains.",
-    "code": "# The function for sorting elements in ascending order \n def selectionSort(list): \n \t for i in range(len(list) - 1): \n \t \t # Find the minimum in the list[i : len(list)] \n \t \t currentMin = list[i] \n \t \t currentMinIndex = i \n \t for j in range(i + 1, len(list)): \n \t \t if currentMin > list[j]: \n \t \t \t currentMin = list[j] \n \t \t \t currentMinIndex = j \n \t # Swap list[i] with list[currentMinIndex] if necessary \n \t if currentMinIndex != i: \n \t \t list[currentMinIndex] = list[i] \n \t \t list[i] = currentMin",
+    "code": "```# The function for sorting elements in ascending order \n def selectionSort(list): \n \t for i in range(len(list) - 1): \n \t \t # Find the minimum in the list[i : len(list)] \n \t \t currentMin = list[i] \n \t \t currentMinIndex = i \n \t for j in range(i + 1, len(list)): \n \t \t if currentMin > list[j]: \n \t \t \t currentMin = list[j] \n \t \t \t currentMinIndex = j \n \t # Swap list[i] with list[currentMinIndex] if necessary \n \t if currentMinIndex != i: \n \t \t list[currentMinIndex] = list[i] \n \t \t list[i] = currentMin```",
     "tags": ["lists"]
   },
   {
     "id": 39,
     "title": "Insertion Sort on List",
     "description": "The insertion-sort algorithm sorts a list of values by repeatedly inserting a new element into a sorted sublist until the whole list is sorted.",
-    "code": "# The function for sorting elements in ascending order \n def insertionSort(list): \n \t for i in range(1, len(list)): \n \t \t # Insert list[i] into a sorted sublist list[0 : i] so that list[0 : i+1] is sorted. \n \t \t currentElement = list[i] \n \t \t k = i - 1 \n \t \t while k >= 0 and list[k] > currentElement: \n \t \t \t list[k + 1] = list[k] \n \t \t \t k -= 1 \n \t \t # Insert the current element into list[k + 1] \n \t \t list[k + 1] = currentElement",
+    "code": "```# The function for sorting elements in ascending order \n def insertionSort(list): \n \t for i in range(1, len(list)): \n \t \t # Insert list[i] into a sorted sublist list[0 : i] so that list[0 : i+1] is sorted. \n \t \t currentElement = list[i] \n \t \t k = i - 1 \n \t \t while k >= 0 and list[k] > currentElement: \n \t \t \t list[k + 1] = list[k] \n \t \t \t k -= 1 \n \t \t # Insert the current element into list[k + 1] \n \t \t list[k + 1] = currentElement```",
     "tags": ["lists"]
   },
   {
     "id": 40,
     "title": "Defining a Function",
     "description": "A function definition consists of the function’s name, parameters, and body. \n A parameter is like a placeholder: When a function is invoked, you pass a value to the parameter. This value is referred to as an actual parameter or argument. Parameters are optional; that is, a function may not have any parameters. Some functions return a value, while other functions perform desired operations without returning a value. \n If a function returns a value, it is called a value-returning function. A return statement using the keyword return is required for a value-returning function to return a result. The function terminates when a return statement is executed. \n The syntax for defining a function is as follows:",
-    "code": "def functionName(list of parameters) \n \t # Function body",
+    "code": "```def functionName(list of parameters) \n \t # Function body```",
     "tags": ["functions"]
   },
   {
     "id": 41,
     "title": "Calling a Function",
     "description": "Calling a function executes the code in the function. To use a function, you have to call or invoke it. The program that calls the function is called a caller. In the following code example, in line 1 the 'max' function is called and the value from the 'max' function is returned and assigned to the variable 'larger'; in line 2 the 'max' function is called and the returned value is printed:",
-    "code": "larger = max(3, 4) \n print(max(3, 4))",
+    "code": "```larger = max(3, 4) \n print(max(3, 4))```",
     "tags": ["functions"]
   },
   {
     "id": 42,
     "title": "'main' Function",
     "description": "By convention, programs often define a function named 'main' that contains the main functionality for a program.",
-    "code": "def main(): \n \t # Statements for program \n main() # Call main function",
+    "code": "```def main(): \n \t # Statements for program \n main() # Call main function```",
     "tags": ["functions"]
   },
   {
     "id": 43,
     "title": "'randint' Function",
     "description": "The randint(a, b) function can be used to generate a random integer between a and b, inclusively. The 'randint' function is defined in the 'random' module. The following code generates a random number and assigns it to the variable 'number':",
-    "code": "number = random.randint(0, 9)",
+    "code": "```number = random.randint(0, 9)```",
     "tags": ["functions"]
   },
   {
     "id": 44,
     "title": "'time' Function",
     "description": "You can use the 'time()' function in the 'time' module to obtain the current system time. The following code assigns the current time to the 'currentTime' variable:",
-    "code": "currentTime = time.time()",
+    "code": "```currentTime = time.time()```",
     "tags": ["functions"]
   },
   {
     "id": 45,
     "title": "'ceil' Function",
     "description": "The 'ceil' function in the 'math' module rounds a number up to its nearest integer and returns that integer. The following code returns '3':",
-    "code": "ceil(2.1)",
+    "code": "```ceil(2.1)```",
     "tags": ["math", "functions"]
   },
   {
     "id": 46,
     "title": "'floor' Function",
     "description": "The 'floor' function in the 'math' module rounds a number up to its nearest integer and returns that integer. The following code returns '2'",
-    "code": "floor(2.3)",
+    "code": "```floor(2.3)```",
     "tags": ["math", "functions"]
   },
   {
     "id": 47,
     "title": "'sqrt' Function",
     "description": "The 'sqrt' function in the 'math' module returns the square root of a number. The following code returns '2':",
-    "code": "sqrt(4.0)",
+    "code": "```sqrt(4.0)```",
     "tags": ["math", "functions"]
   },
   {
     "id": 48,
     "title": "'log' Function",
     "description": "The 'log' function in the 'math' module returns the natural logarithm of a number. The following code returns '1.0':",
-    "code": "log(2.71828)",
+    "code": "```log(2.71828)```",
     "tags": ["math", "functions"]
   },
   {
     "id": 49,
     "title": "'degrees' Function'",
     "description": "The 'degrees' function in the 'math' module converts an angle from radians to degrees. The following code would return '90':",
-    "code": "degrees(1.57)",
+    "code": "```degrees(1.57)```",
     "tags": ["math", "functions"]
   },
   {
     "id": 50,
     "title": "'radian' Function",
     "description": "The 'radian' function in the 'math' module converts and an angle from degrees to radians. The following code would return '1.57':",
-    "code": "radians(90)",
+    "code": "```radians(90)```",
     "tags": ["math", "functions"]
   },
   {
     "id": 51,
     "title": "'sin' Function",
     "description": "The 'sin' function in the 'math' module returns the sine of a number. The following code would return '0':",
-    "code": "sin(3.14159)",
+    "code": "```sin(3.14159)```",
     "tags": ["math", "functions"]
   },
   {
     "id": 52,
     "title": "'cos' Function",
     "description": "The 'cos' function in the 'math' module returns the consine of a number. The following code would return '-1':",
-    "code": "cos(3.14159)",
+    "code": "```cos(3.14159)```",
     "tags": ["math", "functions"]
   },
   {
     "id": 53,
     "title": "'asin' Function",
     "description": "The 'asin' function in the 'math' module returns the angle in radians for the inverse of sine. The following code would return '1.57':",
-    "code": "asin(1.0)",
+    "code": "```asin(1.0)```",
     "tags": ["math", "functions"]
   },
   {
     "id": 54,
     "title": "'acos' Function",
     "description": "The 'acos' function in the 'math' module returns the angle in radians for the inverse of cosine. The following code would return '0':",
-    "code": "acos(1.0)",
+    "code": "```acos(1.0)```",
     "tags": ["math", "functions"]
   },
   {
     "id": 55,
     "title": "'tan' Function",
     "description": "The 'tan' function in the 'math' module returns the tangent of a number. The following code would return '0':",
-    "code": "tan(0.0)",
+    "code": "```tan(0.0)```",
     "tags": ["math", "functions"]
   }
 ]
