@@ -3,6 +3,7 @@ import * as React from "react";
 import fs = require("fs");
 import path = require('path');
 import Store = require("electron-store");
+const homedir = require('os').homedir();
 import ReactMarkdown = require('react-markdown');
 
 export class ReactComponent extends React.Component<{}, { screen: string }> {
@@ -91,7 +92,8 @@ export class ReactComponent extends React.Component<{}, { screen: string }> {
 	}
 
 	private getPythonResource(): Record<string, any>[] {
-		let dataPath = path.join(process.cwd(), 'resources', 'python_resources.json');
+		path.join(homedir, 'lighthouse', `python_resources.json`);
+		let dataPath = path.join(homedir, 'lighthouse', `python_resources.json`);;
 		const resource = JSON.parse((fs.readFileSync(dataPath, "utf8")));
 		return resource;
 	}

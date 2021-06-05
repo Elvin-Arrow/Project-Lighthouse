@@ -58,7 +58,7 @@ export class AssignmentsWidget extends ReactWidget {
               Time: {assignment.solvingTime}
             </div>
             <div className="sub-heading deadline">
-              Attempted: {assignmentStat.completed}
+              Attempted: {assignmentStat.completed ? "Yes" : 'No'}
             </div>
             <div className="sub-heading deadline">
               Score: {assignmentStat.score}

@@ -13,6 +13,8 @@ export class SubmissionService {
 
         let submissionOutput = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', `${this.store.get('assignmentName')}`, 'testing.log');
 
+        console.info(`Log path: ${submissionOutput}`);
+
         if (fs.existsSync(submissionOutput)) {
             let testLog = fs.readFileSync(submissionOutput, 'utf-8');
 
@@ -21,8 +23,6 @@ export class SubmissionService {
             if (testLog.includes('OK')) {
                 // Test cases passed
                 score = 10;
-
-                this.updateAssignmentsStats(score);
             } else {
                 let numberOfTestCases = testLog.split('Ran ')[1].split(' ')[0]
 
@@ -39,6 +39,10 @@ export class SubmissionService {
                     score -= negation
                 }
             }
+
+            // Update stats
+            this.updateAssignmentsStats(score);
+
         }
 
         // Delete the test log

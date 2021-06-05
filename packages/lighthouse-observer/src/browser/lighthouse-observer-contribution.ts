@@ -52,7 +52,7 @@ export class LighthouseObserverCommandContribution implements CommandContributio
 
             this.isActive = false;
             this.store.set('isActive', this.isActive);
-        }, 300000);
+        }, 60000);
     }
 
     private goActive(): void {

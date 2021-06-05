@@ -9,8 +9,8 @@ export class AssignmentService {
 
     public getAssignments(): Record<string, any>[] {
         // Look for assignments in the home directory
-        // const assignmentPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'assignments.json');
-        const assignmentPath = path.join(process.cwd(), 'resources', 'assignments.json');
+        const assignmentPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments.json');
+        // const assignmentPath = path.join(process.cwd(), 'resources', 'assignments.json');
 
         let rawJson = fs.readFileSync(assignmentPath, "utf-8");
 
@@ -20,11 +20,10 @@ export class AssignmentService {
     }
 
     public get assignmentsBaseDir(): string {
-        return path.join(process.cwd(), 'resources');
+        return path.join(homedir, 'lighthouse', `${this.store.get("username")}`);
     }
 
     public resolveAssignmentPath(assignmentName: string): string {
-        // const resourcePath = path.join(process.cwd(), 'resources', 'assignments', assignmentPath);
         let assignmentPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', assignmentName);
         if (!this.dirExists(assignmentPath)) {
             this.createAssignmentDir(assignmentPath);

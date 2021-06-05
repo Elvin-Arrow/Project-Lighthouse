@@ -3,9 +3,6 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import Store = require("electron-store");
 import { CommandService } from "@theia/core";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
-import fs = require('fs');
-import path = require("path");
-const homedir = require('os').homedir();
 import { PerformanceService } from "./performance-service";
 
 export class DashComponent extends React.Component<{ commandService: CommandService }, { screen: string, }> {
@@ -53,7 +50,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 
 	private getDashContent() {
 		this.performanceService.updatePerformanceStats();
-		const areaWisePerformance = this.getPerformanceScores();
+		const areaWisePerformance = this.performanceService.getPerformanceScores();
 
 		return (
 			<>
@@ -61,23 +58,23 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 					<h5>Progress</h5>
 					<div className="progress-block">
 						<div className="section-title">Basics</div>
-						<ProgressBar completed={areaWisePerformance[0] ?? 0} bgColor={'#0E639C'} />
+						<ProgressBar completed={areaWisePerformance[0] ?? 0} bgColor={this.performanceService.getScoreColour(areaWisePerformance[0])} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Conditionals</div>
-						<ProgressBar completed={areaWisePerformance[1] ?? 0} bgColor={'#0E639C'} />
+						<ProgressBar completed={areaWisePerformance[1] ?? 0} bgColor={this.performanceService.getScoreColour(areaWisePerformance[1])} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Loops</div>
-						<ProgressBar completed={areaWisePerformance[2] ?? 0} bgColor={'#0E639C'} />
+						<ProgressBar completed={areaWisePerformance[2] ?? 0} bgColor={this.performanceService.getScoreColour(areaWisePerformance[2])} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Lists</div>
-						<ProgressBar completed={areaWisePerformance[3] ?? 0} bgColor={'#0E639C'} />
+						<ProgressBar completed={areaWisePerformance[3] ?? 0} bgColor={this.performanceService.getScoreColour(areaWisePerformance[3])} />
 					</div>
 					<div className="progress-block">
 						<div className="section-title">Functions</div>
-						<ProgressBar completed={areaWisePerformance[4] ?? 0} bgColor={'#0E639C'} />
+						<ProgressBar completed={areaWisePerformance[4] ?? 0} bgColor={this.performanceService.getScoreColour(areaWisePerformance[4])} />
 					</div>
 					<button className="theia-button secondary" title="View full report" onClick={(_a) => this.setState({ screen: 'Report' })}>View Full Report</button>
 				</div>
@@ -96,7 +93,7 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 	}
 
 	private getReportContent() {
-		const data = [
+		let data = [
 			{
 				name: 'Week 0',
 				Performance: 75,
@@ -134,6 +131,8 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 				Performance: 80,
 			},
 		];
+
+		data = this.performanceService.graphData;
 		return (
 			<>
 				<div id="report-header">
@@ -154,15 +153,15 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 				<div className="right">
 					<div className="metric-block">
 						<div className="metric-title">Average Time to Complete</div>
-						<div className="metric-data">25 min</div>
+						<div className="metric-data">{this.performanceService.averageTimeSpent}</div>
 					</div>
 					<div className="metric-block">
 						<div className="metric-title">Average Number of Errors</div>
-						<div className="metric-data">23</div>
+						<div className="metric-data">{this.performanceService.averageErrors}</div>
 					</div>
 					<div className="metric-block">
 						<div className="metric-title">Average Compilations Before Completion</div>
-						<div className="metric-data">25</div>
+						<div className="metric-data">{this.performanceService.averageCompilations}</div>
 					</div>
 				</div>
 				<div className="bottom">
@@ -175,60 +174,38 @@ export class DashComponent extends React.Component<{ commandService: CommandServ
 						</tr>
 						<tr>
 							<td>Basics</td>
-							<td>{this.performanceService.getNumberOfAttemptedAssignments('basics')} (Class Average: 3)</td>
-							<td>{this.performanceService.getAverageAssignmentScore('basics')} (Class Average: 7)</td>
-							<td>Good</td>
+							<td>{this.performanceService.getNumberOfAttemptedAssignments('basics')} (Class Average: _)</td>
+							<td>{this.performanceService.getAverageAssignmentScore('basics')} (Class Average: _)</td>
+							<td>{this.performanceService.getAreawiseStanding('basics')}</td>
 						</tr>
 						<tr>
 							<td>Conditionals</td>
-							<td>{this.performanceService.getNumberOfAttemptedAssignments('conditionals')} (Class Average: 2)</td>
-							<td>{this.performanceService.getAverageAssignmentScore('conditionals')} (Class Average: 7)</td>
-							<td>Good</td>
+							<td>{this.performanceService.getNumberOfAttemptedAssignments('conditionals')} (Class Average: _)</td>
+							<td>{this.performanceService.getAverageAssignmentScore('conditionals')} (Class Average: _)</td>
+							<td>{this.performanceService.getAreawiseStanding('conditionals')}</td>
 						</tr>
 						<tr>
 							<td>Loops</td>
-							<td>{this.performanceService.getNumberOfAttemptedAssignments('loops')} (Class Average: 1)</td>
-							<td>{this.performanceService.getAverageAssignmentScore('loops')} (Class Average: 5)</td>
-							<td>Average</td>
+							<td>{this.performanceService.getNumberOfAttemptedAssignments('loops')} (Class Average: _)</td>
+							<td>{this.performanceService.getAverageAssignmentScore('loops')} (Class Average: _)</td>
+							<td>{this.performanceService.getAreawiseStanding('loops')}</td>
 						</tr>
 						<tr>
 							<td>Lists</td>
-							<td>{this.performanceService.getNumberOfAttemptedAssignments('lists')} (Class Average: 1)</td>
-							<td>{this.performanceService.getAverageAssignmentScore('lists')} (Class Average: 7)</td>
-							<td>Average</td>
+							<td>{this.performanceService.getNumberOfAttemptedAssignments('lists')} (Class Average: _)</td>
+							<td>{this.performanceService.getAverageAssignmentScore('lists')} (Class Average: _)</td>
+							<td>{this.performanceService.getAreawiseStanding('lists')}</td>
 						</tr>
 						<tr>
 							<td>Functions</td>
-							<td>{this.performanceService.getNumberOfAttemptedAssignments('functions')} (Class Average: 1)</td>
-							<td>{this.performanceService.getAverageAssignmentScore('functions')} (Class Average: 6)</td>
-							<td>Good</td>
+							<td>{this.performanceService.getNumberOfAttemptedAssignments('functions')} (Class Average: _)</td>
+							<td>{this.performanceService.getAverageAssignmentScore('functions')} (Class Average: _)</td>
+							<td>{this.performanceService.getAreawiseStanding('functions')}</td>
 						</tr>
 					</table>
 				</div>
 			</>
 		);
-	}
-
-	protected getPerformanceScores(): Array<number> {
-		let userPerformanceStats: Array<number> = [];
-
-		// Get current user
-		const username = this.store.get('username');
-
-		// Read the performance stats
-		const performanceStatsDir = path.join(homedir, 'lighthouse', `${username}`, 'performance_stats.json');
-
-		if (fs.existsSync(performanceStatsDir)) {
-			let performanceStats = JSON.parse(fs.readFileSync(performanceStatsDir, 'utf-8'));
-
-			// Always true
-			if (Array.isArray(performanceStats)) {
-				performanceStats.forEach(stat => {
-					userPerformanceStats.push(stat.performanceScore);
-				});
-			}
-		}
-		return userPerformanceStats;
 	}
 
 	private viewResources(): void {
