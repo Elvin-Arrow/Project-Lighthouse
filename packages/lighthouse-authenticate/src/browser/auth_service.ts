@@ -52,6 +52,13 @@ export class AuthenticationService {
         );
     }
 
+    /**
+     * Checks the user directory to see if the file directories have been setup, 
+     * if no files exist, it's first time authentication
+     * 
+     * @param username string
+     * @returns boolean
+     */
     private isFirstAuthentication(username: string): boolean {
         const userDir = path.join(homedir, 'lighthouse', `${username}`);
         if (fs.existsSync(userDir)) return false;
@@ -59,11 +66,19 @@ export class AuthenticationService {
         return true;
     }
 
+    /**
+     * Generates the files for the newly authenticated user
+     * @param username string
+     */
     private generateUserDirectory(username: string): void {
         const userDir = path.join(homedir, 'lighthouse', `${username}`);
         fs.mkdirSync(userDir, { recursive: true });
     }
 
+    /**
+     * Write the IDE global configurations is not already setup
+     * 
+     */
     private writeGlobalDefaultConfiguration(): void {
         let configPath = path.join(homedir, '.theia');
 
@@ -95,6 +110,12 @@ export class AuthenticationService {
             fs.writeFile(configFilePath, JSON.stringify(config), (err => { console.error(err); }))
     }
 
+    /**
+     * Create the stats profile for the newly authenticated user if it doesn't
+     * exist.
+     * 
+     * @param username string 
+     */
     private generatePerformanceStats(username: string): void {
         const performanceStatsDir = path.join(homedir, 'lighthouse', `${username}`, 'performance_stats.json');
 
