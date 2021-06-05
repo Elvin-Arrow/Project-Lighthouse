@@ -91,24 +91,27 @@ LighthouseDashboardWidget
 	}
 
 	private handleWorkspaceChange(files: FileStat[] | FileStat | undefined): void {
+		console.info(`Looking into workspace change`);
 		if (Array.isArray(files)) {
+			console.info(`Scanning files`);
 			let isAssignmentDir = false;
 			// The files received are the workspace directory itself
-			files.forEach((file) => {
-				let dirFiles = fs.readdirSync(file.name);
+			try {
+				files.forEach((file) => {
+					let dirFiles = fs.readdirSync(file.name);
 
-				console.info(`Reading workspace directory gave ${dirFiles.length} files`);
+					console.info(`Reading workspace directory gave ${dirFiles.length} files`);
 
-				dirFiles.forEach(dirFile => {
-					console.info(`Workspace file: ${dirFile}`);
+					dirFiles.forEach(dirFile => {
+						console.info(`Workspace file: ${dirFile}`);
 
-					if (dirFile == 'instructions.md' || dirFile == 'a-test.py') {
-						this.store.set('isAssignmentWorkspace', true);
-						isAssignmentDir = true;
-					}
-				})
-			});
-
+						if (dirFile == 'instructions.md' || dirFile == 'a-test.py') {
+							this.store.set('isAssignmentWorkspace', true);
+							isAssignmentDir = true;
+						}
+					});
+				});
+			} finally { }
 			if (!isAssignmentDir) {
 				console.info(`New workspace is not an assignment workspace, unsetting assignment details`);
 				this.store.delete('isAssignmentWorkspace')
