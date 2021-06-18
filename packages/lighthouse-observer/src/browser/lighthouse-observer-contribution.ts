@@ -25,39 +25,6 @@ export class LighthouseObserverCommandContribution implements CommandContributio
         this.isActive = true;
     }
 
-    private startTimer(): void {
-        // wait 5 minutes before calling goInactive
-        console.info(`Waiting for 5 minutes...`);
-        this.timeoutId = window.setTimeout(() => {
-            this.messageService.info("User is now inactive");
-
-            // Store the timing
-            this.storeTime();
-
-            this.isActive = false;
-            this.store.set('inactive', this.isActive);
-        }, 300000);
-    }
-
-    private goActive(): void {
-        if (!this.isActive) {
-            this.messageService.info("We missed you");
-        }
-
-        this.isActive = true;
-        this.store.set('isActive', this.isActive);
-
-        this.startTimer();
-    }
-
-    private resetTimer(): void {
-        console.info(`Resetting timer`);
-        try {
-            window.clearTimeout(this.timeoutId);
-            this.goActive();
-        } finally { }
-    }
-
     registerCommands(registry: CommandRegistry): void {
         registry.registerCommand(LighthouseObserverCommand, {
             execute: () => {
@@ -72,6 +39,39 @@ export class LighthouseObserverCommandContribution implements CommandContributio
                 }
             }
         });
+    }
+
+    private startTimer(): void {
+        // wait 5 minutes before calling goInactive
+        console.info(`Waiting for 5 minutes...`);
+        this.timeoutId = window.setTimeout(() => {
+            this.messageService.info("User is now inactive");
+
+            // Store the timing
+            this.storeTime();
+
+            this.isActive = false;
+            this.store.set('isActive', this.isActive);
+        }, 60000);
+    }
+
+    private goActive(): void {
+        if (!this.isActive) {
+            this.messageService.info("I missed you, good to have you back ❤");
+        }
+
+        this.isActive = true;
+        this.store.set('isActive', this.isActive);
+
+        this.startTimer();
+    }
+
+    private resetTimer(): void {
+        console.info(`Resetting timer`);
+        try {
+            window.clearTimeout(this.timeoutId);
+            this.goActive();
+        } finally { }
     }
 
     private storeTime(): void {

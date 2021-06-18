@@ -9,7 +9,6 @@
     width: 80%;
     float: left;
     padding: 20px;
-    /* border: 1px solid; */
     margin-left: 20px;
     height: 60vh;
 }
@@ -41,6 +40,7 @@ h4{
 .resource-block code {
     display: block;
     background-color: #444;
+	color: #ccc;
     padding: 10px;
     margin: 10px 0;
 }

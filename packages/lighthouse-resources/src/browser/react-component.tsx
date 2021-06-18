@@ -3,6 +3,8 @@ import * as React from "react";
 import fs = require("fs");
 import path = require('path');
 import Store = require("electron-store");
+const homedir = require('os').homedir();
+import ReactMarkdown = require('react-markdown');
 
 export class ReactComponent extends React.Component<{}, { screen: string }> {
 	private readonly store: Store = new Store();
@@ -11,21 +13,13 @@ export class ReactComponent extends React.Component<{}, { screen: string }> {
 		super(props);
 
 		this.state = {
-			screen: "<div>Please select a language from the sidebar.</div>"
+			screen: "python"
 		};
-
-		let temp = this.store.get('resource', null);
-		this.store.set('resource', null);
-
-		if (temp && temp == 'variable') {
-			this.viewPythonResources();
-		}
 	}
 
 	public render(): React.ReactNode {
-
-
 		let content;
+
 		if (this.state.screen == 'python') {
 			content = this.viewPythonResources();
 		} else if (this.state.screen == 'cpp') {
@@ -56,34 +50,31 @@ export class ReactComponent extends React.Component<{}, { screen: string }> {
 	}
 
 	private viewPythonResources(): JSX.Element[] {
-		const resources = this.getPythonResource();
+		let resources = this.getPythonResource();
 		let content: JSX.Element[] = [];
-		let temp = this.store.get('resource', null);
+		let filterTags: Array<string> = [];
 
-		if (temp && temp == 'variable') {
-			resources.forEach(resource => {
-				if (resource.title == 'Variables' || resource.title == 'Identifiers') {
-					content.push(
-						<div className="resource-block">
-							<div className="title">{resource.title}</div>
-							<div className="description">{resource.description}<code>{resource.code}</code></div>
-						</div>
-					);
-				}
-			})
+		// Check to see if there are any filters to be applied
+		if (this.store.get('nameError')) {
+			this.store.delete('nameError');
+			filterTags = ['variables'];
+		} else if (this.store.get('syntaxError')) {
+			filterTags = ['syntax'];
 		} else {
-			resources.forEach((resource) => {
-
-				content.push(
-					<div className="resource-block">
-						<div className="title">{resource.title}</div>
-						<div className="description">{resource.description}<code>{resource.code}</code></div>
-					</div>
-				);
-			});
+			filterTags = this.getAssignmentTags();
 		}
 
+		resources = this.filterResources(resources, filterTags);
 
+		resources.forEach((resource) => {
+
+			content.push(
+				<div className="resource-block">
+					<div className="title">{resource.title}</div>
+					<div className="description">{resource.description}<ReactMarkdown children={resource.code} /></div>
+				</div>
+			);
+		});
 
 		return content;
 	}
@@ -98,23 +89,66 @@ export class ReactComponent extends React.Component<{}, { screen: string }> {
 		this.setState({
 			screen: 'cpp'
 		}, () => { });
-
-		// this.setState({
-		// 	content: cppContent
-		// }, () => { });
 	}
 
 	private getPythonResource(): Record<string, any>[] {
-		let dataPath = path.join(process.cwd(), 'resources', 'python_resources.json');
+		path.join(homedir, 'lighthouse', `python_resources.json`);
+		let dataPath = path.join(homedir, 'lighthouse', `python_resources.json`);;
 		const resource = JSON.parse((fs.readFileSync(dataPath, "utf8")));
 		return resource;
 	}
 
-	// protected sayHello(): void {
-	// 	let dataPath = path.join(process.cwd(), 'resources', 'python_resources.json');
-	// 	fs.readFile(dataPath, "utf8", (err: any, jsonString: any) => {
-	// 		const resource = JSON.parse(jsonString);
-	// 		console.error("The title is:", resource.title);
-	// 	});
-	// }
+	private getAssignmentTags(): Array<string> {
+		let tags: Array<string> = [];
+
+		let id = this.store.get("assignmentId");
+
+		if (id) {
+			// Get the assignment tags for the assignment
+			const assignmentPath = path.join(process.cwd(), 'resources', 'assignments.json');
+
+			const assignments = JSON.parse(fs.readFileSync(assignmentPath, 'utf-8'));
+
+			if (Array.isArray(assignments)) {
+				assignments.forEach(assignment => {
+					if (assignment.id == id) {
+						// Get tags
+						tags = assignment.tags;
+					}
+				})
+			}
+
+		}
+
+		return tags
+	}
+
+	private filterResources(resources: Record<string, any>[], tags: Array<string>): Record<string, any>[] {
+		// If there are no filters, return unfiltered resources
+		if (tags.length == 0) return resources;
+
+		let filteredResources: Record<string, any>[] = [];
+
+		resources.forEach(resource => {
+			if (this.checkTagInResource(resource, tags)) {
+				filteredResources.push(resource);
+			}
+		});
+
+		return filteredResources;
+	}
+
+	private checkTagInResource(resource: Record<string, any>, tags: Array<string>): boolean {
+		let tagExists = false;
+
+		tags.forEach(tag => {
+			if (resource.tags.includes(tag)) {
+				tagExists = true;
+			}
+		})
+
+		return tagExists;
+	}
+
+
 }

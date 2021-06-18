@@ -11,14 +11,16 @@ import {
   TabBarToolbarRegistry,
 } from "@theia/core/lib/browser/shell/tab-bar-toolbar";
 import { EditorManager } from "@theia/editor/lib/browser";
-import { DebugSessionManager } from '@theia/debug/lib/browser/debug-session-manager';
-import { LoggerService } from "./log_service";
 import { WorkspaceService } from "@theia/workspace/lib/browser";
+import { DebugSessionManager } from '@theia/debug/lib/browser/debug-session-manager';
+import { TerminalService } from "@theia/terminal/lib/browser/base/terminal-service";
+import { LoggerService } from "./log_service";
 import Swal from 'sweetalert2'
-
-import * as fs from "fs";
 import { InterventionService } from "./intervention_service";
+import { CompilationService } from "./compile_service";
+import { SubmissionService } from "./submission-service";
 
+import Store = require("electron-store");
 
 export const LighthouseCrnlCommand = {
   id: "LighthouseCrnl.command",
@@ -33,7 +35,10 @@ export const LighthouseSubmitCommand = {
 @injectable()
 export class LighthouseCrnlCommandContribution implements CommandContribution {
   private readonly loggerService = new LoggerService();
+  private readonly submissionService: SubmissionService = new SubmissionService();
   private interventionService: InterventionService;
+  private compilationService: CompilationService;
+  private readonly store: Store = new Store();
 
   constructor(
     @inject(CommandService) private readonly commandService: CommandService,
@@ -43,107 +48,109 @@ export class LighthouseCrnlCommandContribution implements CommandContribution {
     private readonly debugSessionManager: DebugSessionManager,
     @inject(WorkspaceService)
     private readonly workspaceService: WorkspaceService,
+    @inject(TerminalService)
+    private readonly terminalService: TerminalService,
   ) {
     this.interventionService = new InterventionService(this.messageService, this.commandService);
+    this.compilationService = new CompilationService(this.workspaceService, this.editorManager);
   }
 
   registerCommands(registry: CommandRegistry): void {
     registry.registerCommand(LighthouseCrnlCommand, {
       execute: () => {
-        // TODO: Check for launch configrations before launch
         this.commandService
           .executeCommand("workbench.action.debug.start")
           .then(() => {
-            this.debugSessionManager.onDidDestroyDebugSession(() => {
-              let editor = this.editorManager.currentEditor
+            if (this.store.get('isAssignmentWorkspace'))
+              this.debugSessionManager.onDidDestroyDebugSession(() => {
+                let editor = this.editorManager.currentEditor
 
-              let filePath = editor?.getResourceUri();
+                let filePath = editor?.getResourceUri();
 
-              this.commandService.executeCommand('AssignmentView.command');
-
-              if (filePath) {
-                console.info(filePath.path);
-              }
-
-              if (this.isAssignmentDir()) {
-                let creds = this.getAssignmentCredentials();
-                console.info(`Acquired assignment details as: ${creds}`);
-
-                if (creds != null)
-                  this.loggerService.setAssignmentCredentials(creds.id, creds.area);
-              }
-
-              this.loggerService.generateExecutionLog(this.isAssignmentDir()).then((wasError) => {
-                if (wasError) {
-                  console.info(`Triggering intervention`);
-
-                  this.interventionService.triggerIntervention();
+                if (filePath) {
+                  console.info(filePath.path);
                 }
-              }, (reason) => {
-                console.error(reason);
-              });
 
-            })
+                this.loggerService.generateExecutionLog(this.isAssignmentDir()).then((wasError) => {
+                  if (wasError) {
+                    this.commandService.executeCommand('AssignmentView.command');
+                  }
+
+                  console.info(`Triggering intervention`);
+                  this.interventionService.triggerIntervention();
+                }, (reason) => {
+                  console.error(reason);
+                });
+
+              })
           });
       },
     });
 
     registry.registerCommand(LighthouseSubmitCommand, {
       execute: () => {
-        this.commandService
-          .executeCommand("workbench.action.debug.start")
-          .then(() => {
+        Swal.fire({ title: "Processing assignment", icon: 'info' });
+        Swal.showLoading();
 
-            // TODO Write the submission logic
-            // Trigger the test case execution
+        this.terminalService.newTerminal({
+          title: "Program test",
+          useServerTitle: false
+        }).then(term => {
+          term.start().then(() => {
+            term.activate();
+            this.terminalService.open(term);
+            term.show();
 
-            // Acquire test execution result
+            let programPath = this.compilationService.getTestProgramPath();
 
-            // Update scores
+            if (programPath) {
+              term.sendText(`python ${programPath}\n\r`);
 
-            Swal.fire({
-              title: 'Submission successful',
-              text: 'Amazing you just submitted your assignment\nYour score: 10',
-              icon: 'success',
-            })
+              setTimeout(() => {
+                const score = this.submissionService.processAssignmentSubmission();
+
+                Swal.hideLoading();
+                Swal.fire({
+                  title: score >= 5 ? 'Submission successful' : 'You can do better 😟',
+                  text: this.submissionService.getSubmissionMessage(score),
+                  footer: `Your score: ${score}`,
+                  icon: score >= 5 ? 'success' : 'warning',
+                });
+
+                term.close();
+              }, 1000)
+
+
+            } else {
+              setTimeout(() => {
+                term.close();
+                term.dispose();
+                Swal.hideLoading();
+                Swal.fire({
+                  title: 'Submission failed',
+                  text: 'Couldn\'t submit the assignment',
+                  icon: 'error',
+                });
+              }, 250);
+            }
+
           });
+
+        });
       }
     });
   }
 
   private isAssignmentDir(): boolean {
-    if (this.workspaceService.workspace?.name.includes('Assignment')) {
+    console.info(`Checking for assignment before generating log\nIs assignment workspace: ${this.store.get('isAssignmentWorkspace')}`);
+    if (this.store.get('isAssignmentWorkspace', false)) {
       console.info(`Assignment directory detected`);
       return true;
     }
     return false;
   }
 
-  private getAssignmentCredentials(): Record<string, any> | null {
-    let name = this.workspaceService.workspace?.name
-    let details = null;
 
-    if (name) {
-      console.info(`Current workspace name: ${name}`);
-      let slicedName = name.split('\\').reverse()[0];
-      console.info(`Sliced workspace named: ${slicedName}`);
-
-      let assignmentPath = this.loggerService.baseAssignmentPath;
-
-      let assignments = JSON.parse(fs.readFileSync(assignmentPath, 'utf-8'));
-      if (assignments)
-        assignments.forEach((assignment: Record<string, any>) => {
-          if (slicedName == assignment.name) {
-            console.info(`Current workspace: ${slicedName}`)
-            details = {
-              "id": assignment.id,
-              "area": assignment.area
-            };
-          }
-        });
-    }
-    return details;
-  }
 }
 
 

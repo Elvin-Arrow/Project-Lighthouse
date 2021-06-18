@@ -9,7 +9,8 @@ export class AssignmentService {
 
     public getAssignments(): Record<string, any>[] {
         // Look for assignments in the home directory
-        const assignmentPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'assignments.json');
+        const assignmentPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments.json');
+        // const assignmentPath = path.join(process.cwd(), 'resources', 'assignments.json');
 
         let rawJson = fs.readFileSync(assignmentPath, "utf-8");
 
@@ -18,15 +19,11 @@ export class AssignmentService {
         return assignmentsData;
     }
 
-
     public get assignmentsBaseDir(): string {
-        return path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments');
+        return path.join(homedir, 'lighthouse', `${this.store.get("username")}`);
     }
 
-
-
     public resolveAssignmentPath(assignmentName: string): string {
-        // const resourcePath = path.join(process.cwd(), 'resources', 'assignments', assignmentPath);
         let assignmentPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', assignmentName);
         if (!this.dirExists(assignmentPath)) {
             this.createAssignmentDir(assignmentPath);
@@ -45,7 +42,6 @@ export class AssignmentService {
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'instructions.md'), assignment.files.instructions,);
             fs.writeFileSync(this.resolveResourcePath(assignment.name, 'a-test.py'), assignment.files.test,)
 
-
             this.writeDebugConfiguration(this.resolveResourcePath(path.join(assignment.name, '.theia'), 'launch.json'));
 
             filesCreated = true;
@@ -60,10 +56,10 @@ export class AssignmentService {
 
     public curateAssignmentStats(): void {
         let assignmentStats: Record<string, any>[] = [];
-        let statsPath = path.join(this.assignmentsBaseDir, 'stats.json')
+        let statsPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'stats.json');
 
         if (fs.existsSync(statsPath)) {
-            // Assinment stats exist append them
+            // Assinment stats exist append to them
             assignmentStats = JSON.parse(fs.readFileSync(statsPath, 'utf-8'));
         }
 
@@ -71,13 +67,14 @@ export class AssignmentService {
         let assignments = JSON.parse(fs.readFileSync(assignmentsPath, 'utf-8'));
 
         if (Array.isArray(assignments)) {
-            console.info('Fetched the assignments array of length: ' + assignments.length);
             assignments.forEach((assignment) => {
-
                 if (!this.assignmentExists(assignmentStats, assignment.id)) {
                     assignmentStats.push({
                         "id": assignment.id,
+                        "area": assignment.area,
                         "timespent": 0,
+                        "numberOfCompilations": 0,
+                        "numberOfErrors": 0,
                         "completed": false,
                         "score": 0
                     });
@@ -107,6 +104,24 @@ export class AssignmentService {
             };
         })
         return flag;
+    }
+
+    public getAssignmentStats(id: string): Record<string, any> {
+        let assignmentStat: Record<string, any> = {};
+        let assignmentStatsPath = path.join(homedir, 'lighthouse', `${this.store.get("username")}`, 'assignments', 'stats.json');
+
+        if (fs.existsSync(assignmentStatsPath)) {
+            let assignmentStats = JSON.parse(fs.readFileSync(assignmentStatsPath, 'utf-8'));
+
+            if (Array.isArray(assignmentStats)) {
+                assignmentStats.forEach(stat => {
+                    if (stat.id == id) {
+                        assignmentStat = stat;
+                    }
+                });
+            }
+        }
+        return assignmentStat;
     }
 
     private dirExists(dir: string): boolean {

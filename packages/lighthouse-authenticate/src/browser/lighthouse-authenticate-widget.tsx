@@ -133,6 +133,7 @@ export class LighthouseAuthenticateWidget extends ReactWidget {
     this.authenticateionService.authenticate(this.username, this.password).then((wasSuccess) => {
       if (wasSuccess) {
         this.editorManager.closeAll().then(() => {
+          this.dispose();
           this.commandService.executeCommand(ElectronCommands.RELOAD.id);
         });
 

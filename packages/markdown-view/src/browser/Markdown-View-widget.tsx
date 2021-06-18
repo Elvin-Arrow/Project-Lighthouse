@@ -41,13 +41,10 @@ export class MarkdownViewWidget extends ReactWidget {
                 const markdownPath = path.join(file.resource.path.toString());
 
                 content = fs.readFileSync(markdownPath.substr(1), 'utf-8');
-
-                console.log(content);
-
             }
         })
 
-        return <div id="instructions">
+        return <div id="instructions" className="markdown-preview">
             <ReactMarkdown children={content} />
         </div>
 

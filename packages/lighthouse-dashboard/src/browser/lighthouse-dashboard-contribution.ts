@@ -5,7 +5,11 @@ import { Command, CommandRegistry } from "@theia/core/lib/common/command";
 import { FrontendApplicationStateService } from "@theia/core/lib/browser/frontend-application-state";
 import { CommandService } from "@theia/core";
 import { EditorManager } from "@theia/editor/lib/browser";
+import { WorkspaceService } from "@theia/workspace/lib/browser";
+
 import Store = require("electron-store");
+import { FileStat } from "@theia/filesystem/lib/common/files";
+import fs = require('fs');
 
 export const LighthouseDashboardCommand: Command = {
 	id: "lighthouse-dashboard:command",
@@ -29,6 +33,9 @@ LighthouseDashboardWidget
 	@inject(EditorManager)
 	private readonly editorManager: EditorManager;
 
+	@inject(WorkspaceService)
+	private readonly workspaceService: WorkspaceService;
+
 	private readonly store: Store;
 
 	constructor() {
@@ -43,12 +50,16 @@ LighthouseDashboardWidget
 	}
 
 	async onStart(app: FrontendApplication): Promise<void> {
+		this.listenToWorkspaceChanges();
+		this.store.delete('isActive'); // Set user as inactive
+
 		if (this.store.get('authenticated')) {
 			this.stateService.reachedState('ready').then(
 				() => {
 					this.editorManager.closeAll().then(() => {
 						this.openView({ reveal: true });
 						this.commandService.executeCommand('AssignmentView.command');
+
 					});
 				}
 			);
@@ -65,5 +76,50 @@ LighthouseDashboardWidget
 			execute: () =>
 				super.closeView(),
 		})
+	}
+
+	private listenToWorkspaceChanges(): void {
+		this.workspaceService.onWorkspaceChanged(files => {
+			console.info(`Workspace changed, new workspace has the files: ${files.toString()}`);
+			this.handleWorkspaceChange(files);
+		})
+
+		this.workspaceService.onWorkspaceLocationChanged((files => {
+			console.info(`Workspace location changed, new workspace has the files: ${files?.toString()}`);
+			this.handleWorkspaceChange(files);
+		}))
+	}
+
+	private handleWorkspaceChange(files: FileStat[] | FileStat | undefined): void {
+		console.info(`Looking into workspace change`);
+		if (Array.isArray(files)) {
+			console.info(`Scanning files`);
+			let isAssignmentDir = false;
+			// The files received are the workspace directory itself
+			try {
+				files.forEach((file) => {
+					let dirFiles = fs.readdirSync(file.name);
+
+					console.info(`Reading workspace directory gave ${dirFiles.length} files`);
+
+					dirFiles.forEach(dirFile => {
+						console.info(`Workspace file: ${dirFile}`);
+
+						if (dirFile == 'instructions.md' || dirFile == 'a-test.py') {
+							this.store.set('isAssignmentWorkspace', true);
+							isAssignmentDir = true;
+						}
+					});
+				});
+			} finally { }
+			if (!isAssignmentDir) {
+				console.info(`New workspace is not an assignment workspace, unsetting assignment details`);
+				this.store.delete('isAssignmentWorkspace')
+				this.store.delete('assignmentId');
+				this.store.delete('assignmentName');
+				this.store.delete('assignmentArea');
+			}
+		} else
+			console.info(files?.name);
 	}
 }

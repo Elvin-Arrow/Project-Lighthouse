@@ -1,7 +1,13 @@
 #toolbox-container {
 	padding: 30px 10px;
+	width: 220px;
 }
 #toolbox-container button {
-	margin-bottom: 15px;
 	width: 200px;
+	margin: 7px 12px;
+}
+#toolbox-container hr{
+	border-top: 3px solid #444;
+	width: 200px;
+	margin-left: 12px;
 }
