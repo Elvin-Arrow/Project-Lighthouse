@@ -1,5 +1,5 @@
 {
-  "private":"true",
+  "private": "true",
   "name": "assignment-view",
   "keywords": [
     "theia-extension"
@@ -10,7 +10,7 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "latest"
+    "@theia/core": "1.14.0"
   },
   "devDependencies": {
     "rimraf": "latest",

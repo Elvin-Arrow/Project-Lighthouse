@@ -10,7 +10,7 @@
     "src"
   ],
   "dependencies": {
-    "@theia/core": "latest",
+    "@theia/core": "1.14.0",
     "@theia/terminal": "1.11.0"
   },
   "devDependencies": {
